@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home"
+        android:title="News"
+        android:icon="@drawable/ic_home_black_24dp"></item>
+    <item android:id="@+id/nav_cases"
+        android:title="Cases"
+        android:icon="@drawable/ic_assignment_ind_black_24dp"></item>
+    <item android:id="@+id/nav_learnLaw"
+        android:title="Learn Law"
+        android:icon="@drawable/ic_computer_black_24dp"></item>
+
+</menu>

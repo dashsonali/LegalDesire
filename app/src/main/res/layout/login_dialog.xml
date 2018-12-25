@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:fillViewport="true"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+            <LinearLayout
+                android:layout_marginTop="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="30dp">
+                <TextView
+                    android:id="@+id/welcmtxt"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome Back!"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif"
+                    android:textSize="30dp"
+                    android:textColor="#000"
+                    android:layout_margin="5dp"/>
+                <TextView
+                    android:id="@+id/logintxt"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="Login to your account below"
+                    android:layout_width="250dp"
+                    android:layout_margin="5dp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/entEmail"
+                    android:layout_width="235dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/edit_text_border"
+                    android:gravity="center"
+                    android:hint="Enter Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/entPass"
+                    android:layout_width="237dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/edit_text_border"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:hint="Enter Password"
+                    android:inputType="textWebPassword"
+
+                    android:padding="10dp" />
+
+                <Button
+                    android:id="@+id/registerBtn"
+                    android:layout_width="238dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/line"
+                    android:layout_below="@id/usrBtn"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="20dp"
+
+                    android:background="@drawable/button_border"
+                    android:backgroundTint="#000080
+"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="LOGIN"
+                    android:textColor="#ffff"
+
+
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/registertext"
+                   android:textColor="#add8e6"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_margin="5dp"
+                    android:text="New user? Register here"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>

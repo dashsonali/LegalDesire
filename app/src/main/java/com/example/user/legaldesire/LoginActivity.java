@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.user.legaldesire.Fragments.Dialog;
+
 public class LoginActivity extends AppCompatActivity {
 
     private Button usrBtn,lawyerBtn;
@@ -19,19 +21,26 @@ public class LoginActivity extends AppCompatActivity {
         usrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                checkAlreadyLoggedin();
                // Toast.makeText(getApplicationContext(),"User Authentication Pending",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this,RegistrationActivity.class);
-                intent.putExtra("user_type","user");
-                startActivity(intent);
+               // Intent intent = new Intent(LoginActivity.this,RegistrationActivity.class);
+               // intent.putExtra("user_type","user");
+               // startActivity(intent);
             }
         });
         lawyerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,RegistrationActivity.class);
-                intent.putExtra("user_type","lawyer");
-                startActivity(intent);
+                checkAlreadyLoggedin();
+              //  Intent intent = new Intent(LoginActivity.this,RegistrationActivity.class);
+              //  intent.putExtra("user_type","lawyer");
+              //  startActivity(intent);
             }
         });
+    }
+
+    private void checkAlreadyLoggedin() {
+        Dialog dialog=new Dialog();
+        dialog.show(getSupportFragmentManager(),"login dailog");
     }
 }

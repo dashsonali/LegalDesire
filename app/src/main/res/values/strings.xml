@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">LegalDesire</string>
+    <string name="maps_api">AIzaSyCYW4OFJlSr5Wvwclm0yQPy_3T-M3SUx7U</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -12,4 +13,5 @@
         <item>Corporate</item>
 
     </string-array>
+
 </resources>

@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
        // FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        if(firebaseAuth!=null){
+       if(firebaseAuth!=null){
             typeOfUser= pref.getString("type",null);
 
             Log.e("userPresen","firebase not null "+typeOfUser );

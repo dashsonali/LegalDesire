@@ -33,7 +33,7 @@ import java.util.zip.Inflater;
  */
 
 public class Dialog extends AppCompatDialogFragment {
-    TextView registertxt;
+    TextView registertxt,forgot_password;
     EditText email,password;
     Button login ;
     FirebaseAuth mAuth;
@@ -53,8 +53,15 @@ public class Dialog extends AppCompatDialogFragment {
         password=view.findViewById(R.id.entPass);
         registertxt=view.findViewById(R.id.registertext);
         login = view.findViewById(R.id.loginBtn);
+        forgot_password=view.findViewById(R.id.forgetPassword);
         mProgres = new ProgressDialog(getContext());
-
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForgetPassword forgetPassword=new ForgetPassword();
+                forgetPassword.show(getFragmentManager(),"forgot password");
+            }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

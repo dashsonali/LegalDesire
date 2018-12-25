@@ -3,6 +3,7 @@ package com.example.user.legaldesire;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ public class RegistrationActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseAuth mAuth;
     ProgressDialog mProgressdialog;
+    RelativeLayout rl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class RegistrationActivity extends AppCompatActivity {
         editContact = findViewById(R.id.entContact);
         editName = findViewById(R.id.entName);
         editPass = findViewById(R.id.entPass);
+          rl = findViewById(R.id.regRelative);
+
         registerBtn = findViewById(R.id.registerBtn);
         areaOfPractice = findViewById(R.id.areaOfPractice);
         mProgressdialog = new ProgressDialog(this);
@@ -114,7 +119,17 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if( dataSnapshot.hasChild(email.replace('.',','))){
-                    Toast.makeText(getApplicationContext(),"Email address is already registered as a Lawyer",Toast.LENGTH_SHORT).show();
+
+                    Snackbar snackbar = Snackbar.make(rl, "Email address is already registered as a Lawyer",
+                            Snackbar.LENGTH_INDEFINITE);
+
+                    snackbar.show();
+
+
+
+
+
+                    //Toast.makeText(getApplicationContext(),"Email address is already registered as a Lawyer",Toast.LENGTH_SHORT).show();
                 }else{
                     mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -125,6 +140,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             databaseReference1.child("contact").setValue(contact);
                             databaseReference1.child("areaOfPractice").setValue(domain);
                             databaseReference1.child("uid").setValue(mAuth.getUid());
+                            databaseReference1.child("type").setValue("lawyer");
 
                             mProgressdialog.dismiss();
                         }
@@ -143,7 +159,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public void registerUser(){
         mProgressdialog.setMessage("Registering user...");
         mProgressdialog.show();
-        Toast.makeText(getApplicationContext(),"Coming in register user",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),"Coming in register user",Toast.LENGTH_SHORT).show();
 
         name = editName.getText().toString();
         pass = editPass.getText().toString();
@@ -156,7 +172,11 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if( dataSnapshot.hasChild(email.replace('.',','))){
-                    Toast.makeText(getApplicationContext(),"Email address is already registered as User",Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(rl, "Email address is already registered as a User",
+                            Snackbar.LENGTH_INDEFINITE);
+
+                    snackbar.show();
+                   // Toast.makeText(getApplicationContext(),"Email address is already registered as User",Toast.LENGTH_SHORT).show();
                 }else{
                     mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -166,6 +186,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             databaseReference1.child("email").setValue(email);
                             databaseReference1.child("contact").setValue(contact);
                             databaseReference1.child("uid").setValue(mAuth.getUid());
+                            databaseReference1.child("type").setValue("user");
 
                             mProgressdialog.dismiss();
                         }

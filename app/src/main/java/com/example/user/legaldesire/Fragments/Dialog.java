@@ -47,7 +47,7 @@ public class Dialog extends AppCompatDialogFragment {
 
         View view=inflater.inflate(R.layout.login_dialog,null);
         builder.setView(view);
-        Toast.makeText(getContext(),type,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(),type,Toast.LENGTH_SHORT).show();
         mAuth = FirebaseAuth.getInstance();
         email=view.findViewById(R.id.entEmail);
         password=view.findViewById(R.id.entPass);

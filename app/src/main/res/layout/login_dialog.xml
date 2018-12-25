@@ -8,13 +8,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:layout_gravity="center"
             >
             <LinearLayout
                 android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="30dp">
+                android:gravity="center"
+                android:padding="30dp"
+                >
                 <TextView
                     android:id="@+id/welcmtxt"
                     android:padding="10dp"
@@ -61,7 +64,7 @@
                     android:padding="10dp" />
 
                 <Button
-                    android:id="@+id/registerBtn"
+                    android:id="@+id/loginBtn"
                     android:layout_width="238dp"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@id/line"
@@ -70,8 +73,6 @@
                     android:layout_marginTop="20dp"
 
                     android:background="@drawable/button_border"
-                    android:backgroundTint="#000080
-"
                     android:elevation="5dp"
                     android:gravity="center"
                     android:padding="5dp"

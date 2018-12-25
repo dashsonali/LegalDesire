@@ -18,8 +18,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -105,19 +108,36 @@ public class RegistrationActivity extends AppCompatActivity {
         contact = editContact.getText().toString();
         email = editEmail.getText().toString();
         domain = areaOfPractice.getSelectedItem().toString();
-        final DatabaseReference databaseReference = database.getReference();
-         mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-          @Override
-          public void onComplete(@NonNull Task<AuthResult> task) {
-              DatabaseReference databaseReference1 = databaseReference.child("Lawyers").child(email);
-              databaseReference1.child("name").setValue(name);
-              databaseReference1.child("email").setValue(email);
-              databaseReference1.child("contact").setValue(contact);
-              databaseReference.child("uid").setValue(mAuth.getUid());
-              mProgressdialog.dismiss();
-          }
+        final DatabaseReference databaseReference = database.getReference().child("Lawyers");
+        // DatabaseReference databaseReference = database.getReference().child("Users");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if( dataSnapshot.hasChild(email.replace('.',','))){
+                    Toast.makeText(getApplicationContext(),"Email address is already registered as a Lawyer",Toast.LENGTH_SHORT).show();
+                }else{
+                    mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            DatabaseReference databaseReference1 = databaseReference.child(email.replace('.',','));
+                            databaseReference1.child("name").setValue(name);
+                            databaseReference1.child("email").setValue(email);
+                            databaseReference1.child("contact").setValue(contact);
+                            databaseReference1.child("areaOfPractice").setValue(domain);
+                            databaseReference1.child("uid").setValue(mAuth.getUid());
 
-      });
+                            mProgressdialog.dismiss();
+                        }
+
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
     public void registerUser(){
@@ -130,20 +150,36 @@ public class RegistrationActivity extends AppCompatActivity {
         contact = editContact.getText().toString();
         email = editEmail.getText().toString();
         //domain = areaOfPractice.getSelectedItem().toString();
-        final DatabaseReference databaseReference = database.getReference();
-        mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        final DatabaseReference databaseReference = database.getReference().child("Users");
+       // DatabaseReference databaseReference = database.getReference().child("Users");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                DatabaseReference databaseReference1 = databaseReference.child("Users").child(email);
-                databaseReference1.child("name").setValue(name);
-                databaseReference1.child("email").setValue(email);
-                databaseReference1.child("contact").setValue(contact);
-                databaseReference.child("uid").setValue(mAuth.getUid());
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if( dataSnapshot.hasChild(email.replace('.',','))){
+                    Toast.makeText(getApplicationContext(),"Email address is already registered as User",Toast.LENGTH_SHORT).show();
+                }else{
+                    mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            DatabaseReference databaseReference1 = databaseReference.child(email.replace('.',','));
+                            databaseReference1.child("name").setValue(name);
+                            databaseReference1.child("email").setValue(email);
+                            databaseReference1.child("contact").setValue(contact);
+                            databaseReference1.child("uid").setValue(mAuth.getUid());
 
-                mProgressdialog.dismiss();
+                            mProgressdialog.dismiss();
+                        }
+
+                    });
+                }
             }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
+
     }
 
 }

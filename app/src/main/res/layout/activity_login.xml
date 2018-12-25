@@ -52,7 +52,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="99dp"
-            android:text="Please use your Gmail ID to Sign In" />
+            android:text="Please use your Email ID to Sign In" />
 
         <Button
             android:id="@+id/usrBtn"

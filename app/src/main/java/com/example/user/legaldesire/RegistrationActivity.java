@@ -51,9 +51,10 @@ public class RegistrationActivity extends AppCompatActivity {
        if(getIntent().getExtras().get("user_type").equals("lawyer"))
        {
             user_type = "lawyer";
-           Toast.makeText(getApplicationContext(),"You are a lawyer",Toast.LENGTH_SHORT).show();
+
        }else if(getIntent().getExtras().get("user_type").equals("user"))
        {
+           areaOfPractice.setVisibility(View.GONE);
            user_type = "user";
          //  Toast.makeText(getApplicationContext(),"You are a user",Toast.LENGTH_SHORT).show();
        }
@@ -81,8 +82,8 @@ public class RegistrationActivity extends AppCompatActivity {
                    return;
                }
                 if(user_type.equals("lawyer")){
-                    Log.e("Called","Register Usr");
-                   registerUser();
+                    Log.e("Called","Register Lawyer");
+                   registerLawyer();
                 }else if(user_type.equals("user")){
                     Log.e("Called","Register Usr");
                    registerUser();
@@ -93,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
     public void registerLawyer(){
-        mProgressdialog.setMessage("Registering user...");
+        mProgressdialog.setMessage("Registering lawyer...");
         mProgressdialog.show();
         if(areaOfPractice.getSelectedItem().toString().equals("Area Of Practice")){
             Toast.makeText(getApplicationContext(),"Please Select an area of practice",Toast.LENGTH_SHORT).show();
@@ -119,8 +120,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
     public void registerUser(){
+        mProgressdialog.setMessage("Registering user...");
+        mProgressdialog.show();
         Toast.makeText(getApplicationContext(),"Coming in register user",Toast.LENGTH_SHORT).show();
-        areaOfPractice.setVisibility(View.GONE);
+
         name = editName.getText().toString();
         pass = editPass.getText().toString();
         contact = editContact.getText().toString();

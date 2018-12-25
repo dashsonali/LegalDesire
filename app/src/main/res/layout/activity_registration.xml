@@ -32,6 +32,7 @@
             <EditText
                 android:id="@+id/entPass"
                 android:padding="10dp"
+                android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:layout_width="250dp"
                 android:background="@drawable/edit_text_border"
@@ -46,6 +47,7 @@
                 android:padding="10dp"
                 android:gravity="center"
                 android:layout_width="250dp"
+
                 android:layout_margin="5dp"
                 android:background="@drawable/edit_text_border"
                 android:layout_height="wrap_content"

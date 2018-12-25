@@ -18,7 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="30dp">
+            android:padding="30dp"
+            android:background="@drawable/layout_border">
+
             <EditText
                 android:id="@+id/entName"
                 android:padding="10dp"
@@ -28,7 +30,7 @@
                 android:background="@drawable/edit_text_border"
                 android:hint="Enter your name"
                 android:inputType="text"
-                android:layout_margin="5dp"/>
+                android:layout_margin="10dp"/>
             <EditText
                 android:id="@+id/entPass"
                 android:padding="10dp"
@@ -38,7 +40,7 @@
                 android:background="@drawable/edit_text_border"
                 android:layout_height="wrap_content"
                 android:inputType="textWebPassword"
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
 
                 android:hint="Enter Password"
                 />
@@ -48,7 +50,7 @@
                 android:gravity="center"
                 android:layout_width="250dp"
 
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/edit_text_border"
                 android:layout_height="wrap_content"
                 android:hint="Enter Contact"
@@ -61,13 +63,13 @@
                 android:background="@drawable/edit_text_border"
                 android:layout_height="wrap_content"
                 android:hint="Enter Email"
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
                 android:inputType="textEmailAddress"/>
             <Spinner
                 android:id="@+id/areaOfPractice"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
 
 
                 android:padding="10dp">
@@ -83,11 +85,12 @@
 
                 android:background="@drawable/button_border"
                 android:elevation="5dp"
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
                 android:layout_alignStart="@id/line"
                 android:text="REGISTER"
-
+                android:textColor="@color/white"
                 android:padding="5dp"
+                android:textStyle="bold"
                 />
 
         </LinearLayout>

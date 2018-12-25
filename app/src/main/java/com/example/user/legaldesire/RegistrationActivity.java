@@ -109,10 +109,11 @@ public class RegistrationActivity extends AppCompatActivity {
          mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
-              databaseReference.child("Lawyers").child("name").setValue(name);
-              databaseReference.child("Lawyers").child("email").setValue(email);
-              databaseReference.child("Lawyers").child("contact").setValue(contact);
-              databaseReference.child("Lawyers").child("areaOfpractice").setValue(domain);
+              DatabaseReference databaseReference1 = databaseReference.child("Lawyers").child(email);
+              databaseReference1.child("name").setValue(name);
+              databaseReference1.child("email").setValue(email);
+              databaseReference1.child("contact").setValue(contact);
+              databaseReference.child("uid").setValue(mAuth.getUid());
               mProgressdialog.dismiss();
           }
 
@@ -133,13 +134,16 @@ public class RegistrationActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                databaseReference.child("Users").child("name").setValue(name);
-                databaseReference.child("Users").child("email").setValue(email);
-                databaseReference.child("Users").child("contact").setValue(contact);
+                DatabaseReference databaseReference1 = databaseReference.child("Users").child(email);
+                databaseReference1.child("name").setValue(name);
+                databaseReference1.child("email").setValue(email);
+                databaseReference1.child("contact").setValue(contact);
+                databaseReference.child("uid").setValue(mAuth.getUid());
 
                 mProgressdialog.dismiss();
             }
 
         });
     }
+
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistrationActivity"
+    android:layout_gravity="center"
+    android:fillViewport="true"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+      android:gravity="center"
+       >
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
+            <EditText
+                android:id="@+id/entName"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_border"
+                android:hint="Enter your name"
+                android:inputType="text"
+                android:layout_margin="5dp"/>
+            <EditText
+                android:id="@+id/entPass"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_width="250dp"
+                android:background="@drawable/edit_text_border"
+                android:layout_height="wrap_content"
+                android:inputType="textWebPassword"
+                android:layout_margin="5dp"
+
+                android:hint="Enter Password"
+                />
+            <EditText
+                android:id="@+id/entContact"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_width="250dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_text_border"
+                android:layout_height="wrap_content"
+                android:hint="Enter Contact"
+                android:inputType="numberDecimal"/>
+            <EditText
+                android:id="@+id/entEmail"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_width="250dp"
+                android:background="@drawable/edit_text_border"
+                android:layout_height="wrap_content"
+                android:hint="Enter Email"
+                android:layout_margin="5dp"
+                android:inputType="textEmailAddress"/>
+            <Spinner
+                android:id="@+id/areaOfPractice"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+
+
+                android:padding="10dp">
+
+            </Spinner>
+            <Button
+                android:layout_width="251dp"
+                android:id="@+id/registerBtn"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usrBtn"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+
+                android:background="@drawable/button_border"
+                android:elevation="5dp"
+                android:layout_margin="5dp"
+                android:layout_alignStart="@id/line"
+                android:text="REGISTER"
+
+                android:padding="5dp"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

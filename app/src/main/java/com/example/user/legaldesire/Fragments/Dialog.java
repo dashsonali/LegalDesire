@@ -39,11 +39,10 @@ public class Dialog extends AppCompatDialogFragment {
     TextView registertxt,forgot_password;
     EditText email,password;
     Button login ;
-    SharedPreferences pref;
-
     FirebaseAuth mAuth;
    public  static String type;
    ProgressDialog mProgres;
+    SharedPreferences pref;
 
     @Override
     public android.app.Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class Dialog extends AppCompatDialogFragment {
         View view=inflater.inflate(R.layout.login_dialog,null);
         builder.setView(view);
        // Toast.makeText(getContext(),type,Toast.LENGTH_SHORT).show();
-
         mAuth = FirebaseAuth.getInstance();
         email=view.findViewById(R.id.entEmail);
         password=view.findViewById(R.id.entPass);

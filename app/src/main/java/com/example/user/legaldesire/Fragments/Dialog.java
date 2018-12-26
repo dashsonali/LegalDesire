@@ -87,14 +87,14 @@ public class Dialog extends AppCompatDialogFragment {
                 mAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Intent intent;
-                        intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
                         pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("type",type);
                         editor.commit();
-                        //getActivity().finish();
+                        Intent intent;
+                        intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
 
                     }
                 });

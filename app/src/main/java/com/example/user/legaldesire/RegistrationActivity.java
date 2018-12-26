@@ -125,7 +125,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     snackbar.show();
 
-
+                    mProgressdialog.dismiss();
 
 
 
@@ -141,10 +141,12 @@ public class RegistrationActivity extends AppCompatActivity {
                             databaseReference1.child("areaOfPractice").setValue(domain);
                             databaseReference1.child("uid").setValue(mAuth.getUid());
                             databaseReference1.child("type").setValue("lawyer");
+                            mProgressdialog.dismiss();
                             Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
                             intent.putExtra("lawyer_mail",email.replace('.',','));
                             startActivity(intent);
-                            mProgressdialog.dismiss();
+                            finish();
+
                         }
 
                     });

@@ -2,6 +2,7 @@ package com.example.user.legaldesire;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -44,7 +46,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,7 +63,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMapClickListener
-        , View.OnClickListener{
+        , View.OnClickListener {
     private String[] permissoins = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final int LOCATION_PERMISSION_REQUEST = 1234;
     private Button uploadLocation;
@@ -69,13 +73,19 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
     LocationRequest mLocationRequest;
     Marker marker;
     private RelativeLayout rl;
+    ProgressDialog mProgressDialog;
+    FusedLocationProviderClient mFusedLocationClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_location_lawyer);
-         uploadLocation = findViewById(R.id.uploadLocation);
-         uploadLocation.setOnClickListener(this);
-         rl = findViewById(R.id.mapLayout);
+        uploadLocation = findViewById(R.id.uploadLocation);
+        //   uploadLocation.setOnClickListener(this);
+        rl = findViewById(R.id.mapLayout);
+        mProgressDialog = new ProgressDialog(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         initMap();
 
     }
@@ -87,7 +97,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
 
     }
 
-    public void createGoogleApiClient() {
+    public synchronized void createGoogleApiClient() {
         mGoogleApiCleint = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -105,8 +115,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
                     PackageManager.PERMISSION_GRANTED) {
                 PERMISSION_GRANTED = true;
                 mMap.setMyLocationEnabled(true);
-
-
+                createGoogleApiClient();
 
             } else {
                 ActivityCompat.requestPermissions(UploadLocationLawyer.this,
@@ -136,7 +145,6 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
                     }
                     PERMISSION_GRANTED = true;
                     getLocationPermission();
-
                 }
             }
 
@@ -148,7 +156,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        createGoogleApiClient();
+
         getLocationPermission();
         mMap.setOnMapClickListener(this);
 
@@ -159,6 +167,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         if (location == null) {
             Toast.makeText(getApplicationContext(), "Please Turn On Your GPS", Toast.LENGTH_SHORT).show();
         } else {
+            Log.e("On Location Changed","CALLED!");
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
             mMap.animateCamera(cameraUpdate);
@@ -171,13 +180,18 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         // mLocationRequest.setInterval(1000);
+        Log.e("On Connected","CALLED!");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-           ActivityCompat.requestPermissions(UploadLocationLawyer.this,permissoins,LOCATION_PERMISSION_REQUEST);
-        }else{
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Log.e("Permission","Granted!");
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiCleint, mLocationRequest, this);
+        }else{
+            Log.e("Permission","Requested!");
+            ActivityCompat.requestPermissions(UploadLocationLawyer.this,
+                    permissoins
+                    , LOCATION_PERMISSION_REQUEST);
         }
+
 
 
 
@@ -195,6 +209,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onMapClick(LatLng latLng) {
+
             if(marker!=null)
             {
                 marker.remove();
@@ -207,6 +222,8 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onClick(View view) {
+        mProgressDialog.setMessage("Uploading your location...");
+        mProgressDialog.show();
             int id = view.getId();
             if(id == R.id.uploadLocation){
                 Geocoder gc = new Geocoder(this);
@@ -222,18 +239,21 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
                 databaseReference.child("location").child("latitude").setValue(String.valueOf(marker.getPosition().latitude));
                 databaseReference.child("location").child("longitude").setValue(String.valueOf(marker.getPosition().longitude));
+
                 if(locality!=null)
                 databaseReference.child("location").child("locality").setValue(locality);
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("type","lawyer");
+
                 editor.commit();
-                Snackbar snackbar = Snackbar.make(rl, "Email address is already registered as a User",
+                Snackbar snackbar = Snackbar.make(rl, "Your Location Is Uploaded",
                         Snackbar.LENGTH_INDEFINITE);
 
                 snackbar.show();
                // Toast.makeText(getApplicationContext(),"Location Uploaded",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(UploadLocationLawyer.this,LoginActivity.class));
+                mProgressDialog.dismiss();
                 finish();
 
             }

@@ -37,9 +37,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         firebaseAuth=FirebaseAuth.getInstance();
        // FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-       if(firebaseAuth!=null){
+
+       if(firebaseAuth.getCurrentUser()!=null&&pref!=null){
             typeOfUser= pref.getString("type",null);
 
             Log.e("userPresen","firebase not null "+typeOfUser );
@@ -66,22 +65,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAlreadyLoggedin("lawyer");
-              //  Intent intent = new Intent(LoginActivity.this,RegistrationActivity.class);
-              //  intent.putExtra("user_type","lawyer");
-              //  startActivity(intent);
+
             }
         });
-        finish();
+      //  finish();
     }
 
     private void checkAlreadyLoggedin(String type) {
         Dialog dialog=new Dialog();
         dialog.type = type;
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("type",type);
-        editor.commit();
+
+
         dialog.show(getSupportFragmentManager(),"login dialog");
 
     }
@@ -100,5 +95,6 @@ public class LoginActivity extends AppCompatActivity {
     public void  init(){
         usrBtn = findViewById(R.id.usrBtn);
         lawyerBtn = findViewById(R.id.lawyerBtn);
+        pref = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
     }
 }

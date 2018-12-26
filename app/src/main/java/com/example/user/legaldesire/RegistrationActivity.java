@@ -141,7 +141,9 @@ public class RegistrationActivity extends AppCompatActivity {
                             databaseReference1.child("areaOfPractice").setValue(domain);
                             databaseReference1.child("uid").setValue(mAuth.getUid());
                             databaseReference1.child("type").setValue("lawyer");
-
+                            Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
+                            intent.putExtra("lawyer_mail",email.replace('.',','));
+                            startActivity(intent);
                             mProgressdialog.dismiss();
                         }
 
@@ -189,6 +191,8 @@ public class RegistrationActivity extends AppCompatActivity {
                             databaseReference1.child("type").setValue("user");
 
                             mProgressdialog.dismiss();
+                            finish();
+
                         }
 
                     });

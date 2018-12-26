@@ -3,6 +3,7 @@ package com.example.user.legaldesire.Fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.zip.Inflater;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by USER on 25-12-2018.
  */
@@ -36,6 +39,8 @@ public class Dialog extends AppCompatDialogFragment {
     TextView registertxt,forgot_password;
     EditText email,password;
     Button login ;
+    SharedPreferences pref;
+
     FirebaseAuth mAuth;
    public  static String type;
    ProgressDialog mProgres;
@@ -48,6 +53,7 @@ public class Dialog extends AppCompatDialogFragment {
         View view=inflater.inflate(R.layout.login_dialog,null);
         builder.setView(view);
        // Toast.makeText(getContext(),type,Toast.LENGTH_SHORT).show();
+
         mAuth = FirebaseAuth.getInstance();
         email=view.findViewById(R.id.entEmail);
         password=view.findViewById(R.id.entPass);
@@ -84,6 +90,10 @@ public class Dialog extends AppCompatDialogFragment {
                         Intent intent;
                         intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
                         startActivity(intent);
+                        pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("type",type);
+                        editor.commit();
                         //getActivity().finish();
 
                     }

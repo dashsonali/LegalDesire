@@ -26,7 +26,7 @@ import com.example.user.legaldesire.R;
 
 public class UserProfile extends AppCompatActivity {
 
-    private Button b;
+    private Button b,findLawyer;
     private TextView t;
     private LocationManager locationManager;
     private LocationListener listener;
@@ -41,6 +41,14 @@ Location mlocation;
 
         //t = (TextView) findViewById(R.id.textView);
         b = (Button) findViewById(R.id.SOS);
+        findLawyer=findViewById(R.id.findLwyers);
+        findLawyer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),SearchLawer.class);
+                startActivity(intent);
+            }
+        });
         progressDialog=new ProgressDialog(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 

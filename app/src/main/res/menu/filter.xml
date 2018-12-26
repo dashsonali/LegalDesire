@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/areaOfPractice" android:title="Area of Practice ">
+        <menu>
+            <item android:id="@+id/criminal" android:title="Criminal"/>
+            <item android:title="Civil" android:id="@+id/civil"/>
+            <item android:id="@+id/family" android:title="Family"/>
+            <item android:title="Insurance" android:id="@+id/insurance"/>
+            <item android:id="arbitration" android:title="Arbitration"/>
+            <item android:title="Corporation" android:id="@+id/corporation"/>
+        </menu>
+
+</item>
+
+</menu>

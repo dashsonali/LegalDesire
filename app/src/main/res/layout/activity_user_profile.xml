@@ -21,6 +21,22 @@
         android:padding="5dp"
         android:textStyle="bold"
         />
+    <Button
+        android:layout_width="251dp"
+        android:id="@+id/findLwyers"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_below="@+id/SOS"
+        android:background="@drawable/button_border"
+        android:elevation="5dp"
+        android:layout_margin="10dp"
+
+        android:text="Find Lawyers"
+        android:textColor="@color/white"
+        android:padding="5dp"
+        android:textStyle="bold"
+        />
 
 
 </RelativeLayout>

@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -23,12 +23,10 @@
             android:value="@string/maps_api" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".SplashActivity">
-
-        </activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".SplashActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".UploadLocationLawyer"></activity>
+        <activity android:name=".UploadLocationLawyer" />
         <activity android:name=".UserProfile">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SearchLawer"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:padding="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/search_box"
+        android:gravity="top"
+
+        android:id="@+id/layout_for_search"
+        >
+        <EditText
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:elevation="10dp"
+            android:layout_toStartOf="@+id/divider"
+            android:id="@+id/search_places"
+            android:background="@color/white"
+            android:hint="Search places"/>
+            <View
+                android:id="@+id/divider"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/filterBtn"
+                android:background="@color/grey"></View>
+        <ImageButton
+            android:layout_alignParentEnd="true"
+            android:id="@+id/filterBtn"
+            android:background="@color/white"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:elevation="10dp"
+            android:src="@drawable/ic_sort_black_24dp"
+            />
+    </RelativeLayout>

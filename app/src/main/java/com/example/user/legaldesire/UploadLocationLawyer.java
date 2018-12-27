@@ -17,14 +17,18 @@ import android.location.LocationManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -42,6 +46,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -58,6 +63,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.user.legaldesire.R.id.sattelite_view;
+
 public class UploadLocationLawyer extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -69,23 +76,29 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
     private Button uploadLocation;
     private static boolean PERMISSION_GRANTED = false;
     private GoogleMap mMap;
+    private FloatingActionButton myLocationBtn;
     GoogleApiClient mGoogleApiCleint;
     LocationRequest mLocationRequest;
     Marker marker;
     private RelativeLayout rl;
     ProgressDialog mProgressDialog;
     FusedLocationProviderClient mFusedLocationClient;
+    Marker current_location_marker;
+    ImageButton filterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_location_lawyer);
         uploadLocation = findViewById(R.id.uploadLocation);
-        //   uploadLocation.setOnClickListener(this);
+         uploadLocation.setOnClickListener(this);
         rl = findViewById(R.id.mapLayout);
         mProgressDialog = new ProgressDialog(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        myLocationBtn = findViewById(R.id.current_location);
+        myLocationBtn.setOnClickListener(this);
+       // filterButton = findViewById(R.id.filterBtn);
+        //filterButton.setOnClickListener(this);
         initMap();
 
     }
@@ -114,7 +127,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) ==
                     PackageManager.PERMISSION_GRANTED) {
                 PERMISSION_GRANTED = true;
-                mMap.setMyLocationEnabled(true);
+                mMap.setMyLocationEnabled(false);
                 createGoogleApiClient();
 
             } else {
@@ -159,6 +172,10 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
 
         getLocationPermission();
         mMap.setOnMapClickListener(this);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
 
     }
 
@@ -167,9 +184,22 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         if (location == null) {
             Toast.makeText(getApplicationContext(), "Please Turn On Your GPS", Toast.LENGTH_SHORT).show();
         } else {
-            Log.e("On Location Changed","CALLED!");
+            Log.e("On Location Changed", "CALLED!");
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+            if (current_location_marker != null) {
+                current_location_marker.remove();
+
+            }
+            Circle mCircle = mMap.addCircle(new CircleOptions()
+            .center(latLng)
+            .radius(500)
+            .strokeWidth(0)
+            .strokeColor(Color.parseColor("#2271cce7"))
+            .fillColor(Color.parseColor("#2271cce7")));
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("This position will be uploaded!")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location));
+            current_location_marker = mMap.addMarker(markerOptions);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13);
             mMap.animateCamera(cameraUpdate);
         }
     }
@@ -180,19 +210,18 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         // mLocationRequest.setInterval(1000);
-        Log.e("On Connected","CALLED!");
+        Log.e("On Connected", "CALLED!");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Log.e("Permission","Granted!");
+            Log.e("Permission", "Granted!");
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiCleint, mLocationRequest, this);
-        }else{
-            Log.e("Permission","Requested!");
+
+        } else {
+            Log.e("Permission", "Requested!");
             ActivityCompat.requestPermissions(UploadLocationLawyer.this,
                     permissoins
                     , LOCATION_PERMISSION_REQUEST);
         }
-
-
 
 
     }
@@ -210,52 +239,87 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapClick(LatLng latLng) {
 
-            if(marker!=null)
-            {
-                marker.remove();
-            }
+        if (marker != null) {
+            marker.remove();
+        }
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("This position will be uploaded!")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.upload_location));
         marker = mMap.addMarker(markerOptions);
         LatLng latLng1 = marker.getPosition();
     }
 
     @Override
     public void onClick(View view) {
-        mProgressDialog.setMessage("Uploading your location...");
-        mProgressDialog.show();
-            int id = view.getId();
-            if(id == R.id.uploadLocation){
-                Geocoder gc = new Geocoder(this);
-                List<Address> addresses = null;
-                try {
-                     addresses = gc.getFromLocation(marker.getPosition().latitude,marker.getPosition().longitude,1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String locality = addresses.get(0).getLocality();
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                String mail = getIntent().getExtras().getString("lawyer_mail");
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
-                databaseReference.child("location").child("latitude").setValue(String.valueOf(marker.getPosition().latitude));
-                databaseReference.child("location").child("longitude").setValue(String.valueOf(marker.getPosition().longitude));
 
-                if(locality!=null)
+        int id = view.getId();
+        if (id == R.id.uploadLocation) {
+            mProgressDialog.setMessage("Uploading your location...");
+            mProgressDialog.show();
+            Geocoder gc = new Geocoder(this);
+            List<Address> addresses = null;
+            try {
+                addresses = gc.getFromLocation(marker.getPosition().latitude, marker.getPosition().longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String locality = addresses.get(0).getLocality();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            String mail = getIntent().getExtras().getString("lawyer_mail");
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
+            databaseReference.child("location").child("latitude").setValue(String.valueOf(marker.getPosition().latitude));
+            databaseReference.child("location").child("longitude").setValue(String.valueOf(marker.getPosition().longitude));
+
+            if (locality != null)
                 databaseReference.child("location").child("locality").setValue(locality);
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("type","lawyer");
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("type", "lawyer");
 
-                editor.commit();
-                Snackbar snackbar = Snackbar.make(rl, "Your Location Is Uploaded",
-                        Snackbar.LENGTH_INDEFINITE);
+            editor.commit();
+            Snackbar snackbar = Snackbar.make(rl, "Your Location Is Uploaded",
+                    Snackbar.LENGTH_INDEFINITE);
 
-                snackbar.show();
-               // Toast.makeText(getApplicationContext(),"Location Uploaded",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(UploadLocationLawyer.this,LoginActivity.class));
-                mProgressDialog.dismiss();
-                finish();
+            snackbar.show();
+            // Toast.makeText(getApplicationContext(),"Location Uploaded",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(UploadLocationLawyer.this, LoginActivity.class));
+            mProgressDialog.dismiss();
+            finish();
+
+        } else if (id == R.id.current_location) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiCleint, mLocationRequest, this);
 
             }
+        }else if(id==R.id.filterBtn)
+        {
+            PopupMenu popupMenu = new PopupMenu(UploadLocationLawyer.this,filterButton);
+            popupMenu.getMenuInflater().inflate(R.menu.map_types,popupMenu.getMenu());
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    int id = menuItem.getItemId();
+                    switch (id)
+                    {
+                        case R.id.sattelite_view:
+                            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                            return true;
+                        case R.id.default_view:
+                            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                            return true;
+                        case R.id.terrain_view:
+                            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                            return true;
+                        case R.id.hybrid_view:
+                            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                            return true;
+
+                    }
+                    return true;
+                }
+            });
+        }
+
     }
 }

@@ -15,7 +15,7 @@ public class SearchLawer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_lawer);
-        imageButton=findViewById(R.id.imageBtn);
+        imageButton=findViewById(R.id.filterBtn);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -26,17 +26,22 @@
         <activity android:name=".SplashActivity"></activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".UploadLocationLawyer" />
-        <activity android:name=".UserProfile">
 
-        </activity>
-        <activity android:name=".SearchLawer">
+        <activity android:name=".UploadLocationLawyer" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UserProfile">
+
+
+        </activity>
+
+
+
+        <activity android:name=".SearchLawer"></activity>
     </application>
 
 </manifest>

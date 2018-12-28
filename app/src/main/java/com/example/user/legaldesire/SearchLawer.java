@@ -7,9 +7,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.support.v4.app.Fragment;
+
+import com.example.user.legaldesire.Fragments.HomeFragment;
+import com.example.user.legaldesire.Fragments.LawyerRecycler;
+
 
 public class SearchLawer extends AppCompatActivity {
     ImageButton imageButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,23 +26,16 @@ public class SearchLawer extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(getApplicationContext(),imageButton);
-                popup.getMenuInflater()
-                        .inflate(R.menu.filter, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                       /* Toast.makeText(
-                                MainActivity.this,
-                                "You Clicked : " + item.getTitle(),
-                                Toast.LENGTH_SHORT
-                        ).show();*/
-                        return true;
-                    }
-            });
+                PopupMenu popup = new PopupMenu(SearchLawer.this,imageButton);
+               popup.getMenuInflater().inflate(R.menu.filter,popup.getMenu());
 
-                popup.show(); //showing popup menu
-
+               popup.show();
 
     }
 });
+        getSupportFragmentManager().beginTransaction().replace(R.id.recycler_container,new LawyerRecycler()).commit();
+
+        Fragment selectFragment = new LawyerRecycler();
+        getSupportFragmentManager().beginTransaction().replace(R.id.recycler_container,selectFragment).commit();
+
     }}

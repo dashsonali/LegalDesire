@@ -35,23 +35,28 @@ public class ViewPostAdapter extends RecyclerView.Adapter<ViewPostAdapter.Youtub
 
     @Override
     public void onBindViewHolder(YoutubePostViewHolder holder, int position) {
-            YouTubeDataModel object = dataset.get(position);
+            final YouTubeDataModel object = dataset.get(position);
+
             holder.textViewTitle.setText(object.getTitle());
             holder.textViewDate.setText(object.getPublishedAt());
             holder.textViewDes.setText(object.getDes());
-            video_id = object.getVideo_id();
-             Picasso.get().load(object.getThumb()).into(holder.imageViewThumb);
-             holder.imageViewThumb.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View view) {
-                     Intent intent = new Intent(mContext, VideoPlayActivity.class);
-                     intent.putExtra("video_id",video_id);
-                     mContext.startActivity(intent);
-                 }
-             });
-            //TODO:Image will be downloaded from URL
-    }
 
+             Picasso.get().load(object.getThumb()).into(holder.imageViewThumb);
+         holder.itemView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 goToPlayerView(object);
+             }
+         });
+            //TODO:Image will be downloaded from URL
+
+    }
+    public void goToPlayerView(YouTubeDataModel object)
+    {
+        Intent intent = new Intent(mContext, VideoPlayActivity.class);
+        intent.putExtra("video_id",object.getVideo_id());
+        mContext.startActivity(intent);
+    }
     @Override
     public int getItemCount() {
         return dataset.size();

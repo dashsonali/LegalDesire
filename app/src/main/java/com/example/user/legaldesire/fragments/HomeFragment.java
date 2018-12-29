@@ -62,12 +62,11 @@ public class HomeFragment extends Fragment {
         WebSettings webSettings=webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-       // webView.getSettings().setBuiltInZoomControls(true);
+       //webView.getSettings().setBuiltInZoomControls(true);
 
         webView.loadUrl("https://legaldesire.com/");
 
-       
-
+        //HELLO
         webView.setWebViewClient(new WebViewClient() {
 
 

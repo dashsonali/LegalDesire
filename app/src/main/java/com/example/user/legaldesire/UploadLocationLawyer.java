@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
@@ -97,8 +98,8 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         myLocationBtn = findViewById(R.id.current_location);
         myLocationBtn.setOnClickListener(this);
-       // filterButton = findViewById(R.id.filterBtn);
-        //filterButton.setOnClickListener(this);
+        filterButton = findViewById(R.id.filterBtn);
+        filterButton.setOnClickListener(this);
         initMap();
 
     }
@@ -174,7 +175,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         mMap.setOnMapClickListener(this);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
 
     }
@@ -196,15 +197,22 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
             .strokeWidth(0)
             .strokeColor(Color.parseColor("#2271cce7"))
             .fillColor(Color.parseColor("#2271cce7")));
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("This position will be uploaded!")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location));
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("This your current postion!")
+                    .icon(BitmapDescriptorFactory.fromBitmap( resizeIcon("my_location",100,100)));
+
             current_location_marker = mMap.addMarker(markerOptions);
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
             mMap.animateCamera(cameraUpdate);
         }
     }
 
+    public Bitmap resizeIcon(String icon,int width,int height)
+    {
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(icon,"drawable",getPackageName()));
+        Bitmap resizedImage = Bitmap.createScaledBitmap(imageBitmap,width,height,false);
 
+        return resizedImage;
+    }
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = LocationRequest.create();
@@ -243,7 +251,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
             marker.remove();
         }
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("This position will be uploaded!")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.upload_location));
+                .icon(BitmapDescriptorFactory.fromBitmap(resizeIcon("upload_location",100,100)));
         marker = mMap.addMarker(markerOptions);
         LatLng latLng1 = marker.getPosition();
     }

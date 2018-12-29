@@ -1,21 +1,22 @@
-package com.example.user.legaldesire.Fragments;
+package com.example.user.legaldesire.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
 
@@ -57,13 +58,25 @@ public class HomeFragment extends Fragment {
 
         View rootView= inflater.inflate(R.layout.fragment_home, container, false);
         webView=rootView.findViewById(R.id.webview);
+
         WebSettings webSettings=webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+
        // webView.getSettings().setBuiltInZoomControls(true);
 
         webView.loadUrl("https://legaldesire.com/");
+
+       
+
         webView.setWebViewClient(new WebViewClient() {
 
+
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -81,7 +94,7 @@ public class HomeFragment extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 if (progressDialog != null) {
-                  //  progressDialog.dismiss();
+                    progressDialog.dismiss();
                 }
 
             }

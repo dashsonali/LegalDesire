@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.user.legaldesire.Fragments.HomeFragment;
-import com.example.user.legaldesire.Fragments.OtherFragment;
+import com.example.user.legaldesire.fragments.HomeFragment;
+import com.example.user.legaldesire.fragments.OtherFragment;
 
 public class MainActivity extends AppCompatActivity {
 

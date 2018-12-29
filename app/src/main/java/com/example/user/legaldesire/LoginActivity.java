@@ -7,18 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.user.legaldesire.Fragments.Dialog;
+import com.example.user.legaldesire.fragments.Dialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
@@ -74,9 +67,6 @@ public class LoginActivity extends AppCompatActivity {
     private void checkAlreadyLoggedin(String type) {
         Dialog dialog=new Dialog();
         dialog.type = type;
-
-
-
         dialog.show(getSupportFragmentManager(),"login dialog");
 
     }

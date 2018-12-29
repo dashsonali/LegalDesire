@@ -60,6 +60,7 @@
                    android:layout_height="match_parent"
                    android:elevation="10dp"
                    android:src="@drawable/ic_sort_black_24dp"
+                   android:scaleType="fitCenter"
                    />
            </RelativeLayout>
 

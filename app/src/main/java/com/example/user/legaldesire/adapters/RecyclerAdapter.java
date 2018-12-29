@@ -33,9 +33,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         LawyerData current=listItem.get(position);
         holder.name.setText(current.getName());
-        holder.areaOfPractice.setText(current.getAreaOfPractice());
-        holder.email.setText(current.getEmail());
-        holder.contact.setText(current.getContact());
+        holder.areaOfPractice.setText(current.getAreaOfPractice()+" Lawyer");
+//        holder.email.setText(current.getEmail());
+//        holder.contact.setText(current.getContact());
        holder.ratingBar.setNumStars(5);
        holder.ratingBar.setMax(5);
         holder.ratingBar.setStepSize(0.5f);
@@ -57,8 +57,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             super(itemView);
             name=itemView.findViewById(R.id.nametxt);
             areaOfPractice=itemView.findViewById(R.id.areaOfPracticetxt);
-            email=itemView.findViewById(R.id.emailtxt);
-            contact=itemView.findViewById(R.id.contacttxt);
+//            email=itemView.findViewById(R.id.emailtxt);
+//            contact=itemView.findViewById(R.id.contacttxt);
             ratingBar=itemView.findViewById(R.id.ratingtxt);
             noOfRaters=itemView.findViewById(R.id.noOfReviewstxt);
 

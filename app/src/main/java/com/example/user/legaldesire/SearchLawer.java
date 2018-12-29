@@ -3,15 +3,11 @@ package com.example.user.legaldesire;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.support.v4.app.Fragment;
 
-import com.example.user.legaldesire.Fragments.HomeFragment;
-import com.example.user.legaldesire.Fragments.LawyerRecycler;
+import com.example.user.legaldesire.fragments.LawyerRecycler;
 
 
 public class SearchLawer extends AppCompatActivity {

@@ -20,6 +20,7 @@ public class LawyerData {
     private String contact;
     private Float rating;
 
+
     public LawyerData(String name,String email, String areaOfPractice, String contact, Float rating, String noOfRaters ) {
         this.email = email;
         this.areaOfPractice = areaOfPractice;

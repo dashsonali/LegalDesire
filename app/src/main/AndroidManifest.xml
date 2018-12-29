@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:allowBackup="true"
@@ -23,15 +24,12 @@
             android:value="@string/maps_api" />
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity android:name=".SplashActivity" />
+
         <activity android:name=".LoginActivity" >
+
 
         </activity>
         <activity android:name=".RegistrationActivity" />
@@ -40,7 +38,11 @@
         </activity>
         <activity android:name=".UserProfile"></activity>
         <activity android:name=".SearchLawer" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".VideoPlayActivity"></activity>
     </application>

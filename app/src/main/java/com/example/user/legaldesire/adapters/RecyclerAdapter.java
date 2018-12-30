@@ -27,7 +27,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
       LayoutInflater inflater;
      private List<LawyerData>listItem;
     private Context context;
-    LawyerData current;
     private static final int REQUEST_PHONE_CALL = 1;
 
 
@@ -45,7 +44,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-         current=listItem.get(position);
+     final    LawyerData current;
+        current=listItem.get(position);
         holder.name.setText(current.getName());
         holder.areaOfPractice.setText(current.getAreaOfPractice()+" Lawyer");
         Log.e("current.getemail", current.getEmail());

@@ -19,19 +19,29 @@ public class LawyerData {
     private String areaOfPractice;
     private String contact;
     private Float rating;
+    private String locate="NoLocation";
 
 
-    public LawyerData(String name,String email, String areaOfPractice, String contact, Float rating, String noOfRaters ) {
-        this.email = email;
-        this.areaOfPractice = areaOfPractice;
-        this.contact = contact;
-        this.rating = rating;
-        this.noOfRaters = noOfRaters;
-        this.name = name;
+    public String getLocate() {
+        return locate;
+    }
+
+    public void setLocate(String locate) {
+        this.locate = locate;
     }
 
     public String getNoOfRaters() {
         return noOfRaters;
+    }
+
+    public LawyerData(String name,String email, String areaOfPractice, String contact, Float rating, String noOfRaters ,String locate) {
+        this.email = email;
+        this.areaOfPractice = areaOfPractice;
+        this.contact = contact;
+        this.rating = rating;
+        this.locate = locate;
+        this.noOfRaters = noOfRaters;
+        this.name = name;
     }
 
     public void setNoOfRaters(String noOfRaters) {

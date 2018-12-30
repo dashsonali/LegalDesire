@@ -35,6 +35,7 @@ public class LawyerRecycler extends Fragment {
     FirebaseDatabase database;
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -103,22 +104,29 @@ public class LawyerRecycler extends Fragment {
                     String areaOfPractice;
                     Float noOfRaters ;
                     Float rating;
-                            name=dataSnapshot1.child("name").getValue(String.class);
-                            contact=dataSnapshot1.child("contact").getValue(String.class);
+                    String lat="noLat",longi="noLongi",location="noLocation";
+                    name=dataSnapshot1.child("name").getValue(String.class);
+                    contact=dataSnapshot1.child("contact").getValue(String.class);
                     email=dataSnapshot1.child("email").getValue(String.class);
                     areaOfPractice=dataSnapshot1.child("areaOfPractice").getValue(String.class);
                     rating=dataSnapshot1.child("rating").getValue(Float.class);
                     noOfRaters=dataSnapshot1.child("usersRated").getValue(Float.class);
+                    lat=dataSnapshot1.child("location").child("latitude").getValue(String.class);
+                    longi=dataSnapshot1.child("location").child("longitude").getValue(String.class);
+                        if(lat==null){location="noLocation";}else{
+                        location=    "http://maps.google.com/maps?q="+lat+","+longi;}
 
 
-                    Log.e("name",name );
+
+                    Log.e("locationMap",location+"" );
                             LawyerData current=new LawyerData(
                                     name,
                                     email,
                                     areaOfPractice,
                                     contact,
                                     rating,
-                                    noOfRaters+" customers reviews"
+                                    noOfRaters+" customers reviews",
+                                    location
                             );
                             listItems.add(current);
                             progressDialog.dismiss();

@@ -57,34 +57,46 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         holder.locate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LocateOnMap(current);
 
             }
         });
         holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callLawyer(current.getContact());
+                callLawyer(current);
 
             }
         });
         holder.mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mailLawyer(current.getEmail());
+                mailLawyer(current);
             }
         });
         //holder.lawyerData=current;
 
     }
 
-    private void mailLawyer(String email) {
+    private void LocateOnMap(LawyerData current) {
+        if(current.getLocate().equals("noLocation")){
+            Toast.makeText(context, "The Lawyer has not shared  location", Toast.LENGTH_SHORT).show();
+        }else{
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse(current.getLocate()));
+            context.startActivity(intent);}
+    }
+
+    private void mailLawyer(LawyerData current) {
+        String email=current.getEmail();
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));
 
         context.startActivity(Intent.createChooser(emailIntent, "Choose app to mail Lawyer"));
 
     }
 
-    private void callLawyer(String contact) {
+    private void callLawyer(LawyerData current) {
+        String contact=current.getContact();
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact.trim()));
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.CALL_PHONE},REQUEST_PHONE_CALL);

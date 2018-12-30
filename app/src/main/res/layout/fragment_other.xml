@@ -2,13 +2,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.legaldesire.fragments.OtherFragment">
+    tools:context="com.example.user.legaldesire.fragments.UserProfileFrag">
+    <Button
+        android:layout_width="251dp"
+        android:id="@+id/SOS"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
 
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/video_list"
-        ></android.support.v7.widget.RecyclerView>
+        android:background="@drawable/button_border"
+        android:elevation="5dp"
+        android:layout_margin="10dp"
+
+        android:text="SOS"
+        android:textColor="@color/white"
+        android:padding="5dp"
+        android:textStyle="bold"
+        />
+    <Button
+        android:layout_width="251dp"
+        android:id="@+id/findLwyers"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_below="@+id/SOS"
+        android:background="@drawable/button_border"
+        android:elevation="5dp"
+        android:layout_margin="10dp"
+
+        android:text="Find Lawyers"
+        android:textColor="@color/white"
+        android:padding="5dp"
+        android:textStyle="bold"
+        />
 
 </RelativeLayout>

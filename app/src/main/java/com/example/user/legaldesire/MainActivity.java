@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
-import com.example.user.legaldesire.fragments.OtherFragment;
+import com.example.user.legaldesire.fragments.UserProfileFrag;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
                         selectFragment = new HomeFragment();
                         break;
                     case R.id.nav_cases:
-                        selectFragment = new OtherFragment();
+                        selectFragment = new UserProfileFrag();
                         break;
                     case R.id.nav_learnLaw:
-                        selectFragment = new OtherFragment();
+                        selectFragment = new UserProfileFrag();
                         break;
 
                 }

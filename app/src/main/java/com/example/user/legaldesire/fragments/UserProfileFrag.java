@@ -1,7 +1,7 @@
- package com.example.user.legaldesire;
-
+package com.example.user.legaldesire.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,54 +11,90 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.legaldesire.R;
-import com.example.user.legaldesire.adapters.RecyclerAdapter;
-import com.example.user.legaldesire.fragments.LawyerRecycler;
 
- public class UserProfile extends AppCompatActivity {
+import com.example.user.legaldesire.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+
+import static android.content.Context.LOCATION_SERVICE;
+
+/**
+ * Created by USER on 25-12-2018.
+ */
+
+public class UserProfileFrag extends Fragment {
 
     private Button b,findLawyer;
     private TextView t;
     private LocationManager locationManager;
     private LocationListener listener;
     ProgressDialog progressDialog;
-Location mlocation;
+    Location mlocation;
+
+    public static LawyerRecycler newInstance(String param1, String param2) {
+        LawyerRecycler fragment = new LawyerRecycler();
+        Bundle args = new Bundle();
+        args.putString("param1", param1);
+        args.putString("param1", param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_user_profile);
 
-        //t = (TextView) findViewById(R.id.textView);
-        b = (Button) findViewById(R.id.SOS);
-        findLawyer=findViewById(R.id.findLwyers);
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        //AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        LayoutInflater layoutInflater=getActivity().getLayoutInflater();
+        View view=layoutInflater.inflate(R.layout.fragment_other,null);
+       // builder.setView(view);
+      //  FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
+        // Toast.makeText(getContext(),type,Toast.LENGTH_SHORT).show();
+        b = (Button) view.findViewById(R.id.SOS);
+        findLawyer=view.findViewById(R.id.findLwyers);
         findLawyer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),LawyerRecycler.class);
-                startActivity(intent);
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container,new LawyerRecycler()).commit();
+                Fragment selectFragment=new LawyerRecycler();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container,selectFragment).commit();
+
+
             }
         });
-        progressDialog=new ProgressDialog(this);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
+        progressDialog=new ProgressDialog(getContext());
+        locationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
 
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-               mlocation=location;
+                mlocation=location;
                 progressDialog.dismiss();
 
             }
@@ -83,9 +119,13 @@ Location mlocation;
         configure_button();
         progressDialog.setMessage("fetching location");
         progressDialog.show();
+        return view;
 
 
     }
+       // return builder.create();
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -100,9 +140,9 @@ Location mlocation;
 
     void configure_button(){
         // first check for permissions
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                ActivityCompat.requestPermissions( this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET,Manifest.permission.SEND_SMS}
+                ActivityCompat.requestPermissions( (Activity)getContext(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET,Manifest.permission.SEND_SMS}
                         ,10);
             }
 
@@ -128,6 +168,10 @@ Location mlocation;
 
             }
         });
+
+
+
     }
+
 }
 

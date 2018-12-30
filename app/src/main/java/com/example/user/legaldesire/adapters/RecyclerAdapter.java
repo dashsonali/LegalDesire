@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
+import com.example.user.legaldesire.SearchLawer;
+import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.models.LawyerData;
 
 import java.util.List;
@@ -117,7 +121,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
       public   TextView name,areaOfPractice,noOfRaters;
       RatingBar ratingBar;
       Button locate;
-      ImageButton call,mail;
+      ImageButton call,mail,filterbtn;
       //String location,number,email,contact;
      // LawyerData lawyerData;
         public MyViewHolder(View itemView){
@@ -131,7 +135,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 //            contact=itemView.findViewById(R.id.contacttxt);
             ratingBar=itemView.findViewById(R.id.ratingtxt);
             noOfRaters=itemView.findViewById(R.id.noOfReviewstxt);
+            filterbtn=itemView.findViewById(R.id.filterBtn);
+            filterbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popup = new PopupMenu(context,filterbtn);
+                    popup.getMenuInflater().inflate(R.menu.filter,popup.getMenu());
+
+                    popup.show();
+
+
+                }
+            });
+
+        }
 
   }
 
-}}
+}

@@ -43,7 +43,7 @@ public class LearnLaw extends Fragment {
 
     public LearnLaw(){
 
-    }
+    }//
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

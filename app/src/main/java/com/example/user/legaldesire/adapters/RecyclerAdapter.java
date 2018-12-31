@@ -34,7 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private static final int REQUEST_PHONE_CALL = 1;
 
 
-
+//
     public RecyclerAdapter(  List<LawyerData> listItem, Context context) {
         this.listItem = listItem;
         this.context = context;

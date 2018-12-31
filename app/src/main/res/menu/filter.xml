@@ -7,7 +7,7 @@
             <item android:id="@+id/family" android:title="Family"/>
             <item android:title="Insurance" android:id="@+id/insurance"/>
             <item android:id="@+id/arbitration" android:title="Arbitration"/>
-            <item android:title="Corporation" android:id="@+id/corporation"/>
+            <item android:title="Corporate" android:id="@+id/corporation"/>
         </menu>
     </item>
 

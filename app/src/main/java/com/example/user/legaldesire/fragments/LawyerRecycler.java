@@ -10,9 +10,11 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.adapters.RecyclerAdapter;
@@ -34,6 +36,8 @@ public class LawyerRecycler extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     private List<LawyerData>listItems;
+    List<LawyerData> newListItems;
+
     FirebaseDatabase database;
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
@@ -75,14 +79,61 @@ public class LawyerRecycler extends Fragment {
         filterbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                        PopupMenu popup = new PopupMenu(getContext(),filterbtn);
-                        popup.getMenuInflater().inflate(R.menu.filter,popup.getMenu());
+                PopupMenu popup = new PopupMenu(getContext(), filterbtn);
+                popup.getMenuInflater().inflate(R.menu.filter, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        String attr;
 
-                        popup.show();
+                        switch (item.getItemId()) {
+
+                            case R.id.criminal:
+                                Toast.makeText(getContext(), "criminal", Toast.LENGTH_SHORT).show();
+                                 attr="Criminal";
+                                manageData(attr,listItems);
+                                return true;
 
 
-            }
-        });
+                            case R.id.civil:
+                                Toast.makeText(getContext(), "civil", Toast.LENGTH_SHORT).show();
+                                 attr="Civil";
+                                manageData(attr,listItems);
+                                return true;
+
+                            case R.id.family:
+                                Toast.makeText(getContext(), "family", Toast.LENGTH_SHORT).show();
+                                attr="Family";
+                                manageData(attr,listItems);
+                                return true;
+                            case R.id.insurance:
+                                Toast.makeText(getContext(), "insurance", Toast.LENGTH_SHORT).show();
+                                attr="Insurance";
+                                manageData(attr,listItems);
+                                return true;
+                            case R.id.arbitration:
+                                Toast.makeText(getContext(), "arbitration", Toast.LENGTH_SHORT).show();
+                                attr="Arbitration";
+                                manageData(attr,listItems);
+                                return true;
+
+                            case R.id.corporation:
+                                Toast.makeText(getContext(), "corporate", Toast.LENGTH_SHORT).show();
+                                attr="Corporate";
+                                manageData(attr,listItems);
+                                return true;
+
+                        }
+                        return false;
+                    }
+
+                });
+                popup.show();
+
+            }});
+
+
+
 
 
 //........................................................................................................................
@@ -103,6 +154,28 @@ public class LawyerRecycler extends Fragment {
         return rootView;
 
     }
+
+    private void manageData(String attr, List<LawyerData> listItems) {
+
+        newListItems=new ArrayList<>();
+        Log.e("size", String.valueOf(listItems.size()));
+        for (int i=0;i<listItems.size();i++){
+
+            if(listItems.get(i).getAreaOfPractice().equals(attr)){
+                Log.e("attribute", listItems.get(i).getAreaOfPractice());
+                newListItems.add(listItems.get(i));
+
+            }else {
+                Log.e("attributeNot", listItems.get(i).getAreaOfPractice());
+
+                // newListItems.remove(listItems.get(i));
+            }}
+           RecyclerAdapter adapter1=new RecyclerAdapter(newListItems,getContext());
+            recyclerView.setAdapter(adapter1);
+
+        }
+
+
 
     private void loadRecyclerViewData() {
         progressDialog.show();

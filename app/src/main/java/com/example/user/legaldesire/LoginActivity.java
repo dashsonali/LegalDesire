@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
             init();
         }
         firebaseAuth=FirebaseAuth.getInstance();
-       // FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
 
        if(firebaseAuth.getCurrentUser()!=null&&pref!=null){
             typeOfUser= pref.getString("type",null);

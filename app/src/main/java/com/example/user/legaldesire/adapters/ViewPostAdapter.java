@@ -42,7 +42,7 @@ public class ViewPostAdapter extends RecyclerView.Adapter<ViewPostAdapter.Youtub
             holder.textViewDes.setText(object.getDes());
 
              Picasso.get().load(object.getThumb()).into(holder.imageViewThumb);
-         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  goToPlayerView(object);

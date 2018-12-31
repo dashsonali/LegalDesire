@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
+import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                         selectFragment = new UserProfileFrag();
                         break;
                     case R.id.nav_learnLaw:
-                        selectFragment = new UserProfileFrag();
+                        selectFragment = new LearnLaw();
                         break;
 
                 }

@@ -23,14 +23,6 @@
           }
         },
         {
-          "client_id": "767878508256-lsdictu5v9ra824r600a3v6rc5465n1t.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.user.legaldesire",
-            "certificate_hash": "b7838512297386fd43251e1cc6bdeacc8d88f142"
-          }
-        },
-        {
           "client_id": "767878508256-u9g2lg6p16dbrlgclehjm06rdstikg1t.apps.googleusercontent.com",
           "client_type": 3
         }

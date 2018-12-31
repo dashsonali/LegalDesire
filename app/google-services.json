@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "767878508256",
+    "firebase_url": "https://legaldesire-da0fa.firebaseio.com",
+    "project_id": "legaldesire-da0fa",
+    "storage_bucket": "legaldesire-da0fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767878508256:android:f876f771e1a149b1",
+        "android_client_info": {
+          "package_name": "com.example.user.legaldesire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767878508256-1n5c2ug5rqr9gdl14si1c03svpq1kro0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.legaldesire",
+            "certificate_hash": "32129a8cae9c69d2343221d3bd03318ba47173b2"
+          }
+        },
+        {
+          "client_id": "767878508256-u9g2lg6p16dbrlgclehjm06rdstikg1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYW4OFJlSr5Wvwclm0yQPy_3T-M3SUx7U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767878508256-u9g2lg6p16dbrlgclehjm06rdstikg1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

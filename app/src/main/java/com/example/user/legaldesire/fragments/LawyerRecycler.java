@@ -6,11 +6,13 @@ import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.adapters.RecyclerAdapter;
@@ -35,6 +37,7 @@ public class LawyerRecycler extends Fragment {
     FirebaseDatabase database;
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
+    ImageButton filterbtn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -68,7 +71,22 @@ public class LawyerRecycler extends Fragment {
         progressDialog=new ProgressDialog(context);
         recyclerView=rootView.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-       // adapter=new RecyclerAdapter(getActivity(),getData());
+        filterbtn=rootView.findViewById(R.id.filterBtn);
+        filterbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                        PopupMenu popup = new PopupMenu(getContext(),filterbtn);
+                        popup.getMenuInflater().inflate(R.menu.filter,popup.getMenu());
+
+                        popup.show();
+
+
+            }
+        });
+
+
+
+        // adapter=new RecyclerAdapter(getActivity(),getData());
        // recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listItems=new ArrayList<>();
@@ -130,6 +148,9 @@ public class LawyerRecycler extends Fragment {
                             );
                             listItems.add(current);
                             progressDialog.dismiss();
+                    adapter =new RecyclerAdapter(listItems,getContext());
+                    recyclerView.setAdapter(adapter);
+
 
             }}
 
@@ -141,8 +162,6 @@ public class LawyerRecycler extends Fragment {
 
 
 
-        adapter =new RecyclerAdapter(listItems,getContext());
-        recyclerView.setAdapter(adapter);
 
 
 

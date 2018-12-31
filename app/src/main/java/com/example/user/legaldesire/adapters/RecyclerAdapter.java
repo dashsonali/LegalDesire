@@ -35,9 +35,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
 
-    public RecyclerAdapter(List<LawyerData> listItem, Context context) {
+    public RecyclerAdapter(  List<LawyerData> listItem, Context context) {
         this.listItem = listItem;
         this.context = context;
+        Log.e("itemlistsize", String.valueOf(listItem.size()));
     }
 
     @Override
@@ -47,7 +48,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder( MyViewHolder holder, int position) {
      final    LawyerData current;
         current=listItem.get(position);
         holder.name.setText(current.getName());
@@ -78,6 +79,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 mailLawyer(current);
             }
         });
+
         //holder.lawyerData=current;
 
     }
@@ -121,7 +123,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
       public   TextView name,areaOfPractice,noOfRaters;
       RatingBar ratingBar;
       Button locate;
-      ImageButton call,mail,filterbtn;
+      ImageButton call,mail,filtertn;
       //String location,number,email,contact;
      // LawyerData lawyerData;
         public MyViewHolder(View itemView){
@@ -135,18 +137,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 //            contact=itemView.findViewById(R.id.contacttxt);
             ratingBar=itemView.findViewById(R.id.ratingtxt);
             noOfRaters=itemView.findViewById(R.id.noOfReviewstxt);
-            filterbtn=itemView.findViewById(R.id.filterBtn);
-            filterbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popup = new PopupMenu(context,filterbtn);
-                    popup.getMenuInflater().inflate(R.menu.filter,popup.getMenu());
-
-                    popup.show();
-
-
-                }
-            });
 
         }
 

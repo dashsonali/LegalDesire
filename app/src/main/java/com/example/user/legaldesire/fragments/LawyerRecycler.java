@@ -85,7 +85,7 @@ public class LawyerRecycler extends Fragment {
         });
 
 
-
+//........................................................................................................................
         // adapter=new RecyclerAdapter(getActivity(),getData());
        // recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -109,7 +109,7 @@
                   android:isIndicator="true"
 
                   android:max="5"
-                  android:rating="2"
+                  android:rating="3"
                   android:numStars="5"
 
 

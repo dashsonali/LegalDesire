@@ -12,8 +12,10 @@ import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.HashMap;
 
+public class MainActivity extends AppCompatActivity {
+    final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +29,31 @@ public class MainActivity extends AppCompatActivity {
                 Fragment selectFragment=null;
                 switch (item.getItemId()) {
                     case R.id.nav_home:
-                        selectFragment = new HomeFragment();
+                        selectFragment = fragmentHashMap.get("home");
+                        if(selectFragment==null)
+                        {
+                            selectFragment = new HomeFragment();
+                            fragmentHashMap.put("home",selectFragment);
+                        }
+
                         break;
                     case R.id.nav_cases:
-                        selectFragment = new UserProfileFrag();
+                        selectFragment = fragmentHashMap.get("cases");
+                        if(selectFragment==null)
+                        {
+                            selectFragment = new UserProfileFrag();
+                            fragmentHashMap.put("cases",selectFragment);
+                        }
+
                         break;
                     case R.id.nav_learnLaw:
-                        selectFragment = new LearnLaw();
+                        selectFragment = fragmentHashMap.get("learn_law");
+                        if(selectFragment==null)
+                        {
+                            selectFragment = new LearnLaw();
+                            fragmentHashMap.put("learn_law",selectFragment);
+                        }
+
                         break;
 
                 }

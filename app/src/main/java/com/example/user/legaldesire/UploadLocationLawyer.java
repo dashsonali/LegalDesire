@@ -27,12 +27,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.user.legaldesire.adapters.PlaceAutocompleteAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,6 +42,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,6 +54,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,7 +83,9 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
     private static boolean PERMISSION_GRANTED = false;
     private GoogleMap mMap;
     private FloatingActionButton myLocationBtn;
+    private PlaceAutocompleteAdapter placeAutocompleteAdapter;
     GoogleApiClient mGoogleApiCleint;
+    GeoDataClient mGeoDataClient;
     LocationRequest mLocationRequest;
     Marker marker;
     private RelativeLayout rl;
@@ -86,6 +93,10 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
     FusedLocationProviderClient mFusedLocationClient;
     Marker current_location_marker;
     ImageButton filterButton;
+    AutoCompleteTextView search;
+    private static final LatLngBounds LAT_LNG_BOUNDS=new LatLngBounds(
+            new LatLng(-40,-168),new LatLng(71,136)
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +105,9 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         uploadLocation = findViewById(R.id.uploadLocation);
          uploadLocation.setOnClickListener(this);
         rl = findViewById(R.id.mapLayout);
+        mGeoDataClient = Places.getGeoDataClient(this, null);
         mProgressDialog = new ProgressDialog(this);
+        search=findViewById(R.id.search_places);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         myLocationBtn = findViewById(R.id.current_location);
         myLocationBtn.setOnClickListener(this);
@@ -107,6 +120,16 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mGoogleApiCleint=new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this,this)
+                .build();
+
+        placeAutocompleteAdapter =new PlaceAutocompleteAdapter(this,mGeoDataClient,LAT_LNG_BOUNDS,null);
+        search.setAdapter(placeAutocompleteAdapter);
 
 
     }

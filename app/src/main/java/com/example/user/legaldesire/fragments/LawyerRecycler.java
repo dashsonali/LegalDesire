@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class LawyerRecycler extends Fragment {
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     ImageButton filterbtn;
+    EditText searchButton;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,6 +76,7 @@ public class LawyerRecycler extends Fragment {
         View rootView= inflater.inflate(R.layout.fragment_lawyer_recycler, container, false);
         progressDialog=new ProgressDialog(context);
         recyclerView=rootView.findViewById(R.id.recyclerView);
+        searchButton =rootView.findViewById(R.id.editText);
         recyclerView.setHasFixedSize(true);
         filterbtn=rootView.findViewById(R.id.filterBtn);
         filterbtn.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +131,9 @@ public class LawyerRecycler extends Fragment {
                     }
 
                 });
+
                 popup.show();
+
 
             }});
 

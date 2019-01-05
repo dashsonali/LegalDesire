@@ -51,14 +51,6 @@ public class UserProfileFrag extends Fragment {
     ProgressDialog progressDialog;
     Location mlocation;
 
-    public static LawyerRecycler newInstance(String param1, String param2) {
-        LawyerRecycler fragment = new LawyerRecycler();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param1", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,13 +61,10 @@ public class UserProfileFrag extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+
         LayoutInflater layoutInflater=getActivity().getLayoutInflater();
         View view=layoutInflater.inflate(R.layout.fragment_other,null);
-       // builder.setView(view);
-      //  FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
-        // Toast.makeText(getContext(),type,Toast.LENGTH_SHORT).show();
         b = (Button) view.findViewById(R.id.SOS);
         findLawyer=view.findViewById(R.id.findLwyers);
         findLawyer.setOnClickListener(new View.OnClickListener() {
@@ -116,14 +105,19 @@ public class UserProfileFrag extends Fragment {
                 startActivity(i);
             }
         };
-        configure_button();
-        progressDialog.setMessage("fetching location");
-        progressDialog.show();
+        if(mlocation==null)
+        {
+            configure_button();
+            progressDialog.setMessage("Fetching data..");
+            progressDialog.show();
+        }
+
+
         return view;
 
 
     }
-       // return builder.create();
+
 
 
 
@@ -162,9 +156,9 @@ public class UserProfileFrag extends Fragment {
                 smsBody.append(mlocation.getLatitude());
                 smsBody.append(",");
                 smsBody.append(mlocation.getLongitude());
-                smsManager.sendTextMessage("9398888408", null, smsBody.toString(), null, null);
+                smsManager.sendTextMessage("9658463402", null, smsBody.toString(), null, null);
                 Log.e("sms",smsBody.toString() );
-
+                Toast.makeText(getActivity().getBaseContext(),"SOS MESSAGE IS SENT TO EMERGENCY CONTACTS",Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -198,7 +198,7 @@ public class LawyerRecycler extends Fragment {
                     String contact;
                     String email;
                     String areaOfPractice;
-                    Float noOfRaters ;
+                    String noOfRaters ;
                     Float rating;
                     String lat="noLat",longi="noLongi",location="noLocation";
                     name=dataSnapshot1.child("name").getValue(String.class);
@@ -206,11 +206,11 @@ public class LawyerRecycler extends Fragment {
                     email=dataSnapshot1.child("email").getValue(String.class);
                     areaOfPractice=dataSnapshot1.child("areaOfPractice").getValue(String.class);
                     rating=dataSnapshot1.child("rating").getValue(Float.class);
-                    noOfRaters=dataSnapshot1.child("usersRated").getValue(Float.class);
+                    noOfRaters=dataSnapshot1.child("usersRated").getValue().toString();
                     lat=dataSnapshot1.child("location").child("latitude").getValue(String.class);
                     longi=dataSnapshot1.child("location").child("longitude").getValue(String.class);
                         if(lat==null){location="noLocation";}else{
-                        location=    "http://maps.google.com/maps?q="+lat+","+longi;}
+                        location= "http://maps.google.com/maps?q="+lat+","+longi;}
 
 
 

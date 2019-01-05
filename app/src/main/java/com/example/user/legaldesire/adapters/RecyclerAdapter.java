@@ -80,7 +80,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             }
         });
 
-        //holder.lawyerData=current;
+       // //holder.lawyerData=current;
 
     }
 

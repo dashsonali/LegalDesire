@@ -91,13 +91,13 @@ public class UserProfileFrag extends Fragment {
 
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabs);
-
-        setUpViewPager(viewPager);
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+
 
 
 
@@ -105,13 +105,7 @@ public class UserProfileFrag extends Fragment {
 
 
     }
-    public void setUpViewPager(ViewPager viewPager){
-        viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new UserMenuFragment(),"Menu");
-        viewPagerAdapter.addFragment(new LearnLaw(),"Bookmarks");
-        viewPagerAdapter.addFragment(new LawyerRecycler(),"Favorite Lawyers");
-        viewPager.setAdapter(viewPagerAdapter);
-    }
+
     public void show_pop_up(View v){
         PopupMenu popupMenu = new PopupMenu(getActivity().getBaseContext(),v);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

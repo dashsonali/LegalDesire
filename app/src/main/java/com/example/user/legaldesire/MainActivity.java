@@ -15,7 +15,7 @@ import com.example.user.legaldesire.fragments.UserProfileFrag;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-  private  final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
+    final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.nav_cases:
-                        selectFragment = new UserProfileFrag();
+                        selectFragment = fragmentHashMap.get("cases");
+                        if(selectFragment==null)
+                        {
+                            selectFragment = new UserProfileFrag();
+                            fragmentHashMap.put("cases",selectFragment);
+                        }
 
                         break;
                     case R.id.nav_learnLaw:

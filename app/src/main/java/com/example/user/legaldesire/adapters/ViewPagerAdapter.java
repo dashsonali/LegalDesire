@@ -11,9 +11,7 @@ import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserMenuFragment;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     public ViewPagerAdapter(FragmentManager fm) {
@@ -21,28 +19,59 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     private final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
-    private final List<Fragment>  mFragmentList = new ArrayList<>();
-    private final List<String> mFragmentTitleList = new ArrayList<>();
     @Override
     public Fragment getItem(int position) {
+       Fragment selectedFragment = null;
 
+       if(position == 0)
+       {
+           Log.e("Position:",String.valueOf(position));
+           selectedFragment = fragmentHashMap.get("user_menu");
+           if(selectedFragment==null)
+           {
+               selectedFragment = new UserMenuFragment();
+               fragmentHashMap.put("user_menu",selectedFragment);
 
+           }
+       }else if(position == 1){
+           Log.e("Position:",String.valueOf(position));
+           selectedFragment = fragmentHashMap.get("learn_law");
+           if(selectedFragment==null){
+               selectedFragment = new LearnLaw();
+               fragmentHashMap.put("learn_law",selectedFragment);
+           }
 
-       return  mFragmentList.get(position);
+       }else if(position == 2)
+       {
+           Log.e("Position:",String.valueOf(position));
+           selectedFragment = fragmentHashMap.get("lawyer_recycler");
+           if(selectedFragment==null){
+               selectedFragment = new LawyerRecycler();
+               fragmentHashMap.put("lawyer_recycler",selectedFragment);
+           }
+
+       }
+       return  selectedFragment;
     }
 
     @Override
     public int getCount() {
-        return mFragmentList.size();
+        return 3;
     }
-    public void addFragment(Fragment fragment,String title){
-        mFragmentList.add(fragment);
-        mFragmentTitleList.add(title);
-    }
+
     @Override
     public CharSequence getPageTitle(int position) {
+        String title = "test";
+        if(position == 0)
+        {
+           title = "Menu";
+        }else if(position == 1){
+            title = "Bookmarks";
+        }else if(position == 2)
+        {
+            title = "Favorite Lawyers";
+        }
 
-
-        return mFragmentTitleList.get(position);
+        return title;
     }
 }

@@ -13,13 +13,20 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
+import com.example.user.legaldesire.adapters.PlaceAutocompleteAdapter;
 import com.example.user.legaldesire.adapters.RecyclerAdapter;
 import com.example.user.legaldesire.models.LawyerData;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,7 +50,12 @@ public class LawyerRecycler extends Fragment {
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     ImageButton filterbtn;
-    EditText searchButton;
+    AutoCompleteTextView searchButton;
+    private PlaceAutocompleteAdapter placeAutocompleteAdapter;
+    GeoDataClient mGeoDataClient;
+    private static final LatLngBounds LAT_LNG_BOUNDS=new LatLngBounds(
+            new LatLng(-40,-168),new LatLng(71,136)
+    );
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -78,6 +90,10 @@ public class LawyerRecycler extends Fragment {
         recyclerView=rootView.findViewById(R.id.recyclerView);
         searchButton =rootView.findViewById(R.id.editText);
         recyclerView.setHasFixedSize(true);
+        mGeoDataClient = Places.getGeoDataClient(getContext(), null);
+        placeAutocompleteAdapter =new PlaceAutocompleteAdapter(getContext(),mGeoDataClient,LAT_LNG_BOUNDS,null);
+        searchButton.setAdapter(placeAutocompleteAdapter);
+
         filterbtn=rootView.findViewById(R.id.filterBtn);
         filterbtn.setOnClickListener(new View.OnClickListener() {
             @Override

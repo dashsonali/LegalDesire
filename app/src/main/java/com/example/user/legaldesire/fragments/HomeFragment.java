@@ -4,20 +4,20 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
-import android.os.Handler;
+
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JsPromptResult;
-import android.webkit.JsResult;
+
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.example.user.legaldesire.R;
 
@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
     private WebView webView;
 
     ProgressDialog progressDialog;
-
+    private ProgressBar progressBar;
     private View rootView;
     private Bundle webviewBundle;
 
@@ -52,8 +52,9 @@ public class HomeFragment extends Fragment {
         {
             rootView = inflater.inflate(R.layout.fragment_home, container, false);
             webView=rootView.findViewById(R.id.webview);
-            progressDialog = ProgressDialog.show(getContext(), "", "Please wait, our page is loading", true);
-
+          //  progressDialog = ProgressDialog.show(getContext(), "", "Please wait, our page is loading", true);
+            progressBar = rootView.findViewById(R.id.progressBar);
+            progressBar.setMax(100);
             if(savedInstanceState!=null)
             {
                 webView.restoreState(webviewBundle);
@@ -62,7 +63,20 @@ public class HomeFragment extends Fragment {
                 WebSettings webSettings=webView.getSettings();
                 webSettings.setJavaScriptEnabled(true);
                 Log.e("Saved instance","NULL");
-                webView.loadUrl("https://legaldesire.com/"); webView.setWebViewClient(new WebViewClient() {
+                webView.loadUrl("https://legaldesire.com/");
+                webView.setWebChromeClient(new WebChromeClient(){
+                    @Override
+                    public void onProgressChanged(WebView view, int newProgress) {
+                        progressBar.setProgress(newProgress);
+                        if(newProgress == 100)
+                        {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+
+                webView.setWebViewClient(new WebViewClient() {
 
 
 
@@ -72,26 +86,6 @@ public class HomeFragment extends Fragment {
                         return true;
                     }
 
-                    @Override
-                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                        progressDialog.show();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                progressDialog.dismiss();
-                            }
-                        }, 4000);
-                    }
-
-
-                    @Override
-                    public void onPageFinished(WebView view, String url) {
-                        super.onPageFinished(view, url);
-                        if (progressDialog != null) {
-                            progressDialog.dismiss();
-                        }
-
-                    }
 
                 });
 

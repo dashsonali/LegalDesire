@@ -5,7 +5,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.user.legaldesire.UserProfile">
+    <LinearLayout
+        android:id="@+id/layout_for_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/edit_text_border">
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+           >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WELCOME RAKESH SWAIN"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+
+            <ImageView
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:src="@drawable/edit_profile" />
+        </RelativeLayout>
+       <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/phoneNumber"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7008916802"
+
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/phoneNumber"
+                android:layout_alignBottom="@+id/phoneNumber"
+                android:src="@drawable/phone"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/email"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="swain.rakesh131@gmail.com"
+
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/email"
+                android:layout_alignBottom="@+id/email"
+                android:src="@drawable/email"
+                />
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
     <Button
+        android:layout_below="@+id/layout_for_name"
         android:layout_width="251dp"
         android:id="@+id/SOS"
         android:layout_height="wrap_content"

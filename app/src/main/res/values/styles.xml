@@ -14,6 +14,13 @@
         <item name="android:scaleX">1</item>
         <item name="android:scaleY">1</item>
     </style>
+    <style name="ProgressBar" parent="Base.Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:indeterminateTint">@color/colorPrimaryDark</item>
+    </style>
+    <style name="MyTabTextAppearance" parent="TextAppearance.Design.Tab">
+       <item name="android:textSize">10sp</item>
+    </style>
 
 
 </resources>

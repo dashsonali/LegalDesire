@@ -1,39 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.legaldesire.fragments.UserProfileFrag">
-    <Button
-        android:layout_width="251dp"
-        android:id="@+id/SOS"
+    tools:context="com.example.user.legaldesire.UserProfile">
+    <LinearLayout
+        android:id="@+id/layout_for_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/edit_text_border">
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WELCOME RAKESH SWAIN"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:id="@+id/user_name"
+                android:textSize="20dp"/>
 
-        android:background="@drawable/button_border"
-        android:elevation="5dp"
-        android:layout_margin="10dp"
+            <ImageView
+                android:layout_alignParentEnd="true"
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:layout_alignEnd="@+id/user_name"
+                android:id="@+id/user_menu"
+                android:src="@drawable/menu_icon" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/phoneNumber"
 
-        android:text="SOS"
-        android:textColor="@color/white"
-        android:padding="5dp"
-        android:textStyle="bold"
-        />
-    <Button
-        android:layout_width="251dp"
-        android:id="@+id/findLwyers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7008916802"
+
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/phoneNumber"
+                android:layout_alignBottom="@+id/phoneNumber"
+                android:src="@drawable/phone"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/email"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="swain.rakesh131@gmail.com"
+
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/email"
+                android:layout_alignBottom="@+id/email"
+                android:src="@drawable/email"
+                />
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        android:layout_below="@+id/layout_for_name"
+        android:layout_width="match_parent"
+        android:id="@+id/tabs"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/MyTabTextAppearance"
+        android:layout_height="wrap_content">
+        
+    </android.support.design.widget.TabLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:layout_below="@+id/SOS"
-        android:background="@drawable/button_border"
-        android:elevation="5dp"
-        android:layout_margin="10dp"
+        android:layout_below="@+id/tabs">
 
-        android:text="Find Lawyers"
-        android:textColor="@color/white"
-        android:padding="5dp"
-        android:textStyle="bold"
-        />
+    </android.support.v4.view.ViewPager>
+
 
 </RelativeLayout>

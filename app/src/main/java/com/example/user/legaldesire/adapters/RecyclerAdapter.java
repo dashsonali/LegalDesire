@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.SearchLawer;
+import com.example.user.legaldesire.fragments.BookAppointment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.models.LawyerData;
 
@@ -79,6 +82,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 mailLawyer(current);
             }
         });
+        holder.bookApointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //FragmentTransaction ft = FragmentTransaction.beginTransaction();
+
+                BookAppointment bookAppointment =new BookAppointment();
+                bookAppointment.lawyerData=current;
+               // bookAppointment.show()
+            }
+        });
 
        // //holder.lawyerData=current;
 
@@ -122,7 +135,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
   public   class MyViewHolder extends RecyclerView.ViewHolder{
       public   TextView name,areaOfPractice,noOfRaters;
       RatingBar ratingBar;
-      Button locate;
+      Button locate,bookApointment;
       ImageButton call,mail,filtertn;
       //String location,number,email,contact;
      // LawyerData lawyerData;
@@ -137,6 +150,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 //            contact=itemView.findViewById(R.id.contacttxt);
             ratingBar=itemView.findViewById(R.id.ratingtxt);
             noOfRaters=itemView.findViewById(R.id.noOfReviewstxt);
+            bookApointment=itemView.findViewById(R.id.bookbtn);
 
         }
 

@@ -89,7 +89,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                 BookAppointment bookAppointment =new BookAppointment();
                 bookAppointment.lawyerData=current;
-               // bookAppointment.show()
+               // bookAppointment.show()//
             }
         });
 

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -90,6 +91,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 BookAppointment bookAppointment =new BookAppointment();
                 bookAppointment.lawyerData=current;
                // bookAppointment.show()//
+                bookAppointment.show(((AppCompatActivity) context).getSupportFragmentManager(),"");
             }
         });
 
@@ -150,7 +152,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 //            contact=itemView.findViewById(R.id.contacttxt);
             ratingBar=itemView.findViewById(R.id.ratingtxt);
             noOfRaters=itemView.findViewById(R.id.noOfReviewstxt);
-            bookApointment=itemView.findViewById(R.id.bookbtn);
+            bookApointment=itemView.findViewById(R.id.bookAPPbtn);
 
         }
 

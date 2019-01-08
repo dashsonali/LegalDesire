@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -35,7 +38,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class BookAppointment extends AppCompatDialogFragment {
     EditText problem;
-    Button send ;
+    Button send;
+    ImageButton close ;
     FirebaseAuth mAuth;
     public static LawyerData lawyerData;
     SharedPreferences pref;
@@ -51,16 +55,31 @@ public class BookAppointment extends AppCompatDialogFragment {
         problem=view.findViewById(R.id.entProblem);
         send = view.findViewById(R.id.sendBtn);
 
+        close=view.findViewById(R.id.closebtn);
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("clickedclose", "onClick: " );
+                dismiss();
+
+                //return;
+            }
+        });
+
        send.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               SmsManager smsManager = SmsManager.getDefault();
-               StringBuffer smsBody = new StringBuffer();
-               smsBody.append(" http://maps.google.com/maps?q=");
-               smsManager.sendTextMessage("9658463402", null, smsBody.toString(), null, null);
-               Log.e("sms", smsBody.toString());
-               Toast.makeText(getActivity().getBaseContext(), "SOS MESSAGE IS SENT TO EMERGENCY CONTACTS", Toast.LENGTH_SHORT).show();
+               if(mAuth.getCurrentUser()!=null){
+               String mail=lawyerData.getEmail().toString().replace('.',',');
+               DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
+               databaseReference.child("Pending appointments").child(mAuth.getCurrentUser().getUid()).setValue(problem.getText().toString());
+               dismiss();
 
+           }
+           else {
+                   Toast.makeText(getContext(), "no current user", Toast.LENGTH_SHORT).show();
+               }
            }
        });
         return builder.create();

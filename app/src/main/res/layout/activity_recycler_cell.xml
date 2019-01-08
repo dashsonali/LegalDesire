@@ -164,7 +164,7 @@
               android:layout_height="30dp" />
           <ImageButton
 
-              android:id="@id/bookbtn"
+              android:id="@+id/bookbtn"
               android:background="@color/white"
               android:src="@drawable/bookmark"
               android:layout_margin="20dp"
@@ -183,7 +183,7 @@
           android:layout_below="@+id/layout_for_contact_buttons"
           >
           <Button
-              android:id="@+id/bookbtn"
+              android:id="@+id/bookAPPbtn"
               android:layout_width="0dp"
               android:layout_weight="1"
               android:layout_height="wrap_content"

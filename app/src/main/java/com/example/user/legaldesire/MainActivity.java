@@ -1,6 +1,7 @@
 package com.example.user.legaldesire;
 
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
+import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
 
@@ -21,7 +23,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView=findViewById(R.id.btm_nav);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+        Intent intent = getIntent();
+        if(intent.getExtras()!=null)
+        {
+            if(intent.getStringExtra("action").equals("search_lawyer"))
+            {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LawyerRecycler()).commit();
+            }
+        }else{
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+        }
+
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener( new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

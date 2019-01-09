@@ -107,7 +107,7 @@ public class Dialog extends AppCompatDialogFragment {
                 }else if(type.equals("user"))
                 {
 
-                      intent.putExtra("user_type","lawyer");
+                      intent.putExtra("user_type","user");
                       startActivity(intent);
 
 

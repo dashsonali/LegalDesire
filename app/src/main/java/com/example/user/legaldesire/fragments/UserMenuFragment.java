@@ -2,6 +2,7 @@ package com.example.user.legaldesire.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.telephony.SmsManager;
@@ -28,6 +30,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.legaldesire.MainActivity;
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.adapters.ViewPagerAdapter;
 
@@ -56,9 +59,11 @@ public class UserMenuFragment extends Fragment {
         find_lawyers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,new LawyerRecycler()).commit();
-                Fragment selectFragment=new LawyerRecycler();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,selectFragment).commit();
+              Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+              intent.putExtra("action","search_lawyer");
+              startActivity(intent);
+
+
 
 
             }
@@ -95,6 +100,8 @@ public class UserMenuFragment extends Fragment {
             configure_button();
             progressDialog.setMessage("Fetching data..");
             progressDialog.show();
+        }else{
+            Log.e("Location","NULL");
         }
         return view;
     }

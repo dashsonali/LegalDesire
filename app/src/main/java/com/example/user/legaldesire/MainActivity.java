@@ -26,10 +26,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.getExtras()!=null)
         {
-            if(intent.getStringExtra("action").equals("search_lawyer"))
+            if(intent.getStringExtra("action")!=null)
             {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LawyerRecycler()).commit();
+                if(intent.getStringExtra("action").equals("search_lawyer"))
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LawyerRecycler()).commit();
+                }
+            }else{
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
             }
+
         }else{
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
         }

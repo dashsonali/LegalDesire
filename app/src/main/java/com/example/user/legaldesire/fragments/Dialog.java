@@ -8,17 +8,20 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.user.legaldesire.MainActivity;
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.RegistrationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,17 +82,30 @@ public class Dialog extends AppCompatDialogFragment {
                 mAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("type",type);
-                        editor.commit();
-                        Intent intent;
-                        intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                        if(task.isSuccessful()){
+                            pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("type",type);
+                            editor.commit();
+                            Intent intent;
+                            intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }else{
+                            try{
+                                Toast.makeText(getActivity().getBaseContext(),"Authentication Failed!",Toast.LENGTH_SHORT).show();
+                            }catch (Exception e)
+                            {
+                                Log.e("Error",e.getMessage());
+                            }
+
+                        }
+
 
                     }
                 });
+
+
 
             }
         });

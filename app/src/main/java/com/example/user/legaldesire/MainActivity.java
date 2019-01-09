@@ -7,23 +7,28 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView=findViewById(R.id.btm_nav);
         Intent intent = getIntent();
+        mAuth = FirebaseAuth.getInstance();
+        Log.e("Current User",mAuth.getCurrentUser().toString());
         if(intent.getExtras()!=null)
         {
             if(intent.getStringExtra("action")!=null)

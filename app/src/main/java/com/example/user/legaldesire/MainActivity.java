@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView=findViewById(R.id.btm_nav);
         Intent intent = getIntent();
-        mAuth = FirebaseAuth.getInstance();
-        Log.e("Current User",mAuth.getCurrentUser().toString());
+        mAuth=FirebaseAuth.getInstance();
+        Log.e("currentuser",""+mAuth.getCurrentUser()+" njk" );
         if(intent.getExtras()!=null)
         {
             if(intent.getStringExtra("action")!=null)

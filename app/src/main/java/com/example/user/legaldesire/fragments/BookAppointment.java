@@ -66,8 +66,8 @@ public class BookAppointment extends AppCompatDialogFragment {
                 //return;
             }
         });
-
-       send.setOnClickListener(new View.OnClickListener() {
+    //PROBLEM HERE
+           send.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                if(mAuth.getCurrentUser()!=null){

@@ -2,6 +2,7 @@ package com.example.user.legaldesire;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -134,18 +135,30 @@ public class RegistrationActivity extends AppCompatActivity {
                     mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            DatabaseReference databaseReference1 = databaseReference.child(email.replace('.',','));
-                            databaseReference1.child("name").setValue(name);
-                            databaseReference1.child("email").setValue(email);
-                            databaseReference1.child("contact").setValue(contact);
-                            databaseReference1.child("areaOfPractice").setValue(domain);
-                            databaseReference1.child("uid").setValue(mAuth.getUid());
-                            databaseReference1.child("type").setValue("lawyer");
-                            mProgressdialog.dismiss();
-                            Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
-                            intent.putExtra("lawyer_mail",email.replace('.',','));
-                            startActivity(intent);
-                            finish();
+                            if(task.isSuccessful()){
+                                DatabaseReference databaseReference1 = databaseReference.child(email.replace('.',','));
+                                databaseReference1.child("name").setValue(name);
+                                databaseReference1.child("email").setValue(email);
+                                databaseReference1.child("contact").setValue(contact);
+                                databaseReference1.child("areaOfPractice").setValue(domain);
+                                databaseReference1.child("uid").setValue(mAuth.getUid());
+                                databaseReference1.child("type").setValue("lawyer");
+                                mProgressdialog.dismiss();
+                                Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
+                                intent.putExtra("lawyer_mail",email.replace('.',','));
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                try{
+                                    mProgressdialog.dismiss();
+                                    Toast.makeText(getApplicationContext(),"Authentication Failed!",Toast.LENGTH_SHORT).show();
+                                }catch (Exception e)
+                                {
+                                    Log.e("Error",e.getMessage());
+                                }
+
+                            }
+
 
                         }
 
@@ -185,15 +198,37 @@ public class RegistrationActivity extends AppCompatActivity {
                     mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            DatabaseReference databaseReference1 = databaseReference.child(email.replace('.',','));
-                            databaseReference1.child("name").setValue(name);
-                            databaseReference1.child("email").setValue(email);
-                            databaseReference1.child("contact").setValue(contact);
-                            databaseReference1.child("uid").setValue(mAuth.getUid());
-                            databaseReference1.child("type").setValue("user");
 
-                            mProgressdialog.dismiss();
-                            finish();
+                            if(task.isSuccessful()){
+
+                                DatabaseReference databaseReference1 = databaseReference.child(email.replace('.',','));
+                                databaseReference1.child("name").setValue(name);
+                                databaseReference1.child("email").setValue(email);
+                                databaseReference1.child("contact").setValue(contact);
+                                databaseReference1.child("uid").setValue(mAuth.getUid());
+                                databaseReference1.child("type").setValue("user");
+
+                                mProgressdialog.dismiss();
+                                finish();
+                            }else{
+                                try{
+                                    mProgressdialog.dismiss();
+                                    Toast.makeText(getApplicationContext(),"Authentication Failed!",Toast.LENGTH_SHORT).show();
+                                }catch (Exception e)
+                                {
+                                    Log.e("Error",e.getMessage());
+                                }
+
+                            }
+
+
+
+
+
+
+
+
+
 
                         }
 

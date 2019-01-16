@@ -75,8 +75,14 @@ public class MainActivity extends AppCompatActivity {
                         selectFragment = fragmentHashMap.get("learn_law");
                         if(selectFragment==null)
                         {
-                            selectFragment = new UserAppointmentFragment();
+                            selectFragment = new LearnLaw();
                             fragmentHashMap.put("learn_law",selectFragment);
+                        }
+                    case R.id.nav_appointments:
+                        selectFragment = fragmentHashMap.get("appointments");
+                        if(selectFragment==null){
+                            selectFragment = new UserAppointmentFragment();
+                            fragmentHashMap.put("appointments",selectFragment);
                         }
 
                         break;

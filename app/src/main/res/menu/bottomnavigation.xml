@@ -9,6 +9,9 @@
     <item android:id="@+id/nav_cases"
         android:title="Profile"
         android:icon="@drawable/ic_account_profile"></item>
+    <item android:id="@+id/nav_appointments"
+        android:title="Appointments"
+        android:icon="@drawable/appointments"></item>
 
 
 </menu>

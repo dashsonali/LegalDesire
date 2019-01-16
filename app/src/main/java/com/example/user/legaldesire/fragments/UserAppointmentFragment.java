@@ -94,6 +94,7 @@ public class UserAppointmentFragment extends Fragment {
 
     private void loadRecyclerViewData() {
         mAuth = FirebaseAuth.getInstance();
+        progressDialog.setMessage("Fetching data..");
         progressDialog.show();
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();

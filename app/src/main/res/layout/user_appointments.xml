@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/status"
-        android:hint="status"
+        android:hint="N:N:N"
         android:textStyle="italic"
         />
     <Button
@@ -57,7 +57,7 @@
         android:text="Cancel Apppointment"
         android:textColor="#ffff"
         android:id="@+id/cancel_button"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimaryDark"
         />
 
 

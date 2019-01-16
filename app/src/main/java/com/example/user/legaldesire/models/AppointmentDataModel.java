@@ -8,6 +8,16 @@ public class AppointmentDataModel {
     String message;
     String mail;
 
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    String number;
+
     public String getName() {
         return name;
     }
@@ -26,11 +36,12 @@ public class AppointmentDataModel {
         this.mail = mail;
     }
 
-    public AppointmentDataModel(String message, String mail, String status,String name) {
+    public AppointmentDataModel(String message, String mail, String status,String name,String number) {
         this.message = message;
         this.mail = mail;
         this.status = status;
         this.name=name;
+        this.number=number;
     }
 
     public String getMessage() {

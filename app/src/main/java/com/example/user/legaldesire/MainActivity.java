@@ -2,6 +2,7 @@ package com.example.user.legaldesire;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
+import com.example.user.legaldesire.fragments.LawyerAppointmentFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserAppointmentFragment;
@@ -22,6 +24,8 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
     FirebaseAuth mAuth;
+    SharedPreferences sharedPreferences;
+    String typeOfUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView=findViewById(R.id.btm_nav);
         Intent intent = getIntent();
         mAuth=FirebaseAuth.getInstance();
+        sharedPreferences= getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
+        typeOfUser= sharedPreferences.getString("type",null);
+
         Log.e("currentuser",""+mAuth.getCurrentUser()+" njk" );
         if(intent.getExtras()!=null)
         {
@@ -78,11 +85,17 @@ public class MainActivity extends AppCompatActivity {
                             selectFragment = new LearnLaw();
                             fragmentHashMap.put("learn_law",selectFragment);
                         }
+                        break;
                     case R.id.nav_appointments:
                         selectFragment = fragmentHashMap.get("appointments");
                         if(selectFragment==null){
+                            if(typeOfUser.equals("user")){
                             selectFragment = new UserAppointmentFragment();
-                            fragmentHashMap.put("appointments",selectFragment);
+                            fragmentHashMap.put("appointments",selectFragment);}
+                            else {
+                               selectFragment = new LawyerAppointmentFragment();
+                                fragmentHashMap.put("appointments",selectFragment);
+                            }
                         }
 
                         break;

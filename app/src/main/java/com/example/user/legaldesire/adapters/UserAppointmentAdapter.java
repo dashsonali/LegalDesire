@@ -74,7 +74,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
         final    AppointmentDataModel current;
         current=listItem.get(position);
         holder.mail.setText(current.getMail());
-        Log.e("mailinadapter",""+current.getMail()+"" );
+        Log.e("mailinadapter",""+current.getMail()+""+current.getNumber() );
         String Date="Pending";
         if(current.getStatus().equals("-1")){
             holder.status.setText(Date);

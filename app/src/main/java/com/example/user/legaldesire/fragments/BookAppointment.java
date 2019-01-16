@@ -82,6 +82,7 @@ public class BookAppointment extends AppCompatDialogFragment {
                databaseReference1.child("appointments").child(mail).child("status").setValue("-1");
                databaseReference1.child("appointments").child(mail).child("mail").setValue(mail.replace(",","."));
                databaseReference1.child("appointments").child(mail).child("name").setValue(lawyerData.getName().toString());
+               databaseReference1.child("appointments").child(mail).child("number").setValue(lawyerData.getContact().toString());
 
 
 

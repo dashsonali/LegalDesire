@@ -152,9 +152,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                 try{
                                     mProgressdialog.dismiss();
                                     Toast.makeText(getApplicationContext(),"Authentication Failed!",Toast.LENGTH_SHORT).show();
+                                    throw task.getException();
+
                                 }catch (Exception e)
                                 {
-                                    Log.e("Error",e.getMessage());
+                                    Log.e("ExceptionInRegistration",e.getMessage());
                                 }
 
                             }
@@ -214,9 +216,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                 try{
                                     mProgressdialog.dismiss();
                                     Toast.makeText(getApplicationContext(),"Authentication Failed!",Toast.LENGTH_SHORT).show();
+                                    throw task.getException();
+
                                 }catch (Exception e)
                                 {
-                                    Log.e("Error",e.getMessage());
+                                    Log.e("ExceptionInRegistration",e.getMessage());
                                 }
 
                             }

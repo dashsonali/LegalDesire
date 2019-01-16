@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
+import com.example.user.legaldesire.fragments.UserAppointmentFragment;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         selectFragment = fragmentHashMap.get("learn_law");
                         if(selectFragment==null)
                         {
-                            selectFragment = new LearnLaw();
+                            selectFragment = new UserAppointmentFragment();
                             fragmentHashMap.put("learn_law",selectFragment);
                         }
 

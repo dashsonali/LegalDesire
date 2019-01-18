@@ -83,6 +83,7 @@ public class Dialog extends AppCompatDialogFragment {
                         pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("type",type);
+
                         editor.commit();
                         Log.e("currentuser",""+FirebaseAuth.getInstance()+"dialog");
 

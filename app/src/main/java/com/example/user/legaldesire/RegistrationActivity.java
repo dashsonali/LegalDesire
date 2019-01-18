@@ -177,7 +177,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public void registerUser(){
         mProgressdialog.setMessage("Registering user...");
         mProgressdialog.show();
-       // Toast.makeText(getApplicationContext(),"Coming in register user",Toast.LENGTH_SHORT).show();
+       //Toast.makeText(getApplicationContext(),"Coming in register user",Toast.LENGTH_SHORT).show();
 
         name = editName.getText().toString();
         pass = editPass.getText().toString();
@@ -185,7 +185,7 @@ public class RegistrationActivity extends AppCompatActivity {
         email = editEmail.getText().toString();
         //domain = areaOfPractice.getSelectedItem().toString();
         final DatabaseReference databaseReference = database.getReference().child("Users");
-       // DatabaseReference databaseReference = database.getReference().child("Users");
+       //DatabaseReference databaseReference = database.getReference().child("Users");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -218,18 +218,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 }catch (Exception e)
                                 {
                                     Log.e("Error",e.getMessage());
-                                }
-
-                            }
-
-
-
-
-
-
-
-
-
+                                } }
 
                         }
 

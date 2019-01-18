@@ -73,9 +73,9 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final    AppointmentDataModel current;
         current=listItem.get(position);
-        holder.mail.setText(current.getMail());
+      //  holder.mail.setText(current.getMail());
         Log.e("mailinadapter",""+current.getMail()+""+current.getNumber() );
-        String Date="Pending";
+        String Date="N:N:N";
         if(current.getStatus().equals("-1")){
             holder.status.setText(Date);
             holder.cancelButton.setText("PENDING");
@@ -93,11 +93,11 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
 
 
                       final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                      Log.e("cancelreference", holder.mail.getText().toString().replace(".",",")+"  "+mAuth.getCurrentUser().getEmail().replace(".",",").toString());
-                      database.getReference().child("Lawyers").child(holder.mail.getText().toString().replace(".",",")).child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                      Log.e("cancelreference", current.getMail().replace(".",",")+"  "+mAuth.getCurrentUser().getEmail().replace(".",",").toString());
+                      database.getReference().child("Lawyers").child(current.getMail().replace(".",",")).child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                           @Override
                           public void onComplete(@NonNull Task<Void> task) {
-                              database.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("appointments").child(holder.mail.getText().toString().replace(".",","))
+                              database.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("appointments").child(current.getMail().replace(".",","))
                                       .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                   @Override
                                   public void onComplete(@NonNull Task<Void> task) {
@@ -118,7 +118,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
         }
 
         holder.message.setText(current.getMessage());
-        holder.name.setText("Lawyer : "+current.getName().toUpperCase());
+        holder.name.setText(current.getName());
 
     }
 
@@ -129,11 +129,11 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
 
 
     public   class MyViewHolder extends RecyclerView.ViewHolder{
-        public   TextView mail,message,status,name;
+        public   TextView message,status,name;
         Button cancelButton;
         public MyViewHolder(View itemView){
             super(itemView);
-            mail=itemView.findViewById(R.id.mail);
+           // mail=itemView.findViewById(R.id.mail);
             message=itemView.findViewById(R.id.message);
             status=itemView.findViewById(R.id.status);
             name=itemView.findViewById(R.id.name);

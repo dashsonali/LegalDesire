@@ -1,6 +1,7 @@
 package com.example.user.legaldesire;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerAppointmentFragment;
@@ -19,6 +21,11 @@ import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserAppointmentFragment;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -27,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     SharedPreferences sharedPreferences;
     String typeOfUser;
+    ProgressDialog progressDialog;
+    boolean dataStored;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +43,69 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView=findViewById(R.id.btm_nav);
         Intent intent = getIntent();
         mAuth=FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Loading.....");
+        progressDialog.show();
         sharedPreferences= getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
         typeOfUser= sharedPreferences.getString("type",null);
+        dataStored = sharedPreferences.getBoolean("dataStored",false);
+        if(!dataStored)
+        {
+            Toast.makeText(getApplicationContext(),"Data is Not Stored",Toast.LENGTH_SHORT).show();
+          final SharedPreferences.Editor editor = sharedPreferences.edit();
+          if(typeOfUser.equals("user"))
+          {
 
+              DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                      .child(mAuth.getCurrentUser().getEmail().replace(".",","));
+              databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(DataSnapshot dataSnapshot) {
+                      progressDialog.dismiss();
+                      String name = dataSnapshot.child("name").getValue().toString();
+                      String email = dataSnapshot.child("email").getValue().toString();
+                      String contact = dataSnapshot.child("contact").getValue().toString();
+                      editor.putString("name",name);
+                      editor.putString("contact",contact);
+                      editor.putString("email",email);
+                      editor.putBoolean("dataEntered",true);
+                      editor.commit();
+
+                  }
+
+                  @Override
+                  public void onCancelled(DatabaseError databaseError) {
+
+                  }
+              });
+          }else {
+              DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Lawyers")
+                      .child(mAuth.getCurrentUser().getEmail().replace(".",","));
+              databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(DataSnapshot dataSnapshot) {
+                      progressDialog.dismiss();
+                      String name = dataSnapshot.child("name").getValue().toString();
+                      String email = dataSnapshot.child("email").getValue().toString();
+                      String contact = dataSnapshot.child("contact").getValue().toString();
+                      editor.putString("name",name);
+                      editor.putString("contact",contact);
+                      editor.putString("email",email);
+                      editor.putBoolean("dataEntered",true);
+                      editor.commit();
+                  }
+
+                  @Override
+                  public void onCancelled(DatabaseError databaseError) {
+
+                  }
+              });
+          }
+
+        }else{
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(),"Data is Stored",Toast.LENGTH_SHORT).show();
+        }
         Log.e("currentuser",""+mAuth.getCurrentUser()+" njk" );
         if(intent.getExtras()!=null)
         {

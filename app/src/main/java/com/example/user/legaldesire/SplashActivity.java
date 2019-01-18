@@ -55,6 +55,6 @@ public class SplashActivity extends AppCompatActivity {
     private boolean isOnline(){
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
-    }
+       }
     }
 

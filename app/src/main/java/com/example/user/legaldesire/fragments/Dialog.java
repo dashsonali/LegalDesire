@@ -84,6 +84,7 @@ public class Dialog extends AppCompatDialogFragment {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("type",type);
 
+
                         editor.commit();
                         Log.e("currentuser",""+FirebaseAuth.getInstance()+"dialog");
 
@@ -106,7 +107,7 @@ public class Dialog extends AppCompatDialogFragment {
                 if(type.equals("lawyer"))
                 {
 
-                      intent.putExtra("user_type","lawyer");
+                         intent.putExtra("user_type","lawyer");
                          startActivity(intent);
 
                 }else if(type.equals("user"))

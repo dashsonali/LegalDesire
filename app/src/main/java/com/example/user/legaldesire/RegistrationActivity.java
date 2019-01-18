@@ -118,7 +118,7 @@ public class RegistrationActivity extends AppCompatActivity {
         // DatabaseReference databaseReference = database.getReference().child("Users");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
                 if( dataSnapshot.hasChild(email.replace('.',','))){
 
                     Snackbar snackbar = Snackbar.make(rl, "Email address is already registered as a Lawyer",
@@ -143,6 +143,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 databaseReference1.child("areaOfPractice").setValue(domain);
                                 databaseReference1.child("uid").setValue(mAuth.getUid());
                                 databaseReference1.child("type").setValue("lawyer");
+                                databaseReference.child("rating").setValue(0);
+                                databaseReference.child("usersRated").setValue(0);
                                 mProgressdialog.dismiss();
                                 Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
                                 intent.putExtra("lawyer_mail",email.replace('.',','));

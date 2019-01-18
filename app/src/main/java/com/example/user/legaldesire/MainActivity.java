@@ -88,10 +88,17 @@ public class MainActivity extends AppCompatActivity {
                       String name = dataSnapshot.child("name").getValue().toString();
                       String email = dataSnapshot.child("email").getValue().toString();
                       String contact = dataSnapshot.child("contact").getValue().toString();
+                      String rating = dataSnapshot.child("rating").getValue().toString();
+                      String usersRated = dataSnapshot.child("usersRated").getValue().toString();
+                      String areaOfPractice = dataSnapshot.child("areaOfPractice").getValue().toString();
                       editor.putString("name",name);
                       editor.putString("contact",contact);
                       editor.putString("email",email);
+                      editor.putString("rating",rating);
+                      editor.putString("usersRated",usersRated);
+
                       editor.putBoolean("dataEntered",true);
+
                       editor.commit();
                   }
 

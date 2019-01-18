@@ -97,7 +97,8 @@ public class Dialog extends AppCompatDialogFragment {
                             startActivity(intent);
                             getActivity().finish();
                         }else {
-                            Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Invalid Email Or Password",Toast.LENGTH_SHORT).show();
+                            Log.e("Login Error",task.getException().toString());
                         }
 
 

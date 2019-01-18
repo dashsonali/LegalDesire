@@ -3,7 +3,9 @@ package com.example.user.legaldesire.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -114,6 +116,8 @@ public class UserProfileFrag extends Fragment {
                 int id = menuItem.getItemId();
                 if(id == R.id.logout)
                 {
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                    sharedPreferences.edit().clear().commit();
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     mAuth.signOut();
                     startActivity(new Intent(getActivity().getBaseContext(),LoginActivity.class));

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerAppointmentFragment;
+import com.example.user.legaldesire.fragments.LawyerProfileFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserAppointmentFragment;
@@ -70,11 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.nav_cases:
-                        selectFragment = fragmentHashMap.get("cases");
+                        selectFragment = fragmentHashMap.get("user_profile");
                         if(selectFragment==null)
-                        {
+                        {if(typeOfUser.equals("user")){
                             selectFragment = new UserProfileFrag();
-                            fragmentHashMap.put("cases",selectFragment);
+                            fragmentHashMap.put("user_profile",selectFragment);}
+                              else {
+                            selectFragment = new LawyerProfileFragment();
+                            fragmentHashMap.put("user_profile",selectFragment);
+                             }
                         }
 
                         break;

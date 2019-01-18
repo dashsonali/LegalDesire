@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.LawyerProfileFragment">
+
+    <RelativeLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="202dp"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            android:gravity="center">
+            <android.support.v7.widget.CardView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:elevation="12dp"
+                android:padding="10dp"
+                android:innerRadius="0dp"
+                app:cardCornerRadius="40dp"
+                android:shape="ring"
+                >
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/lawyer"
+                    android:padding="5dp"
+                    />
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Rakesh Swain"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/layout_bottom"
+        android:layout_marginBottom="-20dp"
+        android:text="HELO HELO">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="2dp"
+            >
+            <RatingBar
+                android:layout_gravity="center"
+                android:theme="@style/RatingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:id="@+id/ratingtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:transformPivotX="0dp"
+                android:transformPivotY="0dp"
+                android:isIndicator="true"
+
+                android:max="5"
+                android:rating="3"
+                android:numStars="5"
+
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20 users rated"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    <RelativeLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/layout_top"
+        ></RelativeLayout>
+
+
+</RelativeLayout>

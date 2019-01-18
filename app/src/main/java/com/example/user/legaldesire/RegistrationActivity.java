@@ -143,8 +143,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 databaseReference1.child("areaOfPractice").setValue(domain);
                                 databaseReference1.child("uid").setValue(mAuth.getUid());
                                 databaseReference1.child("type").setValue("lawyer");
-                                databaseReference.child("rating").setValue(0);
-                                databaseReference.child("usersRated").setValue(0);
+                                databaseReference1.child("rating").setValue(0);
+                                databaseReference1.child("usersRated").setValue(0);
                                 mProgressdialog.dismiss();
                                 Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
                                 intent.putExtra("lawyer_mail",email.replace('.',','));

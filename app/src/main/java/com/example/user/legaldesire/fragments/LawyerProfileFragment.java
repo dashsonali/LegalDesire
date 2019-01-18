@@ -1,6 +1,7 @@
 package com.example.user.legaldesire.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,8 +15,8 @@ import com.example.user.legaldesire.R;
 public class LawyerProfileFragment extends Fragment {
 
 
-    TextView name,email,areaOfPractice,mail,address,penson,usersRated,raing;
-
+    private  TextView name,email,areaOfPractice,phone,address,penson,usersRated,raing;
+    SharedPreferences sharedPreferences;
     public LawyerProfileFragment() {
         // Required empty public constructor
     }
@@ -28,7 +29,13 @@ public class LawyerProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lawyer_profile, container, false);
-
+        name = view.findViewById(R.id.nametxt);
+        usersRated  = view.findViewById(R.id.usersRatedtext);
+        areaOfPractice = view.findViewById(R.id.areaOfPracticeTxt);
+        phone = view.findViewById(R.id.phoneTxt);
+        email = view.findViewById(R.id.emailTxt);
+        sharedPreferences = getContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+        name.setText(sharedPreferences.getString("name",null));
         return view;
     }
 

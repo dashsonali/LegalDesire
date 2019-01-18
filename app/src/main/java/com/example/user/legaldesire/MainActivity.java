@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                       String usersRated = dataSnapshot.child("usersRated").getValue().toString();
                       String areaOfPractice = dataSnapshot.child("areaOfPractice").getValue().toString();
                       editor.putString("name",name);
+                      editor.putString("areaOfPractice",areaOfPractice);
                       editor.putString("contact",contact);
                       editor.putString("email",email);
                       editor.putString("rating",rating);

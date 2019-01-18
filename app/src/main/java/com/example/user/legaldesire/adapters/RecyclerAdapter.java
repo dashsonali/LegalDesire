@@ -42,7 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public RecyclerAdapter(  List<LawyerData> listItem, Context context) {
         this.listItem = listItem;
         this.context = context;
-        Log.e("itemlistsize", String.valueOf(listItem.size()));
+        Log.e("item_list_size", String.valueOf(listItem.size()));
     }
 
     @Override

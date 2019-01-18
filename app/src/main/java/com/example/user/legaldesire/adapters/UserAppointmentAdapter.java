@@ -3,26 +3,23 @@ package com.example.user.legaldesire.adapters;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+
 import android.net.Uri;
 import android.support.annotation.NonNull;
+
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import android.widget.ImageButton;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +55,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
     public UserAppointmentAdapter(  List<AppointmentDataModel> listItem, Context context) {
         this.listItem = listItem;
         this.context = context;
-        Log.e("itemlistsize", String.valueOf(listItem.size()));
+        Log.e("item_list_size", String.valueOf(listItem.size()));
     }
 
     @Override
@@ -116,9 +113,47 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
                   }
               });
         }
+        holder.mailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mailLawyer(current);
+            }
+        });
+        holder.callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callLawyer(current);
+            }
+        });
 
         holder.message.setText(current.getMessage());
         holder.name.setText(current.getName());
+
+    }
+    private void mailLawyer(AppointmentDataModel current) {
+        String email=current.getMail();
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));
+
+        context.startActivity(Intent.createChooser(emailIntent, "Choose app to mail Lawyer"));
+
+    }
+
+    private void callLawyer(AppointmentDataModel current) {
+        String contact=current.getNumber();
+        if(contact!=null)
+        {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact.trim()));
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.CALL_PHONE},REQUEST_PHONE_CALL);
+            }
+            else
+            {
+                context.startActivity(intent);
+            }
+        }else{
+            Toast.makeText(context,"Lawyer hasn't shared his/her contact",Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -131,12 +166,15 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
     public   class MyViewHolder extends RecyclerView.ViewHolder{
         public   TextView message,status,name;
         Button cancelButton;
+        ImageButton mailBtn,callBtn;
         public MyViewHolder(View itemView){
             super(itemView);
            // mail=itemView.findViewById(R.id.mail);
             message=itemView.findViewById(R.id.message);
             status=itemView.findViewById(R.id.status);
             name=itemView.findViewById(R.id.name);
+            callBtn = itemView.findViewById(R.id.callbtn);
+            mailBtn = itemView.findViewById(R.id.emailbtn);
             cancelButton=itemView.findViewById(R.id.cancel_button);
 
         }

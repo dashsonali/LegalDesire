@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.user.legaldesire.MainActivity;
@@ -80,19 +81,25 @@ public class Dialog extends AppCompatDialogFragment {
                 mAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("type",type);
+                        if(task.isSuccessful())
+                        {
+                            pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("type",type);
 
 
-                        editor.commit();
-                        Log.e("currentuser",""+FirebaseAuth.getInstance()+"dialog");
+                            editor.commit();
+                            Log.e("currentuser",""+FirebaseAuth.getInstance()+"dialog");
 
-                        Log.e("currentuser",""+FirebaseAuth.getInstance().getCurrentUser()+"dialog");
-                        Intent intent;
-                        intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                            Log.e("currentuser",""+FirebaseAuth.getInstance().getCurrentUser()+"dialog");
+                            Intent intent;
+                            intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }else {
+                            Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                        }
+
 
                     }
                 });

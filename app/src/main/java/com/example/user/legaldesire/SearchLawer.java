@@ -27,7 +27,7 @@ public class SearchLawer extends AppCompatActivity {
 
                popup.show();
 
-
+        //Update
     }
 });
         getSupportFragmentManager().beginTransaction().replace(R.id.recycler_container,new LawyerRecycler()).commit();

@@ -106,7 +106,7 @@ public class UserAppointmentFragment extends Fragment {
                 Log.e("datasnapshot", dataSnapshot.toString());
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Log.e("datasnapshot1",dataSnapshot1.toString() );
-                    String email,name,number;
+                    String email,name,number,areaofpractice;
                     String message;
                     String status;
                     message=dataSnapshot1.child("message").getValue(String.class);
@@ -114,12 +114,14 @@ public class UserAppointmentFragment extends Fragment {
                     email=dataSnapshot1.child("mail").getValue(String.class);
                     name=dataSnapshot1.child("name").getValue(String.class);
                     number=dataSnapshot1.child("number").getValue(String.class);
+                    areaofpractice=dataSnapshot1.child("areaOfPractice").getValue(String.class);
                     AppointmentDataModel current=new AppointmentDataModel(
                             message,
                             email,
                             status,
                             name,
-                            number
+                            number,
+                            areaofpractice
                     );
                     appointmentDataModels.add(current);
                     progressDialog.dismiss();

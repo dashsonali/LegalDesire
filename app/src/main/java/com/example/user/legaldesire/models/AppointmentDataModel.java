@@ -8,6 +8,16 @@ public class AppointmentDataModel {
     String message;
     String mail;
 
+    public String getAreaOfPractice() {
+        return AreaOfPractice;
+    }
+
+    public void setAreaOfPractice(String areaOfPractice) {
+        AreaOfPractice = areaOfPractice;
+    }
+
+    String AreaOfPractice;
+
     public String getNumber() {
         return number;
     }
@@ -36,6 +46,15 @@ public class AppointmentDataModel {
         this.mail = mail;
     }
 
+    public AppointmentDataModel(String message, String mail, String status,String name,String number,String AreaOfPractice) {
+        this.message = message;
+        this.mail = mail;
+        this.status = status;
+        this.name=name;
+        this.number=number;
+        this.AreaOfPractice=AreaOfPractice;
+
+    }
     public AppointmentDataModel(String message, String mail, String status,String name,String number) {
         this.message = message;
         this.mail = mail;
@@ -43,7 +62,6 @@ public class AppointmentDataModel {
         this.name=name;
         this.number=number;
     }
-
     public String getMessage() {
         return message;
 

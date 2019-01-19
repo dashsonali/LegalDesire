@@ -1,38 +1,133 @@
 package com.example.user.legaldesire.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.user.legaldesire.R;
+import com.example.user.legaldesire.adapters.LawyerAppointmentAdapter;
+import com.example.user.legaldesire.adapters.UserAppointmentAdapter;
+import com.example.user.legaldesire.models.AppointmentDataModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LawyerAppointmentFragment extends Fragment {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    RecyclerView recyclerView;
+    RecyclerView.Adapter adapter;
+    private List<AppointmentDataModel>appointmentDataModels;
+    FirebaseAuth mAuth;
+    ProgressDialog progressDialog;
 
+    private String mParam1;
+    private String mParam2;
 
-
-
-    public LawyerAppointmentFragment() {
-        // Required empty public constructor
+    public static LawyerAppointmentFragment newInstance(String param1, String param2) {
+        LawyerAppointmentFragment fragment = new LawyerAppointmentFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lawyer_appointment, container, false);
+        Context context=getContext();
+
+        View rootView= inflater.inflate(R.layout.fragment_user_appointment, container, false);
+        recyclerView=rootView.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        progressDialog=new ProgressDialog(context);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        appointmentDataModels=new ArrayList<>();
+        loadRecyclerViewData();
+
+        return rootView;
+
     }
 
 
 
-}
+    private void loadRecyclerViewData() {
+        mAuth = FirebaseAuth.getInstance();
+        progressDialog.setMessage("Fetching data..");
+        progressDialog.show();
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        final DatabaseReference databaseReference = database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("datasnapshot", dataSnapshot.toString());
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Log.e("datasnapshot1",dataSnapshot1.toString() );
+                    String email,name,number;
+                    String message;
+                    String status;
+                    message=dataSnapshot1.child("message").getValue(String.class);
+                    status=dataSnapshot1.child("status").getValue(String.class);
+                    email=dataSnapshot1.child("mail").getValue(String.class);
+                    name=dataSnapshot1.child("name").getValue(String.class).toUpperCase();
+                    number=dataSnapshot1.child("number").getValue(String.class);
+                    AppointmentDataModel current=new AppointmentDataModel(
+                            message,
+                            email,
+                            status,
+                            name,
+                            number
+                    );
+                    appointmentDataModels.add(current);
+                    progressDialog.dismiss();
+
+
+                    adapter =new LawyerAppointmentAdapter(appointmentDataModels,getContext());
+                    recyclerView.setAdapter(adapter);
+
+
+                }}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+    }}
+
+

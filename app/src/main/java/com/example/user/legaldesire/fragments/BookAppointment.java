@@ -75,14 +75,21 @@ public class BookAppointment extends AppCompatDialogFragment {
                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("message").setValue(problem.getText().toString());
                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").setValue("-1");
-            //New Book
+               databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("email").setValue(mAuth.getCurrentUser().getEmail());
+               databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("number").setValue("123456789");
+               databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("name").setValue("sonali");
 
-               DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",","));
+
+
+                   //New Book
+                   DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",","));
+
                databaseReference1.child("appointments").child(mail).child("message").setValue(problem.getText().toString());
                databaseReference1.child("appointments").child(mail).child("status").setValue("-1");
                databaseReference1.child("appointments").child(mail).child("mail").setValue(mail.replace(",","."));
                databaseReference1.child("appointments").child(mail).child("name").setValue(lawyerData.getName().toString());
                databaseReference1.child("appointments").child(mail).child("number").setValue(lawyerData.getContact().toString());
+               databaseReference1.child("appointments").child(mail).child("areaOfPractice").setValue(lawyerData.getAreaOfPractice());
 
 
 

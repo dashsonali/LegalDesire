@@ -42,7 +42,7 @@ import java.util.List;
 
 import static android.graphics.Typeface.ITALIC;
 
-public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointmentAdapter.MyViewHolder> {
+public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppointmentAdapter.MyViewHolder> {
     LayoutInflater inflater;
     private List<AppointmentDataModel>listItem;
     private Context context;
@@ -52,7 +52,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
 
 
     //
-    public UserAppointmentAdapter(  List<AppointmentDataModel> listItem, Context context) {
+    public LawyerAppointmentAdapter(  List<AppointmentDataModel> listItem, Context context) {
         this.listItem = listItem;
         this.context = context;
         Log.e("item_list_size", String.valueOf(listItem.size()));
@@ -60,7 +60,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.user_appointments,parent,false);
+        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_lawyer_appointment,parent,false);
         mAuth=FirebaseAuth.getInstance();
 
         return new MyViewHolder(view);
@@ -70,48 +70,12 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final    AppointmentDataModel current;
         current=listItem.get(position);
-      //  holder.mail.setText(current.getMail());
+        //  holder.mail.setText(current.getMail());
         Log.e("mailinadapter",""+current.getMail()+""+current.getNumber() );
         String Date="N:N:N";
-        if(current.getStatus().equals("-1")){
+        if(current.getStatus().equals("-1")) {
             holder.status.setText(Date);
-            holder.cancelButton.setText("PENDING");
-            holder.cancelButton.setTypeface(holder.cancelButton.getTypeface(), Typeface.BOLD_ITALIC);
 
-            holder.cancelButton.setEnabled(false);
-
-        }
-        else {holder.status.setText(current.getStatus());
-              holder.cancelButton.setEnabled(true);
-              holder.cancelButton.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View view) {
-                      Toast.makeText(context, "clicked cancel", Toast.LENGTH_SHORT).show();
-
-
-                      final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                      Log.e("cancelreference", current.getMail().replace(".",",")+"  "+mAuth.getCurrentUser().getEmail().replace(".",",").toString());
-                      database.getReference().child("Lawyers").child(current.getMail().replace(".",",")).child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                          @Override
-                          public void onComplete(@NonNull Task<Void> task) {
-                              database.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("appointments").child(current.getMail().replace(".",","))
-                                      .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                  @Override
-                                  public void onComplete(@NonNull Task<Void> task) {
-                                      listItem.remove(position);
-                                      notifyItemRemoved(position);
-                                      notifyItemRangeChanged(position,listItem.size());
-                                  }
-                              });
-
-
-                          }
-                      });
-
-
-
-                  }
-              });
         }
         holder.mailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,9 +89,9 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
                 callLawyer(current);
             }
         });
-        holder.areaofpractice.setText(current.getAreaOfPractice());
+
         holder.message.setText(current.getMessage());
-        holder.name.setText(current.getName().toUpperCase());
+        holder.name.setText(current.getName());
 
     }
     private void mailLawyer(AppointmentDataModel current) {
@@ -164,20 +128,19 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
 
 
     public   class MyViewHolder extends RecyclerView.ViewHolder{
-        public   TextView message,status,name,areaofpractice;
-        Button cancelButton;
+        public   TextView message,status,name;
+        Button acceptButton,declineButton;
         ImageButton mailBtn,callBtn;
-
         public MyViewHolder(View itemView){
             super(itemView);
-           // mail=itemView.findViewById(R.id.mail);
+            // mail=itemView.findViewById(R.id.mail);
             message=itemView.findViewById(R.id.message);
             status=itemView.findViewById(R.id.status);
             name=itemView.findViewById(R.id.name);
             callBtn = itemView.findViewById(R.id.callbtn);
             mailBtn = itemView.findViewById(R.id.emailbtn);
-            cancelButton=itemView.findViewById(R.id.cancel_button);
-            areaofpractice=itemView.findViewById(R.id.areaOfPracticetxt);
+            acceptButton=itemView.findViewById(R.id.accept_button);
+            declineButton=itemView.findViewById(R.id.decline_button);
 
         }
 

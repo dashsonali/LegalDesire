@@ -29,7 +29,7 @@ import com.example.user.legaldesire.fragments.LawyerRecycler;
  public class UserProfile extends AppCompatActivity {
 
     private Button b,findLawyer;
-    private TextView t;
+
     private LocationManager locationManager;
     private LocationListener listener;
     ProgressDialog progressDialog;

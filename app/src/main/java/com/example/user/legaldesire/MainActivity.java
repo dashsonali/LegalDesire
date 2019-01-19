@@ -65,9 +65,11 @@ public class MainActivity extends AppCompatActivity {
                       String name = dataSnapshot.child("name").getValue().toString();
                       String email = dataSnapshot.child("email").getValue().toString();
                       String contact = dataSnapshot.child("contact").getValue().toString();
+                      String consultationFee = dataSnapshot.child("consultationFee").getValue().toString();
                       editor.putString("name",name);
                       editor.putString("contact",contact);
                       editor.putString("email",email);
+                      editor.putString("consultationFee",consultationFee);
                       editor.putBoolean("dataEntered",true);
                       editor.commit();
 

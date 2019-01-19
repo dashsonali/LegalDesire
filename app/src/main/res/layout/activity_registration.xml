@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-      android:gravity="center"
+        android:gravity="center"
         android:id="@+id/regRelative"
        >
         <LinearLayout
@@ -20,8 +20,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="30dp"
+            android:gravity="center"
             android:background="@drawable/layout_border">
-
+            <android.support.v7.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:elevation="12dp"
+                android:padding="10dp"
+                android:innerRadius="0dp"
+                app:cardCornerRadius="50dp"
+                android:shape="ring"
+                android:id="@+id/roundedImageView"
+                >
+                <ImageView
+                    android:id="@+id/roundedImage"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/lawyer"
+                    android:padding="5dp"
+                    />
+            </android.support.v7.widget.CardView>
+            <TextView
+                android:layout_width="250dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Tap To Choose Profile Picture"/>
             <EditText
                 android:id="@+id/entName"
                 android:padding="10dp"
@@ -76,12 +99,40 @@
                 android:padding="10dp">
 
             </Spinner>
+            <LinearLayout
+                android:id="@+id/consultatonFee"
+                android:layout_width="250dp"
+                android:orientation="vertical"
+                android:weightSum="1"
+
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:gravity="center"
+                    android:id="@+id/consultationFeeTxt"
+                    android:layout_width="match_parent"
+
+                    android:padding="10dp"
+                    android:background="@drawable/edit_text_border"
+                    android:layout_margin="10dp"
+                    android:hint="Consultation Fee in RS/-"
+                    android:layout_height="wrap_content" />
+                <Spinner
+                    android:id="@+id/charges"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"></Spinner>
+
+            </LinearLayout>
+
             <Button
-                android:layout_width="251dp"
+                android:layout_width="250dp"
                 android:id="@+id/registerBtn"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/usrBtn"
-                android:layout_marginTop="20dp"
+
+
                 android:gravity="center"
 
                 android:background="@drawable/button_border"

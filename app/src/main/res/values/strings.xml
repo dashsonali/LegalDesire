@@ -13,5 +13,9 @@
         <item>Corporate</item>
 
     </string-array>
+    <string-array name="charges">
+        <item>Per Hour</item>
+        <item>Per Consultation</item>
+    </string-array>
 
 </resources>

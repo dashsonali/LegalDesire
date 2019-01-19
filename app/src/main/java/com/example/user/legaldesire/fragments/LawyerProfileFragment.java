@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LawyerProfileFragment extends Fragment {
 
 
-    private  TextView name,email,areaOfPractice,phone,address,penson,usersRated;
+    private  TextView name,email,areaOfPractice,phone,address,feeTxt,usersRated;
     SharedPreferences sharedPreferences;
     private RatingBar ratingBar;
     private ImageView user_menu;
@@ -44,14 +44,16 @@ public class LawyerProfileFragment extends Fragment {
         ratingBar = view.findViewById(R.id.ratingtxt);
         phone = view.findViewById(R.id.phoneTxt);
         email = view.findViewById(R.id.emailTxt);
+        feeTxt = view.findViewById(R.id.feeTxt);
         user_menu = view.findViewById(R.id.user_menu);
         sharedPreferences = getContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         name.setText(sharedPreferences.getString("name",null));
         ratingBar.setRating(Float.valueOf(sharedPreferences.getString("rating",null)));
         usersRated.setText(sharedPreferences.getString("usersRated",null)+" "+"user(s) have rated");
-        areaOfPractice.setText(sharedPreferences.getString("areaOfPractice",null));
+        areaOfPractice.setText(sharedPreferences.getString("areaOfPractice",null)+" "+"Lawyer");
         phone.setText(sharedPreferences.getString("contact",null));
         email.setText(sharedPreferences.getString("email",null));
+        feeTxt.setText(sharedPreferences.getString("consultationFee",null));
         user_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -89,6 +89,7 @@ public class LawyerAppointmentFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("datasnapshot", dataSnapshot.toString());
+                appointmentDataModels.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Log.e("datasnapshot1",dataSnapshot1.toString() );
                     String email,name,number;
@@ -114,7 +115,8 @@ public class LawyerAppointmentFragment extends Fragment {
                     recyclerView.setAdapter(adapter);
 
 
-                }}
+                }
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

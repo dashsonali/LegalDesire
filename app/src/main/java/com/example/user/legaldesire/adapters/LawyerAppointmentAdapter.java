@@ -84,7 +84,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            Calendar calendar=Calendar.getInstance();
+                Calendar calendar=Calendar.getInstance();
                 mYear = calendar.get(Calendar.YEAR);
                 mMonth = calendar.get(Calendar.MONTH);
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -153,29 +153,11 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
 
         FirebaseAuth mAuth=FirebaseAuth.getInstance();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-       DatabaseReference databaseReference=database.getReference().child("Lawyers");
-       databaseReference.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
-                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.getChildren()) {
-                        if (dataSnapshot2.getKey().equals("pending_appointments")) {
-                            for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
-                                if (dataSnapshot3.getKey().equals(mail.replace(".", ","))) {
-                                   dataSnapshot3.child("status").getRef().setValue(txtDate+" at "+txtTime);
-                            }
-                        }
-                    }
-                }
-           }}
-
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-
-           }
-       });
-
+       DatabaseReference databaseReference=database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
+               .child(current.getMail().replace(".",","));
+       databaseReference.child("status").setValue(txtDate+" at "+txtTime);
+        current.setStatus(txtDate+" at "+txtTime);
+        notifyDataSetChanged();
 
 
 
@@ -220,7 +202,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         ImageButton mailBtn,callBtn;
         public MyViewHolder(View itemView){
             super(itemView);
-            // mail=itemView.findViewById(R.id.mail);
+
             message=itemView.findViewById(R.id.message);
             status=itemView.findViewById(R.id.status);
             name=itemView.findViewById(R.id.name);

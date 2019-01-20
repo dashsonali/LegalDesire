@@ -47,10 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                checkAlreadyLoggedin("user");
-               // Toast.makeText(getApplicationContext(),"User Authentication Pending",Toast.LENGTH_SHORT).show();
-               // Intent intent = new Intent(LoginActivity.this,RegistrationActivity.class);
-               // intent.putExtra("user_type","user");
-               // startActivity(intent);
+
             }
         });
         lawyerBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-      //  finish();
+
     }
 
     private void checkAlreadyLoggedin(String type) {

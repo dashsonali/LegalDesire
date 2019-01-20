@@ -37,6 +37,7 @@
                 android:shape="ring"
                 >
                 <ImageView
+                    android:id="@+id/profilePic"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/lawyer"
@@ -199,7 +200,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
 
-                android:text="Rasulgarh,Bhubaneswar-25,\nOdisha"
+                android:text="!Upload Your Location In Settings!"
                 android:layout_toRightOf="@id/addressImageView"
                 android:id="@+id/addressTxt"
                 android:layout_below="@+id/emailTxt"/>

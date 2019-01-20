@@ -157,7 +157,7 @@ public class RegistrationActivity extends AppCompatActivity {
         email = editEmail.getText().toString();
         domain = areaOfPractice.getSelectedItem().toString();
         chargeStr= charges.getSelectedItem().toString();
-        consultationFee = consultationFeeTxt.getText().toString() + " "+chargeStr;
+        consultationFee = consultationFeeTxt.getText().toString() + " RS/- "+chargeStr;
 
         final DatabaseReference databaseReference = database.getReference().child("Lawyers");
         // DatabaseReference databaseReference = database.getReference().child("Users");
@@ -191,7 +191,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 databaseReference1.child("rating").setValue(0);
                                 databaseReference1.child("usersRated").setValue(0);
                                 databaseReference1.child("consultation_fee").setValue(consultationFee);
-                                StorageReference ref = FirebaseStorage.getInstance().getReference().child("ProfileImages/Lawyers/"+mAuth.getCurrentUser().getUid());
+                                StorageReference ref = FirebaseStorage.getInstance().getReference().child("ProfileImages/Lawyers/"+mAuth.getCurrentUser().getEmail());
                                 ref.putFile(selectImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {

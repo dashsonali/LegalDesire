@@ -20,15 +20,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.SearchLawer;
 import com.example.user.legaldesire.fragments.BookAppointment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.models.LawyerData;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
@@ -36,7 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
      private List<LawyerData>listItem;
     private Context context;
     private static final int REQUEST_PHONE_CALL = 1;
-
+    ImageView propic;
 
 //
     public RecyclerAdapter(  List<LawyerData> listItem, Context context) {
@@ -55,6 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder( MyViewHolder holder, int position) {
      final    LawyerData current;
         current=listItem.get(position);
+        loadProfilePic(current);
         holder.name.setText(current.getName());
         holder.areaOfPractice.setText(current.getAreaOfPractice()+" Lawyer");
         Log.e("current.getemail", current.getEmail());
@@ -98,6 +105,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
        // //holder.lawyerData=current;
 
     }
+    public void loadProfilePic(LawyerData current){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("ProfileImages/").child("Lawyers/").child(current.getEmail());
+        if(storageReference!=null)
+        {
+            Log.e("Picstorange","Not Null");
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+
+                    Glide.with(context).load(uri.toString()).into(propic);
+                    Log.e("imageuriString",uri.toString());
+                }
+
+            });
+        }
+
+    }
 
     private void LocateOnMap(LawyerData current) {
         if(current.getLocate().equals("noLocation")){
@@ -137,6 +161,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
   public   class MyViewHolder extends RecyclerView.ViewHolder{
       public   TextView name,areaOfPractice,noOfRaters;
       RatingBar ratingBar;
+
       Button locate,bookApointment;
       ImageButton call,mail,filtertn;
       //String location,number,email,contact;
@@ -145,6 +170,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             super(itemView);
             locate=itemView.findViewById(R.id.locatebtn);
             name=itemView.findViewById(R.id.nametxt);
+            propic = itemView.findViewById(R.id.profilePic);
             areaOfPractice=itemView.findViewById(R.id.areaOfPracticetxt);
             call=itemView.findViewById(R.id.callbtn);
             mail=itemView.findViewById(R.id.emailbtn);

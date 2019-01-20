@@ -62,7 +62,7 @@
             android:gravity="center"
             android:id="@+id/status"
             android:background="@color/white"
-            android:text="N:N:N"
+            android:hint="N:N:N"
             android:layout_margin="20dp"
             android:layout_width="0dp"
             android:layout_weight="1"

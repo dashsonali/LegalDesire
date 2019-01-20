@@ -96,7 +96,7 @@ public class LawyerAppointmentFragment extends Fragment {
                     String status;
                     message=dataSnapshot1.child("message").getValue(String.class);
                     status=dataSnapshot1.child("status").getValue(String.class);
-                    email=dataSnapshot1.child("mail").getValue(String.class);
+                    email=dataSnapshot1.child("email").getValue(String.class);
                     name=dataSnapshot1.child("name").getValue(String.class).toUpperCase();
                     number=dataSnapshot1.child("number").getValue(String.class);
                     AppointmentDataModel current=new AppointmentDataModel(

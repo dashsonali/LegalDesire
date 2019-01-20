@@ -2,6 +2,8 @@ package com.example.user.legaldesire.adapters;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 
 import android.content.Intent;
@@ -19,18 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.example.user.legaldesire.R;
-import com.example.user.legaldesire.SearchLawer;
-import com.example.user.legaldesire.fragments.BookAppointment;
-import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.models.AppointmentDataModel;
-import com.example.user.legaldesire.models.LawyerData;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,9 +35,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
+import java.util.Calendar;
 
-import static android.graphics.Typeface.ITALIC;
+import java.util.List;
 
 public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppointmentAdapter.MyViewHolder> {
     LayoutInflater inflater;
@@ -48,6 +45,11 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
     private Context context;
     private static final int REQUEST_PHONE_CALL = 1;
     FirebaseAuth mAuth;
+    int mYear,mMonth,mDay,mHour, mMinute;
+    String txtDate ,txtTime;
+    String mail;
+
+
 
 
 
@@ -73,10 +75,57 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         //  holder.mail.setText(current.getMail());
         Log.e("mailinadapter",""+current.getMail()+""+current.getNumber() );
         String Date="N:N:N";
-        if(current.getStatus().equals("-1")) {
-            holder.status.setText(Date);
+       if(current.getStatus().equals("-1")) {
+           holder.status.setText(Date);
 
-        }
+        }else{
+           holder.status.setText(current.getStatus());
+       }
+        holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            Calendar calendar=Calendar.getInstance();
+                mYear = calendar.get(Calendar.YEAR);
+                mMonth = calendar.get(Calendar.MONTH);
+                mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                txtDate="date";
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                txtDate=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+
+                                TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                                        new TimePickerDialog.OnTimeSetListener() {
+
+                                            @Override
+                                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                                  int minute) {
+
+                                                txtTime=(hourOfDay + ":" + minute);
+                                                setDate(txtDate,txtTime,current);
+
+                                            }
+                                        }, mHour, mMinute, false);
+
+                                timePickerDialog.show();
+
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+
+
+
+
+
+
+            }
+        });
+
         holder.mailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +143,44 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         holder.name.setText(current.getName());
 
     }
+
+    private void setDate(final String txtDate, final String txtTime,  AppointmentDataModel current) {
+          mail=current.getMail();
+        Log.e("LAdatasnapshot-mail_1:", mail+" "+current.getStatus());
+
+
+        Toast.makeText(context, ""+txtDate+"and time is "+txtTime, Toast.LENGTH_SHORT).show();
+
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+       DatabaseReference databaseReference=database.getReference().child("Lawyers");
+       databaseReference.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
+                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.getChildren()) {
+                        if (dataSnapshot2.getKey().equals("pending_appointments")) {
+                            for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
+                                if (dataSnapshot3.getKey().equals(mail.replace(".", ","))) {
+                                   dataSnapshot3.child("status").getRef().setValue(txtDate+" at "+txtTime);
+                            }
+                        }
+                    }
+                }
+           }}
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
+
+
+
+    }
+
     private void mailLawyer(AppointmentDataModel current) {
         String email=current.getMail();
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));

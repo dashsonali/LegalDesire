@@ -93,7 +93,7 @@ public class UserProfileFrag extends Fragment {
         welcome.setText(sharedPreferences.getString("name",null));
         mail.setText(sharedPreferences.getString("email",null));
         number.setText(sharedPreferences.getString("contact",null));
-
+//
 
         user_menu = view.findViewById(R.id.user_menu);
         user_menu.setOnClickListener(new View.OnClickListener() {

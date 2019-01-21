@@ -1,10 +1,13 @@
 package com.example.user.legaldesire.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,9 +20,20 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class HomeFragment extends Fragment {
@@ -29,7 +43,8 @@ public class HomeFragment extends Fragment {
     private ProgressBar progressBar;
     private View rootView;
     private Bundle webviewBundle;
-
+    private ImageView bookMarkBtn;
+    private String URL = "";
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -53,7 +68,9 @@ public class HomeFragment extends Fragment {
             rootView = inflater.inflate(R.layout.fragment_home, container, false);
             webView=rootView.findViewById(R.id.webview);
           //  progressDialog = ProgressDialog.show(getContext(), "", "Please wait, our page is loading", true);
+            bookMarkBtn = rootView.findViewById(R.id.bookMarkBtn);
             progressBar = rootView.findViewById(R.id.progressBar);
+            bookMarkBtn.setVisibility(View.INVISIBLE);
             progressBar.setMax(100);
             if(savedInstanceState!=null)
             {
@@ -63,7 +80,15 @@ public class HomeFragment extends Fragment {
                 WebSettings webSettings=webView.getSettings();
                 webSettings.setJavaScriptEnabled(true);
                 Log.e("Saved instance","NULL");
-                webView.loadUrl("https://legaldesire.com/");
+
+                if(getArguments()!=null)
+                {
+                    URL = getArguments().getString("URL");
+                }else
+                {
+                    URL = "https://legaldesire.com/";
+                }
+                webView.loadUrl(URL);
                 webView.setWebChromeClient(new WebChromeClient(){
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
@@ -71,8 +96,11 @@ public class HomeFragment extends Fragment {
                         if(newProgress == 100)
                         {
                             progressBar.setVisibility(View.GONE);
+                            bookMarkBtn.setVisibility(View.VISIBLE);
                         }
+
                     }
+
                 });
 
 
@@ -123,12 +151,95 @@ public class HomeFragment extends Fragment {
 
         }
 
-
-
+        bookMarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"ADDING BOOKMARK",Toast.LENGTH_SHORT).show();
+                addBookMark(webView.getUrl());
+            }
+        });
         return rootView;
 
     }
 
+    public void addBookMark(final String url){
+        Toast.makeText(getContext(),"ADDING BOOKMARK",Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        final DatabaseReference databaseReference;
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        if(sharedPreferences.getString("type","user").equals("user"))
+        {
+           // Toast.makeText(getContext(),"USER TYPE USER",Toast.LENGTH_SHORT).show();
+            databaseReference = database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",",")).child("bookmarks");
+        }else{
+
+            databaseReference = database.getReference().child("Lawyers").child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",",")).child("bookmarks");
+
+        }
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(getContext(),"comming here"+String.valueOf(dataSnapshot.getChildrenCount()),Toast.LENGTH_SHORT).show();
+                if(dataSnapshot.getChildrenCount()==0)
+                {
+                    databaseReference.child(databaseReference.push().getKey()).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getContext(),"Completed!",Toast.LENGTH_SHORT).show();
+                            if(task.isSuccessful())
+                            {
+
+                                Toast.makeText(getContext(),"Bookmark Added!",Toast.LENGTH_SHORT).show();
+                            }else
+                            {
+                                Log.e("bookmark error",task.getException().toString());
+                                Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }else{
+                    boolean bookmarkExists=false;
+                    for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                    {
+                        if(dataSnapshot1.getValue().toString().equals(url))
+                        {
+                            Toast.makeText(getContext(),"Bookmark Already Exists!",Toast.LENGTH_SHORT).show();
+                            bookmarkExists=true;
+                        }
+                    }
+                    if(!bookmarkExists)
+                    {
+                        databaseReference.child(databaseReference.push().getKey()).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getContext(),"Completed!",Toast.LENGTH_SHORT).show();
+                                if(task.isSuccessful())
+                                {
+
+                                    Toast.makeText(getContext(),"Bookmark Added!",Toast.LENGTH_SHORT).show();
+                                }else
+                                {
+                                    Log.e("bookmark error",task.getException().toString());
+                                    Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+    }
     @Override
     public void onPause() {
         super.onPause();

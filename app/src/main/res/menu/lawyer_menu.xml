@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/edit_profile"
+        android:title="Edit profile"></item>
+    <item
+        android:id="@+id/uploadLocation"
+        android:title="Update Location">
+
+    </item>
+    <item android:id="@+id/bookmarks"
+        android:title="Bookmarks">
+
+
+    </item>
+    <item
+        android:id="@+id/logout"
+        android:title="Log out"></item>
+</menu>

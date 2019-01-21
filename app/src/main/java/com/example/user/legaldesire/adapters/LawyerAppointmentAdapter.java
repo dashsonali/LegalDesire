@@ -118,7 +118,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                 datePickerDialog.show();
 
 
-
+//
 
 
 

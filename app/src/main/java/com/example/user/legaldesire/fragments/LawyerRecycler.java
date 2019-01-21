@@ -57,28 +57,9 @@ public class LawyerRecycler extends Fragment {
             new LatLng(-40,-168),new LatLng(71,136)
     );
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public static LawyerRecycler newInstance(String param1, String param2) {
-        LawyerRecycler fragment = new LawyerRecycler();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,7 +90,7 @@ public class LawyerRecycler extends Fragment {
 
                             case R.id.criminal:
                                 Toast.makeText(getContext(), "criminal", Toast.LENGTH_SHORT).show();
-                                 attr="Criminal";
+                                attr="Criminal";
                                 manageData(attr,listItems);
                                 return true;
 
@@ -157,20 +138,11 @@ public class LawyerRecycler extends Fragment {
 
 
 
-//........................................................................................................................
-        // adapter=new RecyclerAdapter(getActivity(),getData());
-       // recyclerView.setAdapter(adapter);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listItems=new ArrayList<>();
         loadRecyclerViewData();
-       /* for(int i=0;i<10;i++){
-            LawyerData current=new LawyerData(
-                    "name"+i
-            );
-            listItems.add(current);
 
-        }
-        adapter =new RecyclerAdapter(listItems,getContext());*/
 
         return rootView;
 
@@ -199,6 +171,7 @@ public class LawyerRecycler extends Fragment {
 
 
     private void loadRecyclerViewData() {
+        progressDialog.setMessage("Loading Data...");
         progressDialog.show();
         mAuth = FirebaseAuth.getInstance();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -239,12 +212,12 @@ listItems.clear();
                                     areaOfPractice,
                                     contact,
                                     rating,
-                                    noOfRaters+" customers reviews",
+                                    noOfRaters+" client reviews",
                                     location
                             );
                             listItems.add(current);
                             progressDialog.dismiss();
-                    adapter =new RecyclerAdapter(listItems,getContext());
+                    adapter = new RecyclerAdapter(listItems,getContext());
                     recyclerView.setAdapter(adapter);
 
 

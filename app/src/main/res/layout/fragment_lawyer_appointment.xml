@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="vertical"
         android:id="@+id/layout_for_name">
         <TextView
             android:id="@+id/name"
@@ -27,7 +28,13 @@
             android:text="Rakesh Swain"
             android:textSize="15dp"
             />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:backgroundTint="@color/black"
+            android:background="@color/black">
 
+        </View>
 
     </LinearLayout>
     <LinearLayout

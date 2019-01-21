@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -132,22 +135,45 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
 
             @Override
             public void onClick(View view) {
-                mail=current.getMail();
-                FirebaseAuth mAuth=FirebaseAuth.getInstance();
-                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                database.getReference().child("Users").child(mail.replace(".",",")).child("appointments")
-                        .child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").getRef().setValue("0");
-                database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
-                        .child(mail.replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
+
+
+
+                AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                adb.setTitle("ARE YOU SURE YOU WANT TO DECLINE?");
+                adb.setMessage("This client will be removed from the list.");
+                adb.setIcon(R.drawable.ic_delete_forever_black_24dp);
+                adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        mail=current.getMail();
+                        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        database.getReference().child("Users").child(mail.replace(".",",")).child("appointments")
+                                .child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").getRef().setValue("0");
+                        database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
+                                .child(mail.replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
 //                        listItem.remove(position);
-                          notifyItemRemoved(position);
-                         notifyItemRangeChanged(position,listItem.size());
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position,listItem.size());
+                            }
+                        });
+
                     }
                 });
-            }
+                adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                adb.show();
+
+
+
+
+                            }
         });
 
 

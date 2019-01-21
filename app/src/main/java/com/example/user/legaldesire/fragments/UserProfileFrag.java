@@ -65,6 +65,8 @@ public class UserProfileFrag extends Fragment {
     private ViewPagerAdapter viewPagerAdapter;
     private TabLayout tabLayout;
     private ImageView user_menu;
+    TextView welcome,mail,number;
+    SharedPreferences sharedPreferences;
 
     private  int[] tabIcons = {R.drawable.user_menu,
             R.drawable.article_bookmarks,
@@ -75,6 +77,7 @@ public class UserProfileFrag extends Fragment {
         super.onCreate(savedInstanceState);
 
 
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,6 +85,15 @@ public class UserProfileFrag extends Fragment {
 
         LayoutInflater layoutInflater=getActivity().getLayoutInflater();
         View view=layoutInflater.inflate(R.layout.fragment_other,null);
+        welcome=view.findViewById(R.id.welcmtxt);
+        number=view.findViewById(R.id.phoneNumber);
+        mail=view.findViewById(R.id.email);
+        sharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+
+        welcome.setText(sharedPreferences.getString("name",null));
+        mail.setText(sharedPreferences.getString("email",null));
+        number.setText(sharedPreferences.getString("contact",null));
+
 
         user_menu = view.findViewById(R.id.user_menu);
         user_menu.setOnClickListener(new View.OnClickListener() {

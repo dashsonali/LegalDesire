@@ -28,15 +28,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.models.AppointmentDataModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.Calendar;
-
 import java.util.List;
 
 public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppointmentAdapter.MyViewHolder> {
@@ -84,7 +80,9 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar=Calendar.getInstance();
+
+
+            Calendar calendar=Calendar.getInstance();
                 mYear = calendar.get(Calendar.YEAR);
                 mMonth = calendar.get(Calendar.MONTH);
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -114,6 +112,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                                 timePickerDialog.show();
 
 
+
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -125,6 +124,33 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
 
             }
         });
+       if(current.getStatus().equals("-1")){}else{    holder.acceptButton.setVisibility(View.GONE);
+           holder.declineButton.setVisibility(View.GONE);}
+
+
+        holder.declineButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                mail=current.getMail();
+                FirebaseAuth mAuth=FirebaseAuth.getInstance();
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                database.getReference().child("Users").child(mail.replace(".",",")).child("appointments")
+                        .child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").getRef().setValue("0");
+                database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
+                        .child(mail.replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
+//                        listItem.remove(position);
+                          notifyItemRemoved(position);
+                         notifyItemRangeChanged(position,listItem.size());
+                    }
+                });
+            }
+        });
+
+
 
         holder.mailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +166,29 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         });
 
         holder.message.setText(current.getMessage());
-        holder.name.setText(current.getName());
+        holder.name.setText(current.getName().toUpperCase());
+
+    }
+
+    private void decline(final AppointmentDataModel current, final int position) {
+        mail=current.getMail();
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference().child("Users").child(mail.replace(".",",")).child("appointments")
+                .child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").getRef().setValue("0");
+        database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
+                .child(mail.replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
+                //listItem.remove();
+              //  notifyItemRemoved(position);
+              //  notifyItemRangeChanged(position,listItem.size());
+            }
+        });
+
+
+
 
     }
 
@@ -153,12 +201,14 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
 
         FirebaseAuth mAuth=FirebaseAuth.getInstance();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-       DatabaseReference databaseReference=database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
-               .child(current.getMail().replace(".",","));
-       databaseReference.child("status").setValue(txtDate+" at "+txtTime);
-        current.setStatus(txtDate+" at "+txtTime);
-        notifyDataSetChanged();
 
+
+        database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
+                .child(mail.replace(".",",")).child("status").getRef().setValue(txtDate+" at "+txtTime);
+
+
+        database.getReference().child("Users").child(mail.replace(".",",")).child("appointments")
+                .child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").getRef().setValue(txtDate+" at "+txtTime);
 
 
     }
@@ -202,7 +252,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         ImageButton mailBtn,callBtn;
         public MyViewHolder(View itemView){
             super(itemView);
-
+            // mail=itemView.findViewById(R.id.mail);
             message=itemView.findViewById(R.id.message);
             status=itemView.findViewById(R.id.status);
             name=itemView.findViewById(R.id.name);

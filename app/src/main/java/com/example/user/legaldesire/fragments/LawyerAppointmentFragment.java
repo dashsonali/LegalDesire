@@ -98,16 +98,19 @@ public class LawyerAppointmentFragment extends Fragment {
                     message=dataSnapshot1.child("message").getValue(String.class);
                     status=dataSnapshot1.child("status").getValue(String.class);
                     email=dataSnapshot1.child("email").getValue(String.class);
-                    name=dataSnapshot1.child("name").getValue(String.class).toUpperCase();
+                    name=dataSnapshot1.child("name").getValue(String.class);
                     number=dataSnapshot1.child("number").getValue(String.class);
-                    AppointmentDataModel current=new AppointmentDataModel(
-                            message,
-                            email,
-                            status,
-                            name,
-                            number
-                    );
-                    appointmentDataModels.add(current);
+                    if(status!=null){
+                    if(status.equals("-1")) {
+                        AppointmentDataModel current = new AppointmentDataModel(
+                                message,
+                                email,
+                                status,
+                                name,
+                                number
+                        );
+                        appointmentDataModels.add(current);
+                    }}
                     progressDialog.dismiss();
 
 

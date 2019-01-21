@@ -205,9 +205,11 @@ public class LawyerRecycler extends Fragment {
 
         final DatabaseReference databaseReference = database.getReference().child("Lawyers");
         databaseReference.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("datasnapshot", dataSnapshot.toString());
+listItems.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Log.e("datasnapshot1",dataSnapshot1.toString() );
                             String name;

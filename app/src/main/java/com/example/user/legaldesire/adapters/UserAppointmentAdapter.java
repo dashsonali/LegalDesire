@@ -81,7 +81,33 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
             holder.cancelButton.setEnabled(false);
 
         }
-        else {holder.status.setText(current.getStatus());
+     else   if(current.getStatus().equals("0")){
+            holder.status.setText(Date);
+            holder.cancelButton.setText("REQUEST DECLINED,click to remove from list");
+            holder.cancelButton.setTypeface(holder.cancelButton.getTypeface(), Typeface.BOLD_ITALIC);
+            holder.cancelButton.setEnabled(true);
+            holder.cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            database.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("appointments").child(current.getMail().replace(".",","))
+                                    .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                   // listItem.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position,listItem.size());
+                                }
+                            });
+
+
+                        }
+
+
+        });}
+        if(current.getStatus().equals("0")||current.getStatus().equals("-1")){}else {holder.status.setText(current.getStatus());
               holder.cancelButton.setEnabled(true);
               holder.cancelButton.setOnClickListener(new View.OnClickListener() {
                   @Override
@@ -98,7 +124,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
                                       .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                   @Override
                                   public void onComplete(@NonNull Task<Void> task) {
-                                      listItem.remove(position);
+                                     // listItem.remove(position);
                                       notifyItemRemoved(position);
                                       notifyItemRangeChanged(position,listItem.size());
                                   }

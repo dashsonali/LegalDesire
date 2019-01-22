@@ -100,7 +100,7 @@ public class UserProfileFrag extends Fragment {
         if(sharedPreferences.getBoolean("dataEntered",false))
         {
 
-            user_name.setText(sharedPreferences.getString("name",""));
+            user_name.setText("WELCOME "+sharedPreferences.getString("name","").toUpperCase());
             email.setText(sharedPreferences.getString("email",""));
             phoneNumber.setText(sharedPreferences.getString("contact",""));
         }

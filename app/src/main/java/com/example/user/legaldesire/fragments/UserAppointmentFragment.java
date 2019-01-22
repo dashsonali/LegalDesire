@@ -115,7 +115,7 @@ public class UserAppointmentFragment extends Fragment {
                     email=dataSnapshot1.child("mail").getValue(String.class);
                     name=dataSnapshot1.child("name").getValue(String.class);
                     number=dataSnapshot1.child("number").getValue(String.class);
-                    areaofpractice=dataSnapshot1.child("areaOfPractice").getValue(String.class);
+                    areaofpractice=dataSnapshot1.child("areaOfPractice").getValue(String.class)+" Lawyer";
                     AppointmentDataModel current=new AppointmentDataModel(
                             message,
                             email,

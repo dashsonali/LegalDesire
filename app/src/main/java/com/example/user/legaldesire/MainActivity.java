@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerAppointmentFragment;
+import com.example.user.legaldesire.fragments.LawyerAppointmetnParentFragment;
 import com.example.user.legaldesire.fragments.LawyerProfileFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                             selectFragment = new UserAppointmentFragment();
                             fragmentHashMap.put("appointments",selectFragment);}
                             else {
-                               selectFragment = new LawyerAppointmentFragment();
+                               selectFragment = new LawyerAppointmetnParentFragment();
                                 fragmentHashMap.put("appointments",selectFragment);
                             }
                         }

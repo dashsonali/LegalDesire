@@ -52,8 +52,15 @@ public class BookmarkFragment extends Fragment {
         bookmarkRecycler.setHasFixedSize(true);
         bookmarkRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadData();
+
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if(isVisibleToUser){
+            loadData();
+        }
     }
 
     public void loadData(){

@@ -141,7 +141,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
 
 
           // android.widget.LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT,160,100); // 60 is height you can set it as u need
-
+//
          //  holder.acceptButton.setLayoutParams(lp);
            holder.acceptButton.setText("Set Reminder");
            holder.acceptButton.setWidth(WRAP_CONTENT);

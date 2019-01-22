@@ -73,7 +73,8 @@ public class BookmarkFragment extends Fragment {
                 {
                     for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
                         Log.e("coming here",dataSnapshot1.toString());
-                        BookmarkDataModel bookmarkDataModel = new BookmarkDataModel(dataSnapshot1.getKey(),dataSnapshot1.getValue().toString());
+                        BookmarkDataModel bookmarkDataModel = new BookmarkDataModel(dataSnapshot1.getKey(),dataSnapshot1.child("link").getValue().toString(),
+                                dataSnapshot1.child("title").getValue().toString());
                         bookmarkLinks.add(bookmarkDataModel);
                         //bookmarkLinks.add(dataSnapshot1.getValue().toString());
                         bookmarksRecyclerAdapter = new BookmarksRecyclerAdapter(bookmarkLinks,getContext());

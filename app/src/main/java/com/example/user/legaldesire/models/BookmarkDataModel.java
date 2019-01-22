@@ -1,11 +1,20 @@
 package com.example.user.legaldesire.models;
 
 public class BookmarkDataModel {
-    String key,link;
+    String key,link,title;
 
-    public BookmarkDataModel(String key, String link) {
+    public BookmarkDataModel(String key, String link,String title) {
         this.key = key;
         this.link = link;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getKey() {

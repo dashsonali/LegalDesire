@@ -65,7 +65,7 @@ public class UserProfileFrag extends Fragment {
     private ViewPagerAdapter viewPagerAdapter;
     private TabLayout tabLayout;
     private ImageView user_menu;
-
+    private TextView email,phoneNumber,user_name;
     private  int[] tabIcons = {R.drawable.user_menu,
             R.drawable.article_bookmarks,
             R.drawable.favorite_lawyers};
@@ -93,6 +93,17 @@ public class UserProfileFrag extends Fragment {
 
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabs);
+        email = view.findViewById(R.id.email);
+        phoneNumber = view.findViewById(R.id.phoneNumber);
+        user_name = view.findViewById(R.id.user_name);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("dataEntered",false))
+        {
+
+            user_name.setText(sharedPreferences.getString("name",""));
+            email.setText(sharedPreferences.getString("email",""));
+            phoneNumber.setText(sharedPreferences.getString("contact",""));
+        }
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

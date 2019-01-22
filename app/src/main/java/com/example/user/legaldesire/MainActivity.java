@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
         sharedPreferences= getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
         typeOfUser= sharedPreferences.getString("type",null);
-        dataStored = sharedPreferences.getBoolean("dataStored",false);
+        dataStored = sharedPreferences.getBoolean("dataEntered",false);
         if(!dataStored)
         {
             Toast.makeText(getApplicationContext(),"Data is Not Stored",Toast.LENGTH_SHORT).show();

@@ -45,14 +45,14 @@ public class BookmarksRecyclerAdapter extends  RecyclerView.Adapter<BookmarksRec
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final BookmarkDataModel bookmarkDataModel = bookmarkLinks.get(position);
-        Log.e("Links",bookmarkDataModel.getKey()+" : "+bookmarkDataModel.getLink());
+        Log.e("Links",bookmarkDataModel.getKey()+" : "+bookmarkDataModel.getLink()+": "+bookmarkDataModel.getTitle());
 
        // Toast.makeText(context,link,Toast.LENGTH_SHORT).show();
-        holder.link.setText(bookmarkDataModel.getLink());
+        holder.link.setText(bookmarkDataModel.getTitle());
         holder.link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToHomeFragment(holder.link.getText().toString(),view);
+                goToHomeFragment(bookmarkDataModel,view);
 
             }
         });
@@ -88,9 +88,10 @@ public class BookmarksRecyclerAdapter extends  RecyclerView.Adapter<BookmarksRec
                     }
                 });
     }
-    public void goToHomeFragment(String link,View view)
+    public void goToHomeFragment(BookmarkDataModel bookmarkDataModel,View view)
     {
         MainActivity activity = (MainActivity)view.getContext();
+        String link = bookmarkDataModel.getLink();
         HomeFragment homeFragment = new HomeFragment();
         Bundle bundle = new Bundle();
         bundle.putString("URL",link);

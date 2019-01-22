@@ -114,7 +114,7 @@ public class LawyerProfileFragment extends Fragment{
                         int errorCode = ((StorageException) e).getErrorCode();
                         if(errorCode == StorageException.ERROR_OBJECT_NOT_FOUND){
                             mProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(getContext(),"Please Upload A Profile Pic",Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getContext(),"Please Upload A Profile Pic",Toast.LENGTH_SHORT).show();
                         }
 
                     }

@@ -64,7 +64,7 @@ public class PlaceAutocompleteAdapter
      * Handles autocomplete requests.
      */
     private GeoDataClient mGeoDataClient;
-
+    //
     /**
      * The bounds used for Places Geo Data autocomplete API requests.
      */

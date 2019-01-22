@@ -3,7 +3,9 @@
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -33,7 +35,10 @@ import com.example.user.legaldesire.fragments.LawyerRecycler;
     private LocationManager locationManager;
     private LocationListener listener;
     ProgressDialog progressDialog;
+    TextView welcome,number,mail;
 Location mlocation;
+SharedPreferences sharedPreferences;
+Boolean bo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,8 +47,19 @@ Location mlocation;
         setContentView(R.layout.activity_user_profile);
 
         //t = (TextView) findViewById(R.id.textView);
+        welcome=findViewById(R.id.welcmtxt);
+        number=findViewById(R.id.phoneNumber);
+        mail=findViewById(R.id.email);
         b = (Button) findViewById(R.id.SOS);
         findLawyer=findViewById(R.id.findLwyers);
+        sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        Log.e("sharedname",String.valueOf( sharedPreferences.getBoolean("dataStored",bo))+"shared");
+
+        welcome.setText("WELCOME "+sharedPreferences.getString("name",null).toUpperCase());
+        mail.setText(sharedPreferences.getString("email",null));
+        number.setText(sharedPreferences.getString("contact",null));
+
+
         findLawyer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

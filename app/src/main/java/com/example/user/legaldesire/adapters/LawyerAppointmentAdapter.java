@@ -9,9 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 
 import android.net.Uri;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 
 import android.support.v4.app.ActivityCompat;
@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.support.v7.widget.ListPopupWindow.WRAP_CONTENT;
 
 public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppointmentAdapter.MyViewHolder> {
     LayoutInflater inflater;
@@ -80,55 +83,90 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         }else{
            holder.status.setText(current.getStatus());
        }
-        holder.acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
 
-            Calendar calendar=Calendar.getInstance();
-                mYear = calendar.get(Calendar.YEAR);
-                mMonth = calendar.get(Calendar.MONTH);
-                mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                txtDate="date";
-                DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-                                txtDate=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-
-                                TimePickerDialog timePickerDialog = new TimePickerDialog(context,
-                                        new TimePickerDialog.OnTimeSetListener() {
-
-                                            @Override
-                                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                                  int minute) {
-
-                                                txtTime=(hourOfDay + ":" + minute);
-                                                setDate(txtDate,txtTime,current);
-
-                                            }
-                                        }, mHour, mMinute, false);
-
-                                timePickerDialog.show();
+       if(current.getStatus().equals("-1")){
+           holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
 
 
+                   Calendar calendar=Calendar.getInstance();
+                   mYear = calendar.get(Calendar.YEAR);
+                   mMonth = calendar.get(Calendar.MONTH);
+                   mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                   txtDate="date";
+                   DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                           new DatePickerDialog.OnDateSetListener() {
 
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
+                               @Override
+                               public void onDateSet(DatePicker view, int year,
+                                                     int monthOfYear, int dayOfMonth) {
+
+                                   txtDate=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+
+                                   TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                                           new TimePickerDialog.OnTimeSetListener() {
+
+                                               @Override
+                                               public void onTimeSet(TimePicker view, int hourOfDay,
+                                                                     int minute) {
+
+                                                   txtTime=(hourOfDay + ":" + minute);
+                                                   setDate(txtDate,txtTime,current);
+
+                                               }
+                                           }, mHour, mMinute, false);
+
+                                   timePickerDialog.show();
+
+
+
+                               }
+                           }, mYear, mMonth, mDay);
+                   datePickerDialog.show();
 
 
 //
 
 
 
-            }
-        });
-       if(current.getStatus().equals("-1")){}else{    holder.acceptButton.setVisibility(View.GONE);
-           holder.declineButton.setVisibility(View.GONE);}
+               }
+           });
+
+       }else{
+
+           //holder.acceptButton.setVisibility(View.GONE);
+           holder.declineButton.setVisibility(View.GONE);
+
+
+          // android.widget.LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT,160,100); // 60 is height you can set it as u need
+
+         //  holder.acceptButton.setLayoutParams(lp);
+           holder.acceptButton.setText("Set Reminder");
+           holder.acceptButton.setWidth(WRAP_CONTENT);
+           holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   String arr[]=current.getStatus().split(" ");
+                   Toast.makeText(context, "reminder", Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(Intent.ACTION_EDIT);
+                   intent.setType("vnd.android.cursor.item/event");
+                   intent.putExtra("beginTime", arr[0]);
+                   intent.putExtra("allDay", true);
+                   intent.putExtra("endTime", arr[2]+24*60*60*1000);
+                   intent.putExtra(CalendarContract.Events.TITLE, "Appointment of "+current.getName());
+                   context.startActivity(intent);
+
+
+               }
+           });
+
+
+
+
+
+       }
 
 
         holder.declineButton.setOnClickListener(new View.OnClickListener() {
@@ -207,9 +245,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
-                //listItem.remove();
-              //  notifyItemRemoved(position);
-              //  notifyItemRangeChanged(position,listItem.size());
+
             }
         });
 

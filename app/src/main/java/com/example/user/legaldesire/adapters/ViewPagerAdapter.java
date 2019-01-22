@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
+import com.example.user.legaldesire.fragments.BookmarkClientFragment;
 import com.example.user.legaldesire.fragments.BookmarkFragment;
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
@@ -38,7 +39,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
            Log.e("Position:",String.valueOf(position));
            selectedFragment = fragmentHashMap.get("bookmarks");
            if(selectedFragment==null){
-               selectedFragment = new BookmarkFragment();
+               selectedFragment = new BookmarkClientFragment();
                fragmentHashMap.put("bookmarks",selectedFragment);
            }
 

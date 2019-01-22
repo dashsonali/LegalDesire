@@ -66,7 +66,7 @@ public class LawyerProfileFragment extends Fragment{
         sharedPreferences = getContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         name.setText(sharedPreferences.getString("name",null));
         ratingBar.setRating(Float.valueOf(sharedPreferences.getString("rating",null)));
-        usersRated.setText(sharedPreferences.getString("usersRated",null)+" "+"user(s) have rated");
+        usersRated.setText(sharedPreferences.getString("usersRated",null)+" "+"client(s) have rated");
         areaOfPractice.setText(sharedPreferences.getString("areaOfPractice",null)+" "+"Lawyer");
         phone.setText(sharedPreferences.getString("contact",null));
         email.setText(sharedPreferences.getString("email",null));

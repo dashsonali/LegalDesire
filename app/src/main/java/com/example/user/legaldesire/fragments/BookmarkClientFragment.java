@@ -1,6 +1,7 @@
 package com.example.user.legaldesire.fragments;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
@@ -27,11 +32,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BookmarkFragment extends Fragment {
+public class BookmarkClientFragment extends Fragment {
 
     RecyclerView bookmarkRecycler;
     RecyclerView.Adapter bookmarksRecyclerAdapter;
-    public BookmarkFragment() {
+    private  View view=null;
+    private  LayoutInflater mInflater;
+    private ViewGroup mContainer;
+    Context mContext;
+    public BookmarkClientFragment() {
         // Required empty public constructor
     }
     List<BookmarkDataModel> bookmarkLinks = new ArrayList<>();
@@ -40,6 +49,7 @@ public class BookmarkFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getContext();
 
     }
 
@@ -47,32 +57,35 @@ public class BookmarkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Toast.makeText(getContext(),"SHOW",Toast.LENGTH_SHORT).show();
-        View view = inflater.inflate(R.layout.fragment_bookmark, container, false);
+        mContainer = container;
+       mInflater = inflater;
+         view = inflater.inflate(R.layout.fragment_bookmark, container, false);
         bookmarkRecycler = view.findViewById(R.id.bookmarkRecycler);
         bookmarkRecycler.setHasFixedSize(true);
         bookmarkRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadData();
+
         return view;
     }
 
-
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if(isVisibleToUser){
+            loadData();
+        }
+    }
 
     public void loadData(){
         FirebaseDatabase fdatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = fdatabase.getReference().child("Lawyers").child(FirebaseAuth.getInstance()
-        .getCurrentUser().getEmail().replace(".",",")).child("bookmarks");
+                .getCurrentUser().getEmail().replace(".",",")).child("bookmarks");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bookmarkLinks.clear();
                 if(dataSnapshot.getChildrenCount()==0)
                 {
-                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                   ft.replace(R.id.fragment_container,new BookmarkNullFragment()).commit();
-                    Toast.makeText(getContext(),"Nothing To Show",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"You haven't added any bookmarks!",Toast.LENGTH_SHORT).show();
                 }else
                 {
                     for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){

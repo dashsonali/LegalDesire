@@ -50,18 +50,12 @@ public class LawyerAppointmentFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         appointmentDataModels=new ArrayList<>();
 
-
+        loadRecyclerViewData();
         return rootView;
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if(isVisibleToUser)
-        {
-            loadRecyclerViewData();
-        }
-    }
+
 
     private void loadRecyclerViewData() {
         mAuth = FirebaseAuth.getInstance();

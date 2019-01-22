@@ -29,7 +29,7 @@ public class LawyerAppointmetnParentFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabs);
         appointmentParentPagerAdapter = new AppointmentParentPagerAdapter(getChildFragmentManager());
-        viewPager.setOffscreenPageLimit(2);
+
         viewPager.setAdapter(appointmentParentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         Toast.makeText(getContext(),"IN HERE",Toast.LENGTH_SHORT).show();

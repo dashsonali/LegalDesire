@@ -174,7 +174,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                   intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,"6:00 AM");
                    //cal.set(2016, 1, 23, 18, 5, 0);
 
-                   intent.putExtra(CalendarContract.Events.ALL_DAY, true);
+                   intent.putExtra(CalendarContract.Events.ALL_DAY, true);//
                   // intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,  7000000);
                    intent.putExtra(CalendarContract.Events.TITLE, "Appointment with "+current.getName());
                    context.startActivity(intent);

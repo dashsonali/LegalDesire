@@ -37,12 +37,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import static android.support.v7.widget.ListPopupWindow.MATCH_PARENT;
 import static android.support.v7.widget.ListPopupWindow.WRAP_CONTENT;
 
 public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppointmentAdapter.MyViewHolder> {
@@ -54,7 +57,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
     int mYear,mMonth,mDay,mHour, mMinute;
     String txtDate ,txtTime;
     String mail;
-
+    String choosenDate;
 
 
 
@@ -95,7 +98,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                public void onClick(View view) {
 
 
-                   Calendar calendar=Calendar.getInstance();
+                   final Calendar calendar=Calendar.getInstance();
                    mYear = calendar.get(Calendar.YEAR);
                    mMonth = calendar.get(Calendar.MONTH);
                    mDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -107,11 +110,13 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                                public void onDateSet(DatePicker view, int year,
                                                      int monthOfYear, int dayOfMonth) {
 
+                                   //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
+                                   //java.util.Date date = new Date(year,monthOfYear,dayOfMonth-1);
+                                  // String dayOfTheWeek = simpleDateFormat.format(date);
                                    txtDate=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                                   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
-                                   java.util.Date date = new Date(year,monthOfYear,dayOfMonth-1);
-                                   String dayOfTheWeek = simpleDateFormat.format(date);
-                                   Toast.makeText(context,dayOfMonth,Toast.LENGTH_SHORT).show();
+                                   Date date = calendar.getTime();
+                                   DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
+                                   choosenDate = dateFormat.format(date);
                                    TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                                            new TimePickerDialog.OnTimeSetListener() {
 
@@ -120,7 +125,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                                                                      int minute) {
 
                                                    txtTime=(hourOfDay + ":" + minute);
-                                                   setDate(txtDate,txtTime,current);
+                                                   setDate(choosenDate,txtTime,current);
 
                                                }
                                            }, mHour, mMinute, false);
@@ -151,7 +156,8 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
 //
          //  holder.acceptButton.setLayoutParams(lp);
            holder.acceptButton.setText("Set Reminder");
-           holder.acceptButton.setWidth(WRAP_CONTENT);
+        //   holder.acceptButton.setWidth(MATCH_PARENT);
+           holder.acceptButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
            holder.acceptButton.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
@@ -159,12 +165,12 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                    Toast.makeText(context, "reminder"+arr[0], Toast.LENGTH_SHORT).show();
                    Intent intent = new Intent(Intent.ACTION_EDIT);
                    intent.setType("vnd.android.cursor.item/event");
-                   intent.putExtra("beginTime", arr[0]);
+                   intent.putExtra("beginTime", choosenDate);
                    intent.putExtra("allDay", true);
-                   intent.putExtra("endTime", arr[2]+24*60*60*1000);
+                   intent.putExtra("endTime", choosenDate);
                    intent.putExtra(CalendarContract.Events.TITLE, "Appointment with "+current.getName());
                    context.startActivity(intent);
-
+                    //Format Changed
 
                }
            });

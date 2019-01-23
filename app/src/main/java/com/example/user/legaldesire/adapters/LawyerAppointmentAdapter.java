@@ -36,7 +36,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import java.util.Date;
 import java.util.List;
 
 import static android.support.v7.widget.ListPopupWindow.WRAP_CONTENT;
@@ -76,7 +80,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         current=listItem.get(position);
         //  holder.mail.setText(current.getMail());
         Log.e("mailinadapter",""+current.getMail()+""+current.getNumber() );
-        String Date="N:N:N";
+        final String Date="N:N:N";
        if(current.getStatus().equals("-1")) {
            holder.status.setText(Date);
 
@@ -104,7 +108,10 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                                                      int monthOfYear, int dayOfMonth) {
 
                                    txtDate=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-
+                                   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
+                                   java.util.Date date = new Date(year,monthOfYear,dayOfMonth-1);
+                                   String dayOfTheWeek = simpleDateFormat.format(date);
+                                   Toast.makeText(context,dayOfMonth,Toast.LENGTH_SHORT).show();
                                    TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                                            new TimePickerDialog.OnTimeSetListener() {
 
@@ -149,13 +156,13 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                @Override
                public void onClick(View view) {
                    String arr[]=current.getStatus().split(" ");
-                   Toast.makeText(context, "reminder", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(context, "reminder"+arr[0], Toast.LENGTH_SHORT).show();
                    Intent intent = new Intent(Intent.ACTION_EDIT);
                    intent.setType("vnd.android.cursor.item/event");
                    intent.putExtra("beginTime", arr[0]);
                    intent.putExtra("allDay", true);
                    intent.putExtra("endTime", arr[2]+24*60*60*1000);
-                   intent.putExtra(CalendarContract.Events.TITLE, "Appointment of "+current.getName());
+                   intent.putExtra(CalendarContract.Events.TITLE, "Appointment with "+current.getName());
                    context.startActivity(intent);
 
 

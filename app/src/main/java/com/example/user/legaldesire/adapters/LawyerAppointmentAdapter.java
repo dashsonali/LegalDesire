@@ -125,7 +125,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                                                                      int minute) {
 
                                                    txtTime=(hourOfDay + ":" + minute);
-                                                   setDate(choosenDate,txtTime,current);
+                                                   setDate(txtDate,txtTime,current);
 
                                                }
                                            }, mHour, mMinute, false);
@@ -163,11 +163,19 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                public void onClick(View view) {
                    String arr[]=current.getStatus().split(" ");
                    Toast.makeText(context, "reminder"+arr[0], Toast.LENGTH_SHORT).show();
+                   String arr1[]=arr[0].split("-");
+                   String arr2[]=arr[2].split(":");
+
                    Intent intent = new Intent(Intent.ACTION_EDIT);
                    intent.setType("vnd.android.cursor.item/event");
-                   intent.putExtra("beginTime", choosenDate);
-                   intent.putExtra("allDay", true);
-                   intent.putExtra("endTime", choosenDate);
+                   //intent.putExtra("date",)
+                   Calendar cal=Calendar.getInstance();
+                   Log.e("timecal",   String.valueOf(cal.getTime().getTime()));
+                  intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,"6:00 AM");
+                   //cal.set(2016, 1, 23, 18, 5, 0);
+
+                   intent.putExtra(CalendarContract.Events.ALL_DAY, true);
+                  // intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,  7000000);
                    intent.putExtra(CalendarContract.Events.TITLE, "Appointment with "+current.getName());
                    context.startActivity(intent);
                     //Format Changed

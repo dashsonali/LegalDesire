@@ -61,7 +61,7 @@
                 android:id="@+id/entPhone"
                 android:layout_width="235dp"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
+                android:inputType="phone"
                 android:layout_below="@+id/entProblem"
                 android:hint="Enter phone number"/>
 

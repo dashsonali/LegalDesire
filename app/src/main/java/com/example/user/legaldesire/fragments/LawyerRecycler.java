@@ -87,6 +87,7 @@ public class LawyerRecycler extends Fragment {
 
 
         filterbtn=rootView.findViewById(R.id.filterBtn);
+
         Bundle arguments = getArguments();
         String location = arguments.getString("location");
         Log.e("locationinfindLawyer",""+location);

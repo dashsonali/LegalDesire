@@ -35,6 +35,12 @@ import android.widget.Toast;
 import com.example.user.legaldesire.MainActivity;
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.adapters.ViewPagerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -142,6 +148,64 @@ public class UserMenuFragment extends Fragment {
             progressDialog.dismiss();
 
         }
+        send_sos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //noinspection MissingPermission
+                progressDialog.setMessage("Sending SOS...");
+                    progressDialog.show();
+                if( ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
+                    progressDialog.dismiss();
+                    ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.SEND_SMS}
+                            , 10);
+                }else{
+                    if(mlocation!=null)
+                    {
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",","));
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                progressDialog.dismiss();
+                                if(dataSnapshot.hasChild("emergency_contact"))
+                                {
+                                    for(DataSnapshot dataSnapshot1 : dataSnapshot.child("emergency_contact").getChildren())
+                                    {
+                                        Toast.makeText(mContext, "SOS MESSAGE IS SENT TO ALL EMERGENCY CONTACT", Toast.LENGTH_SHORT).show();
+                                        String contact = dataSnapshot1.child("contact").getValue().toString();
+                                        SmsManager smsManager = SmsManager.getDefault();
+                                        StringBuffer smsBody = new StringBuffer();
+                                        smsBody.append(mContext.getSharedPreferences("MyPref",Context.MODE_PRIVATE).getString("name","****")+" needs your help "+"\n Locate on maps :\n"+"http://maps.google.com/maps?q=");
+                                        smsBody.append(mlocation.getLatitude());
+                                        smsBody.append(",");
+                                        smsBody.append(mlocation.getLongitude());
+                                        smsManager.sendTextMessage(contact, null, smsBody.toString(), null, null);
+                                        Log.e("sms", smsBody.toString());
+
+                                    }
+
+
+                                }else{
+                                    Toast.makeText(mContext,"You do not have any emergency contact!",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }else{
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, listener);
+                        progressDialog.dismiss();
+                        Toast.makeText(mContext,"Wait for location update!",Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+
+            }
+        });
 
         return view;
     }
@@ -168,26 +232,7 @@ public class UserMenuFragment extends Fragment {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, listener);
         }
         // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-        send_sos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //noinspection MissingPermission
 
-
-                //Log.e("location",mlocation.toString() );
-                SmsManager smsManager = SmsManager.getDefault();
-                StringBuffer smsBody = new StringBuffer();
-                smsBody.append(" http://maps.google.com/maps?q=");
-                smsBody.append(mlocation.getLatitude());
-                smsBody.append(",");
-                smsBody.append(mlocation.getLongitude());
-                smsManager.sendTextMessage("9658463402", null, smsBody.toString(), null, null);
-                Log.e("sms", smsBody.toString());
-                Toast.makeText(getActivity().getBaseContext(), "SOS MESSAGE IS SENT TO EMERGENCY CONTACTS", Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
 
     }
 

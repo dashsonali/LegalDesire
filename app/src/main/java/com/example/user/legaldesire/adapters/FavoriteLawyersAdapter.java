@@ -8,12 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,9 +26,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.user.legaldesire.R;
-import com.example.user.legaldesire.SearchLawer;
-import com.example.user.legaldesire.fragments.BookAppointment;
-import com.example.user.legaldesire.fragments.LawyerRecycler;
+import com.example.user.legaldesire.fragments.FavoriteLawyers;
 import com.example.user.legaldesire.models.LawyerData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,32 +35,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
-      LayoutInflater inflater;
-     private List<LawyerData>listItem;
-    private Context context;
+
+public class FavoriteLawyersAdapter extends RecyclerView.Adapter<FavoriteLawyersAdapter.MyViewHolder> {
+
+    List<LawyerData> listitem = new ArrayList<>();
+    Context context;
     private static final int REQUEST_PHONE_CALL = 1;
- ProgressBar mProgressBar;
+    ProgressBar mProgressBar;
     ImageView propic;
-
-//
-    public RecyclerAdapter(  List<LawyerData> listItem, Context context) {
-        this.listItem = listItem;
-        this.context = context;
-        Log.e("item_list_size", String.valueOf(listItem.size()));
+    public FavoriteLawyersAdapter(List<LawyerData> listItem, Context mContext)
+    {
+        this.listitem = listItem;
+        this.context = mContext;
+    }
+    @Override
+    public FavoriteLawyersAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_lawyer_cell,parent,false);
+        return new FavoriteLawyersAdapter.MyViewHolder(view);
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-     View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_recycler_cell,parent,false);
-     return new MyViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder( MyViewHolder holder, int position) {
-     final    LawyerData current;
-        current=listItem.get(position);
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        final    LawyerData current;
+        current=listitem.get(position);
         loadProfilePic(current);
         holder.name.setText(current.getName());
         holder.areaOfPractice.setText(current.getAreaOfPractice()+" Lawyer");
@@ -85,6 +76,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
             }
         });
+        holder.favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,"Lawyer Removed From Favorites",Toast.LENGTH_SHORT).show();
+                FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",","))
+                        .child("favorite_lawyers").child(current.getEmail().replace(".",",")).removeValue();
+            }
+        });
         holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,27 +97,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 mailLawyer(current);
             }
         });
-        holder.favoriteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context,"Lawyer Added To Favorites",Toast.LENGTH_SHORT).show();
-                FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",","))
-                        .child("favorite_lawyers").child(current.getEmail().replace(".",",")).setValue(current);
-            }
-        });
-        holder.bookApointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //FragmentTransaction ft = FragmentTransaction.beginTransaction();
+    }
+    private void mailLawyer(LawyerData current) {
+        String email=current.getEmail();
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));
 
-                BookAppointment bookAppointment =new BookAppointment();
-                bookAppointment.lawyerData=current;
-               // bookAppointment.show()//
-                bookAppointment.show(((AppCompatActivity) context).getSupportFragmentManager(),"");
-            }
-        });
-
-       // //holder.lawyerData=current;
+        context.startActivity(Intent.createChooser(emailIntent, "Choose app to mail Lawyer"));
 
     }
     public void loadProfilePic(LawyerData current){
@@ -168,14 +152,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             context.startActivity(intent);}
     }
 
-    private void mailLawyer(LawyerData current) {
-        String email=current.getEmail();
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));
-
-        context.startActivity(Intent.createChooser(emailIntent, "Choose app to mail Lawyer"));
-
-    }
-
     private void callLawyer(LawyerData current) {
         String contact=current.getContact();
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact.trim()));
@@ -187,21 +163,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             context.startActivity(intent);
         }
     }
-
     @Override
     public int getItemCount() {
-        return listItem.size();
+        return listitem.size();
     }
 
-
-  public   class MyViewHolder extends RecyclerView.ViewHolder{
-      public   TextView name,areaOfPractice,noOfRaters;
-      RatingBar ratingBar;
-      Button locate,bookApointment;
-      ImageButton call,mail,filtertn,favoriteBtn;
-      //String location,number,email,contact;
-     // LawyerData lawyerData;
-        public MyViewHolder(View itemView){
+    public class  MyViewHolder extends RecyclerView.ViewHolder{
+        public TextView name,areaOfPractice,noOfRaters;
+        RatingBar ratingBar;
+        Button locate,bookApointment;
+        ImageButton call,mail,filtertn,favoriteBtn;
+        public MyViewHolder(View itemView) {
             super(itemView);
             locate=itemView.findViewById(R.id.locatebtn);
             name=itemView.findViewById(R.id.nametxt);
@@ -216,9 +188,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             noOfRaters=itemView.findViewById(R.id.noOfReviewstxt);
             bookApointment=itemView.findViewById(R.id.bookAPPbtn);
             mProgressBar = itemView.findViewById(R.id.profilePicProgresspar);
-
         }
-
-  }
-
+    }
 }
+

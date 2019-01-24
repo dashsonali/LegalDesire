@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.user.legaldesire.fragments.BookmarkClientFragment;
 import com.example.user.legaldesire.fragments.BookmarkFragment;
+import com.example.user.legaldesire.fragments.FavoriteLawyers;
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
@@ -48,7 +49,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
            Log.e("Position:",String.valueOf(position));
            selectedFragment = fragmentHashMap.get("lawyer_recycler");
            if(selectedFragment==null){
-               selectedFragment = new LawyerRecycler();
+               selectedFragment = new FavoriteLawyers();
                fragmentHashMap.put("lawyer_recycler",selectedFragment);
            }
 

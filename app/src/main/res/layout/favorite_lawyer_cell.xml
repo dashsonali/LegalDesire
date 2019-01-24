@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    tools:context="com.example.user.legaldesire.adapters.RecyclerAdapter">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp"
+        >
+
+        <RelativeLayout
+
+            android:id="@+id/parentRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+
+            android:background="@drawable/recycler_border"
+
+            >
+
+            <RelativeLayout
+                android:id="@+id/layout_for_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/imageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="10dp"
+                    android:elevation="12dp"
+                    android:innerRadius="0dp"
+                    android:padding="10dp"
+                    android:shape="ring"
+                    app:cardCornerRadius="40dp">
+
+                    <ImageView
+                        android:id="@+id/profilePic"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:src="@drawable/lawyer" />
+                    <ProgressBar
+                        android:id="@+id/profilePicProgresspar"
+                        android:layout_margin="22dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+                </android.support.v7.widget.CardView>
+
+                <TextView
+
+                    android:id="@+id/nametxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/imageView"
+                    android:text="Rakesh Swain" />
+
+                <TextView
+                    android:id="@+id/areaOfPracticetxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/nametxt"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/imageView"
+
+                    android:text="Corporate Lawyer" />
+
+                <LinearLayout
+                    android:layout_margin="5dp"
+                    android:id="@+id/ratingLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/areaOfPracticetxt"
+                    android:layout_toRightOf="@+id/imageView">
+
+                    <RatingBar
+                        android:id="@+id/ratingtxt"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:isIndicator="true"
+
+                        android:max="5"
+                        android:numStars="5"
+                        android:rating="3"
+
+                        android:theme="@style/RatingBar"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="0dp"
+
+
+                        />
+
+                </LinearLayout>
+
+                <TextView
+
+                    android:id="@+id/noOfReviewstxt"
+
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/ratingLayout"
+                    android:layout_toRightOf="@+id/imageView"
+
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="0 Client(s) Rated" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:weightSum="3"
+                android:id="@+id/layout_for_contact_buttons"
+                android:orientation="horizontal"
+                android:layout_below="@+id/layout_for_name">
+                <ImageButton
+
+                    android:id="@+id/callbtn"
+                    android:src="@drawable/phone"
+                    android:background="@color/white"
+                    android:layout_margin="20dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:layout_height="30dp" />
+                <ImageButton
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/email"
+                    android:background="@color/white"
+                    android:id="@+id/emailbtn"
+                    android:layout_margin="20dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+                <ImageButton
+
+                    android:id="@+id/bookbtn"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_delete_forever_black_24dp"
+                    android:layout_margin="20dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_for_bookbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@+id/layout_for_contact_buttons"
+                >
+                <Button
+                    android:id="@+id/bookAPPbtn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="Book Appointment"
+
+                    android:textColor="#fff" />
+                <Button
+                    android:id="@+id/locatebtn"
+
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="SHOW ON MAP"
+                    android:padding="5dp"
+                    android:textColor="#fff" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

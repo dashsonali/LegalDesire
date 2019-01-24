@@ -104,24 +104,28 @@ public class LawyerRecycler extends Fragment {
 
                 if(placeAutocompleteAdapter.getContext().getApplicationContext()==null){}else{
 
-                    if(placeAutocompleteAdapter.getItem(2)!=null){
-                        String addr2=  placeAutocompleteAdapter.getItem(1).toString();
-                        Log.e("onItemSelected",""+addr2+"");
-
-                        String addr21[]=addr2.split("India");
-                        Log.e("onItemSelected12",""+addr21[0]+"");
-                        String addr211[]=addr21[0].split(",");
+                   if(placeAutocompleteAdapter.getItem(2)!=null){
+                       // String addr2=  placeAutocompleteAdapter.getItem(1).toString();
+                       String addr2=  searchButton.getText().toString();
 
 
-                            city=addr211[addr211.length-2];
-                        Log.e("onItemSelected12",""+addr211[addr211.length-2]+"");
-                        loadRecyclerViewData(city);
+                        String addr21[]=addr2.split(",");
+
+
+                            city=addr21[addr21.length-2];
+                        Log.e("onItemSelected12",""+addr21[addr21.length-2]+"");
+                       loadRecyclerViewData(city);
 
 
 
                     }else {
                         Toast.makeText(getContext(), "Enter a state", Toast.LENGTH_SHORT).show();
-                    }}
+                    }
+
+
+
+
+                }
 
 
 

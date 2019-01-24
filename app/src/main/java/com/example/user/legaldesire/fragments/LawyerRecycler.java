@@ -2,6 +2,9 @@ package com.example.user.legaldesire.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -36,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class LawyerRecycler extends Fragment {
@@ -56,7 +60,7 @@ public class LawyerRecycler extends Fragment {
     private static final LatLngBounds LAT_LNG_BOUNDS=new LatLngBounds(
             new LatLng(-40,-168),new LatLng(71,136)
     );
-
+    Geocoder geocoder;
 
 
 
@@ -76,6 +80,14 @@ public class LawyerRecycler extends Fragment {
         searchButton.setAdapter(placeAutocompleteAdapter);
 
         filterbtn=rootView.findViewById(R.id.filterBtn);
+        Bundle arguments = getArguments();
+        String location = arguments.getString("location");
+        Log.e("locationinfindLawyer",""+location);
+
+
+
+
+
         filterbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

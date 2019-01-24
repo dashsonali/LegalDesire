@@ -73,6 +73,9 @@ public class BookAppointment extends AppCompatDialogFragment {
                if(mAuth.getCurrentUser()!=null){
                String mail=lawyerData.getEmail().toString().replace('.',',');
                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
+               if(databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",","))!=null){
+                   Toast.makeText(getContext(), "already sent request", Toast.LENGTH_SHORT).show();
+               }else{
                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("message").setValue(problem.getText().toString());
                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").setValue("-1");
                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("email").setValue(mAuth.getCurrentUser().getEmail());
@@ -98,7 +101,7 @@ public class BookAppointment extends AppCompatDialogFragment {
 
                    dismiss();
 
-           }
+           }}
            else {
                    Toast.makeText(getContext(), "no current user", Toast.LENGTH_SHORT).show();
                }

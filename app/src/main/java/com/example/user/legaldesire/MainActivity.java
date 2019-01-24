@@ -42,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView=findViewById(R.id.btm_nav);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         mAuth=FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("Loading.....");
         progressDialog.show();
         sharedPreferences= getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
         typeOfUser= sharedPreferences.getString("type",null);
+        Log.e("locationlawyer",""+intent.getStringExtra("location"));
         dataStored = sharedPreferences.getBoolean("dataEntered",false);
         if(!dataStored)
         {
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                       editor.putString("name",name);
                       editor.putString("contact",contact);
                       editor.putString("email",email);
+                    //  String location=intent.getStringExtra("location");
+                    //  editor.putString("location",location);
 
                       editor.putBoolean("dataEntered",true);
                       editor.commit();
@@ -125,8 +128,15 @@ public class MainActivity extends AppCompatActivity {
             if(intent.getStringExtra("action")!=null)
             {
                 if(intent.getStringExtra("action").equals("search_lawyer"))
-                {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LawyerRecycler()).commit();
+                {  LawyerRecycler lawyerRecycler=new LawyerRecycler();
+                    String location = intent.getStringExtra("location");
+                    Log.e("locationinfindLawyer",""+location+intent.getStringExtra("location"));
+
+                    Bundle arguments = new Bundle();
+                    arguments.putString( "location" , location);
+                    lawyerRecycler.setArguments(arguments);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,lawyerRecycler).commit();
+
                 }
             }else{
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();

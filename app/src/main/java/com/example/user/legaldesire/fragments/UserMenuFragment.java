@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -34,6 +36,10 @@ import com.example.user.legaldesire.MainActivity;
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.adapters.ViewPagerAdapter;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import static android.content.Context.LOCATION_SERVICE;
 
 public class UserMenuFragment extends Fragment {
@@ -47,6 +53,8 @@ public class UserMenuFragment extends Fragment {
 
     CardView send_sos,find_lawyers;
     Location mlocation;
+    Geocoder geocoder;
+    String city;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,23 +64,24 @@ public class UserMenuFragment extends Fragment {
 
        // b = (Button) view.findViewById(R.id.SOS);
         find_lawyers=view.findViewById(R.id.find_lawyers);
-        find_lawyers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-              intent.putExtra("action","search_lawyer");
-              startActivity(intent);
 
-
-
-
-            }
-        });
         progressDialog=new ProgressDialog(getContext());
         locationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                geocoder=new Geocoder(getContext(), Locale.getDefault());
+                double lat=location.getLatitude();
+              double longti=  location.getLongitude();
+                try {
+                    List<Address> addresses  = geocoder.getFromLocation(lat,longti, 1);
+                    city = addresses.get(0).getAdminArea();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 mlocation=location;
                 progressDialog.dismiss();
 
@@ -95,14 +104,35 @@ public class UserMenuFragment extends Fragment {
                 startActivity(i);
             }
         };
-        if(mlocation==null)
+        find_lawyers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                intent.putExtra("action","search_lawyer");
+                if(mlocation!=null){
+                    intent.putExtra("location",city.toString());
+                    Log.e("locationinfindLawyer",""+mlocation);
+
+                }
+                startActivity(intent);
+
+
+
+
+            }
+        });
+        configure_button();
+        progressDialog.setMessage("Fetching data..");
+        progressDialog.show();
+
+       // Log.e("Location","NULL");
+        if (mlocation!=null)
         {
-            configure_button();
-            progressDialog.setMessage("Fetching data..");
-            progressDialog.show();
-        }else{
-            Log.e("Location","NULL");
+
+            progressDialog.dismiss();
+
         }
+
         return view;
     }
     @Override

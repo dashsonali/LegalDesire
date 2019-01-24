@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
     private Bundle webviewBundle;
     private ImageView bookMarkBtn;
     private String URL = "";
+    Context mContext;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -158,7 +159,7 @@ public class HomeFragment extends Fragment {
         bookMarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"ADDING BOOKMARK",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"ADDING BOOKMARK",Toast.LENGTH_SHORT).show();
                 addBookMark(webView.getUrl(),title);
             }
         });
@@ -167,8 +168,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void addBookMark(final String url,final String title){
-        Toast.makeText(getContext(),"ADDING BOOKMARK",Toast.LENGTH_SHORT).show();
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        Toast.makeText(mContext,"ADDING BOOKMARK",Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         final DatabaseReference databaseReference;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         if(sharedPreferences.getString("type","user").equals("user"))
@@ -190,30 +191,30 @@ public class HomeFragment extends Fragment {
                     databaseReference.child(key).child("link").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(getContext(),"Completed!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"Completed!",Toast.LENGTH_SHORT).show();
                             if(task.isSuccessful())
                             {
 
-                                Toast.makeText(getContext(),"Bookmark Added!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,"Bookmark Added!",Toast.LENGTH_SHORT).show();
                             }else
                             {
                                 Log.e("bookmark error",task.getException().toString());
-                                Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,task.getException().toString(),Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                     databaseReference.child(key).child("title").setValue(title).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(getContext(),"Completed!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"Completed!",Toast.LENGTH_SHORT).show();
                             if(task.isSuccessful())
                             {
 
-                                Toast.makeText(getContext(),"Bookmark Added!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,"Bookmark Added!",Toast.LENGTH_SHORT).show();
                             }else
                             {
                                 Log.e("bookmark error",task.getException().toString());
-                                Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,task.getException().toString(),Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -223,7 +224,7 @@ public class HomeFragment extends Fragment {
                     {
                         if(dataSnapshot1.child("link").getValue().toString().equals(url))
                         {
-                            Toast.makeText(getContext(),"Bookmark Already Exists!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"Bookmark Already Exists!",Toast.LENGTH_SHORT).show();
                             bookmarkExists=true;
                         }
                     }
@@ -234,30 +235,29 @@ public class HomeFragment extends Fragment {
                         databaseReference.child(key).child("link").setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(getContext(),"Completed!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,"Completed!",Toast.LENGTH_SHORT).show();
                                 if(task.isSuccessful())
                                 {
 
-                                    Toast.makeText(getContext(),"Bookmark Added!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext,"Bookmark Added!",Toast.LENGTH_SHORT).show();
                                 }else
                                 {
                                     Log.e("bookmark error",task.getException().toString());
-                                    Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext,task.getException().toString(),Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        });
-                        databaseReference.child(key).child("title").setValue(title).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        });databaseReference.child(key).child("title").setValue(title).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(getContext(),"Completed!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,"Completed!",Toast.LENGTH_SHORT).show();
                                 if(task.isSuccessful())
                                 {
 
-                                    Toast.makeText(getContext(),"Bookmark Added!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext,"Bookmark Added!",Toast.LENGTH_SHORT).show();
                                 }else
                                 {
                                     Log.e("bookmark error",task.getException().toString());
-                                    Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext,task.getException().toString(),Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -282,6 +282,12 @@ public class HomeFragment extends Fragment {
         super.onPause();
         webviewBundle = new Bundle();
         webView.saveState(webviewBundle);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }
 

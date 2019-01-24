@@ -38,15 +38,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static android.support.v7.widget.ListPopupWindow.MATCH_PARENT;
-import static android.support.v7.widget.ListPopupWindow.WRAP_CONTENT;
+
 
 public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppointmentAdapter.MyViewHolder> {
     LayoutInflater inflater;

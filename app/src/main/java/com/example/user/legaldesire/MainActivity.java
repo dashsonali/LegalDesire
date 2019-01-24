@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.user.legaldesire.fragments.EmergencyContact;
 import com.example.user.legaldesire.fragments.HomeFragment;
 import com.example.user.legaldesire.fragments.LawyerAppointmentFragment;
 import com.example.user.legaldesire.fragments.LawyerAppointmetnParentFragment;
@@ -141,6 +142,10 @@ public class MainActivity extends AppCompatActivity {
                     lawyerRecycler.setArguments(arguments);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,lawyerRecycler).commit();
 
+                }else if(intent.getStringExtra("action").equals("emergency_contact"))
+                {
+                    Fragment emergency_frag = new EmergencyContact();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,emergency_frag).commit();
                 }
             }else{
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();

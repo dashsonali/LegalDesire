@@ -45,13 +45,14 @@ import static android.content.Context.LOCATION_SERVICE;
 public class UserMenuFragment extends Fragment {
 
 
+    Context mContext;
   //  private Button b,findLawyer;
     private TextView t;
     private LocationManager locationManager;
     private LocationListener listener;
     ProgressDialog progressDialog;
 
-    CardView send_sos,find_lawyers;
+    CardView send_sos,find_lawyers,emergencyContactBtn;
     Location mlocation;
     Geocoder geocoder;
     String city;
@@ -64,13 +65,13 @@ public class UserMenuFragment extends Fragment {
 
        // b = (Button) view.findViewById(R.id.SOS);
         find_lawyers=view.findViewById(R.id.find_lawyers);
-
+        emergencyContactBtn = view.findViewById(R.id.emergency_contactsBtn);
         progressDialog=new ProgressDialog(getContext());
         locationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                geocoder=new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+                geocoder=new Geocoder(mContext, Locale.getDefault());
                 double lat=location.getLatitude();
               double longti=  location.getLongitude();
                 try {
@@ -107,7 +108,7 @@ public class UserMenuFragment extends Fragment {
         find_lawyers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("action","search_lawyer");
                 if(mlocation!=null){
                     intent.putExtra("location",city.toString());
@@ -119,6 +120,15 @@ public class UserMenuFragment extends Fragment {
 
 
 
+            }
+        });
+        emergencyContactBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, MainActivity.class);
+                intent.putExtra("action","emergency_contact");
+
+                startActivity(intent);
             }
         });
         configure_button();
@@ -150,7 +160,7 @@ public class UserMenuFragment extends Fragment {
         // first check for permissions
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.SEND_SMS}
+                ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.SEND_SMS}
                         , 10);
             }
 
@@ -181,6 +191,9 @@ public class UserMenuFragment extends Fragment {
 
     }
 
-
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:fillViewport="true"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        >
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="30dp"
+            android:id="@+id/linearLayout">
+            <TextView
+                android:id="@+id/welcmtxt"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:text="CONTACT DETAILS"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+                android:textSize="18dp"
+                android:textColor="#000"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:id="@+id/closebtn"
+                android:layout_toRightOf="@+id/welcmtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/welcmtxt"
+                android:background="#0000"
+                android:src="@drawable/ic_close_black_24dp" />
+
+            <EditText
+                android:id="@+id/entProblem"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+                android:hint="Enter name"
+                android:layout_alignStart="@+id/welcmtxt"
+                android:padding="10dp"
+                android:layout_below="@+id/welcmtxt"
+                />
+            <EditText
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:id="@+id/entPhone"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:layout_below="@+id/entProblem"
+                android:hint="Enter phone number"/>
+
+
+            <Button
+                android:id="@+id/sendBtn"
+                android:layout_width="238dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/entPhone"
+                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/button_border"
+                android:elevation="5dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="SUBMIT"
+                android:textColor="#ffff"
+
+
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

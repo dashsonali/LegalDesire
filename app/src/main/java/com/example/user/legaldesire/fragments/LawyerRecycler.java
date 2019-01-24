@@ -26,7 +26,9 @@ import com.example.user.legaldesire.adapters.PlaceAutocompleteAdapter;
 import com.example.user.legaldesire.adapters.RecyclerAdapter;
 import com.example.user.legaldesire.models.LawyerData;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -76,14 +78,18 @@ public class LawyerRecycler extends Fragment {
         searchButton =rootView.findViewById(R.id.editText);
         recyclerView.setHasFixedSize(true);
         mGeoDataClient = Places.getGeoDataClient(getContext(), null);
-        placeAutocompleteAdapter =new PlaceAutocompleteAdapter(getContext(),mGeoDataClient,LAT_LNG_BOUNDS,null);
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(Place.TYPE_ADMINISTRATIVE_AREA_LEVEL_1)
+                .setCountry("INDIA")
+                .build();
+        placeAutocompleteAdapter =new PlaceAutocompleteAdapter(getContext(),mGeoDataClient,LAT_LNG_BOUNDS,autocompleteFilter);
         searchButton.setAdapter(placeAutocompleteAdapter);
+
 
         filterbtn=rootView.findViewById(R.id.filterBtn);
         Bundle arguments = getArguments();
         String location = arguments.getString("location");
         Log.e("locationinfindLawyer",""+location);
-
 
 
 
@@ -194,7 +200,7 @@ public class LawyerRecycler extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("datasnapshot", dataSnapshot.toString());
-listItems.clear();
+               listItems.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Log.e("datasnapshot1",dataSnapshot1.toString() );
                             String name;

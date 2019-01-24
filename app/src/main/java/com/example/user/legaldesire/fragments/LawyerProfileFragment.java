@@ -75,7 +75,7 @@ public class LawyerProfileFragment extends Fragment{
         email.setText(sharedPreferences.getString("email",null));
        // Log.e("consultationFee",sharedPreferences.getString("consultationFee",null));
         feeTxt.setText(sharedPreferences.getString("consultationFee","Not Assigned!"));
-        address.setText(sharedPreferences.getString("address","Please Update Your Address In Settings."));
+        address.setText(sharedPreferences.getString("address","Please Update Your Address In Settings so that clients can find you."));
         loadProfilePic();
         user_menu.setOnClickListener(new View.OnClickListener() {
             @Override

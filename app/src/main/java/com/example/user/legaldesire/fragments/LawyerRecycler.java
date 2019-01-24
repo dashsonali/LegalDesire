@@ -14,8 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,12 +47,13 @@ import java.util.Locale;
 
 
 public class LawyerRecycler extends Fragment {
-
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     private List<LawyerData>listItems;
     List<LawyerData> newListItems;
-
+    String city;
     FirebaseDatabase database;
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
@@ -77,19 +80,76 @@ public class LawyerRecycler extends Fragment {
         searchButton =rootView.findViewById(R.id.editText);
         recyclerView.setHasFixedSize(true);
         mGeoDataClient = Places.getGeoDataClient(getContext(), null);
+
         AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(Place.TYPE_ADMINISTRATIVE_AREA_LEVEL_1)
                 .setCountry("INDIA")
                 .build();
-        placeAutocompleteAdapter =new PlaceAutocompleteAdapter(getContext(),mGeoDataClient,LAT_LNG_BOUNDS,autocompleteFilter);
+      //  placeAutocompleteAdapter =new PlaceAutocompleteAdapter(getContext(),mGeoDataClient,LAT_LNG_BOUNDS,autocompleteFilter);
+        placeAutocompleteAdapter =new PlaceAutocompleteAdapter(getContext(),mGeoDataClient,LAT_LNG_BOUNDS,null);
+
         searchButton.setAdapter(placeAutocompleteAdapter);
-
-
-        filterbtn=rootView.findViewById(R.id.filterBtn);
-
         Bundle arguments = getArguments();
-        String location = arguments.getString("location");
-        Log.e("locationinfindLawyer",""+location);
+
+        city = arguments.getString("location");
+        Log.e("locationinfindLawyer",""+city);
+        filterbtn=rootView.findViewById(R.id.filterBtn);
+        searchButton.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                Log.e("onItemSelected",""+city);
+
+
+                if(placeAutocompleteAdapter.getContext().getApplicationContext()==null){}else{
+
+                    if(placeAutocompleteAdapter.getItem(2)!=null){
+                        String addr2=  placeAutocompleteAdapter.getItem(1).toString();
+                        Log.e("onItemSelected",""+addr2+"");
+
+                        String addr21[]=addr2.split("India");
+                        Log.e("onItemSelected12",""+addr21[0]+"");
+                        String addr211[]=addr21[0].split(",");
+
+
+                            city=addr211[addr211.length-2];
+                        Log.e("onItemSelected12",""+addr211[addr211.length-2]+"");
+                        loadRecyclerViewData(city);
+
+
+
+                    }else {
+                        Toast.makeText(getContext(), "Enter a state", Toast.LENGTH_SHORT).show();
+                    }}
+
+
+
+
+
+
+
+    }
+        });
+
+
+
+             /*   if(searchButton.getText()!=null){
+                    String searchText=searchButton.getText().toString();
+                    Log.e("cityinsearch",""+searchText);
+
+                    String search[]=searchText.split(",");
+                    if(search.length>1){
+                        city=search[search.length-1];
+                        Log.e("cityinsearch",""+search[search.length-2]);
+
+                    }}*/
+
+
+
+
+
+           // pl.setOnPlaceSelectedListener
 
 
 
@@ -162,6 +222,7 @@ public class LawyerRecycler extends Fragment {
         loadRecyclerViewData();
 
 
+
         return rootView;
 
     }
@@ -200,7 +261,7 @@ public class LawyerRecycler extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("datasnapshot", dataSnapshot.toString());
-               listItems.clear();
+listItems.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Log.e("datasnapshot1",dataSnapshot1.toString() );
                             String name;
@@ -209,6 +270,7 @@ public class LawyerRecycler extends Fragment {
                     String areaOfPractice;
                     String noOfRaters ;
                     Float rating;
+                    String state;
                     String lat="noLat",longi="noLongi",location="noLocation";
                     name=dataSnapshot1.child("name").getValue(String.class);
                     contact=dataSnapshot1.child("contact").getValue(String.class);
@@ -218,7 +280,9 @@ public class LawyerRecycler extends Fragment {
                     noOfRaters=dataSnapshot1.child("usersRated").getValue().toString();
                     lat=dataSnapshot1.child("location").child("latitude").getValue(String.class);
                     longi=dataSnapshot1.child("location").child("longitude").getValue(String.class);
-                        if(lat==null){location="noLocation";}else{
+                    state=dataSnapshot1.child("location").child("state").getValue(String.class);
+
+                    if(lat==null){location="noLocation";}else{
                         location= "http://maps.google.com/maps?q="+lat+","+longi;}
 
 
@@ -233,7 +297,11 @@ public class LawyerRecycler extends Fragment {
                                     noOfRaters+" client reviews",
                                     location
                             );
-                            listItems.add(current);
+                    Log.e("locationinfindLawyer",""+state);
+                    if(state!=null){
+
+                    if(city.toUpperCase().equals(state.toUpperCase())){
+                            listItems.add(current);}}
                             progressDialog.dismiss();
                     adapter = new RecyclerAdapter(listItems,getContext());
                     recyclerView.setAdapter(adapter);
@@ -246,6 +314,85 @@ public class LawyerRecycler extends Fragment {
 
                         }
                     });
+
+
+
+
+
+
+
+    }
+
+    private void loadRecyclerViewData(final String city1) {
+        progressDialog.setMessage("Loading Data...");
+        progressDialog.show();
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        final DatabaseReference databaseReference = database.getReference().child("Lawyers");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("datasnapshot", dataSnapshot.toString());
+                listItems.clear();
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Log.e("datasnapshot1",dataSnapshot1.toString() );
+                    String name;
+                    String contact;
+                    String email;
+                    String areaOfPractice;
+                    String noOfRaters ;
+                    Float rating;
+                    String state;
+                    String lat="noLat",longi="noLongi",location="noLocation";
+                    name=dataSnapshot1.child("name").getValue(String.class);
+                    contact=dataSnapshot1.child("contact").getValue(String.class);
+                    email=dataSnapshot1.child("email").getValue(String.class);
+                    areaOfPractice=dataSnapshot1.child("areaOfPractice").getValue(String.class);
+                    rating=dataSnapshot1.child("rating").getValue(Float.class);
+                    noOfRaters=dataSnapshot1.child("usersRated").getValue().toString();
+                    lat=dataSnapshot1.child("location").child("latitude").getValue(String.class);
+                    longi=dataSnapshot1.child("location").child("longitude").getValue(String.class);
+                    state=dataSnapshot1.child("location").child("state").getValue(String.class);
+
+                    if(lat==null){location="noLocation";}else{
+                        location= "http://maps.google.com/maps?q="+lat+","+longi;}
+
+
+
+                    Log.e("locationMap",location+"" );
+                    LawyerData current=new LawyerData(
+                            name,
+                            email,
+                            areaOfPractice,
+                            contact,
+                            rating,
+                            noOfRaters+" client reviews",
+                            location
+                    );
+                    Log.e("locationinfindLawyer",""+state);
+                    Log.e("currentcity1",""+current.toString()+""+city1+",");
+
+                    if(state!=null){
+
+                        if(city1.trim().toUpperCase().equals(state.toUpperCase())){
+                            listItems.add(current);
+                            Log.e("currentcity1",""+current.toString()+"");
+
+                        }}
+                    progressDialog.dismiss();
+                    adapter = new RecyclerAdapter(listItems,getContext());
+                    recyclerView.setAdapter(adapter);
+
+
+                }}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 

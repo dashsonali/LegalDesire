@@ -35,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.user.legaldesire.adapters.PlaceAutocompleteAdapter;
+import com.example.user.legaldesire.fragments.AddressDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -134,6 +135,16 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
                 .addOnConnectionFailedListener(this)
                 .build();
         mGoogleApiCleint.connect();
+    }
+    public void openDialog(String longitude,String latitude,String state){
+        AddressDialog addressDialog = new AddressDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("long",longitude);
+        bundle.putString("lat",latitude);
+        bundle.putString("state",state);
+        addressDialog.setArguments(bundle);
+        addressDialog.show(getSupportFragmentManager(),"address dialog");
+
     }
 
     private void getLocationPermission() {
@@ -278,8 +289,7 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
         int id = view.getId();
         if (id == R.id.uploadLocation) {
             if(marker.getPosition()!=null){
-                mProgressDialog.setMessage("Uploading your location...");
-                mProgressDialog.show();
+
                 Geocoder gc = new Geocoder(this);
                 List<Address> addresses = null;
                 try {
@@ -287,29 +297,10 @@ public class UploadLocationLawyer extends AppCompatActivity implements OnMapRead
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                String locality = addresses.get(0).getLocality();
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                String mail = getIntent().getExtras().getString("lawyer_mail");
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
-                databaseReference.child("location").child("latitude").setValue(String.valueOf(marker.getPosition().latitude));
-                databaseReference.child("location").child("longitude").setValue(String.valueOf(marker.getPosition().longitude));
-
-                if (locality != null)
-                    databaseReference.child("location").child("locality").setValue(locality);
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("type", "lawyer");
-
-                editor.commit();
-                Snackbar snackbar = Snackbar.make(rl, "Your Location Is Uploaded",
-                        Snackbar.LENGTH_INDEFINITE);
-
-                snackbar.show();
-                // Toast.makeText(getApplicationContext(),"Location Uploaded",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(UploadLocationLawyer.this, LoginActivity.class));
-                mProgressDialog.dismiss();
-                finish();
+                String state= addresses.get(0).getAdminArea();
+                openDialog(String.valueOf(marker.getPosition().longitude),String.valueOf(marker.getPosition().latitude),state);
             }else{
+
                 Toast.makeText(getApplicationContext(),"Please Tap On A Location!",Toast.LENGTH_SHORT);
             }
 

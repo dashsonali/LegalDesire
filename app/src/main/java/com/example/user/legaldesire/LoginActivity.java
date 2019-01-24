@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         dialog.type = type;
         dialog.show(getSupportFragmentManager(),"login dialog");
 
+
     }
     public boolean isServiceOk(){
         int availability = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(LoginActivity.this);

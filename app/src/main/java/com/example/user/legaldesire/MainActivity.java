@@ -106,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
                       editor.putString("rating",rating);
                       editor.putString("usersRated",usersRated);
                       editor.putString("consultationFee",consultationFee);
+                      if(dataSnapshot.hasChild("location"))
+                      {
+                          editor.putString("address",dataSnapshot.child("location").child("address").getValue().toString());
+                      }
                       editor.putBoolean("dataEntered",true);
 
                       editor.commit();

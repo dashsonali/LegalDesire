@@ -26,12 +26,14 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.user.legaldesire.LoginActivity;
 import com.example.user.legaldesire.R;
+import com.example.user.legaldesire.UploadLocationLawyer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class LawyerProfileFragment extends Fragment{
 
@@ -61,6 +63,7 @@ public class LawyerProfileFragment extends Fragment{
         email = view.findViewById(R.id.emailTxt);
         feeTxt = view.findViewById(R.id.feeTxt);
         user_menu = view.findViewById(R.id.user_menu);
+        address = view.findViewById(R.id.addressTxt);
         propic = view.findViewById(R.id.profilePic);
         mProgressBar = view.findViewById(R.id.profilePicProgresspar);
         sharedPreferences = getContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
@@ -72,6 +75,7 @@ public class LawyerProfileFragment extends Fragment{
         email.setText(sharedPreferences.getString("email",null));
        // Log.e("consultationFee",sharedPreferences.getString("consultationFee",null));
         feeTxt.setText(sharedPreferences.getString("consultationFee","Not Assigned!"));
+        address.setText(sharedPreferences.getString("address","Please Update Your Address In Settings."));
         loadProfilePic();
         user_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +153,9 @@ public class LawyerProfileFragment extends Fragment{
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.fragment_container,new BookmarkFragment()).commit();
 
+                }else if(id==R.id.uploadLocation)
+                {
+                    startActivity(new Intent(getContext(), UploadLocationLawyer.class));
                 }
                 return false;
             }

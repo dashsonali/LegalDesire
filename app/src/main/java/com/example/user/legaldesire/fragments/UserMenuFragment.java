@@ -70,7 +70,7 @@ public class UserMenuFragment extends Fragment {
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                geocoder=new Geocoder(getContext(), Locale.getDefault());
+                geocoder=new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
                 double lat=location.getLatitude();
               double longti=  location.getLongitude();
                 try {

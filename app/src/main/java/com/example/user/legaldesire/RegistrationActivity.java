@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -30,6 +31,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +44,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -191,18 +197,18 @@ public class RegistrationActivity extends AppCompatActivity {
                                 databaseReference1.child("rating").setValue(0);
                                 databaseReference1.child("usersRated").setValue(0);
                                 databaseReference1.child("consultation_fee").setValue(consultationFee);
-                                StorageReference ref = FirebaseStorage.getInstance().getReference().child("ProfileImages/Lawyers/"+mAuth.getCurrentUser().getEmail());
-                                ref.putFile(selectImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-                                        Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
-                                        intent.putExtra("lawyer_mail",email.replace('.',','));
-                                        startActivity(intent);
-                                        finish();
-
+                                Bitmap bitmapImage=null;
+                                if(selectImage!=null)
+                                {
+                                    try {
+                                        bitmapImage =MediaStore.Images.Media.getBitmap(getContentResolver() ,selectImage);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
-                                });
+                                }else{
+                                    bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.lawyer);
+                                }
+                                compressAndUpload(bitmapImage);
 
                             }else{
                                 try{
@@ -226,6 +232,35 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+    }
+    public void compressAndUpload(Bitmap bitmap)
+    {
+        mProgressdialog.setMessage("Uploading Profile Pic ...");
+        bitmap = Bitmap.createScaledBitmap(bitmap, 500 ,500, true);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 30, baos);
+        byte[] data = baos.toByteArray();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("ProfileImages/Lawyers").child(mAuth.getCurrentUser().getEmail());
+        UploadTask uploadTask = storageReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                mProgressdialog.dismiss();
+                Toast.makeText(getApplicationContext(),"Something Went Wrong!",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                mProgressdialog.dismiss();
+                Intent intent = new Intent(RegistrationActivity.this,UploadLocationLawyer.class);
+                intent.putExtra("lawyer_mail",mAuth.getCurrentUser().getEmail());
+                startActivity(intent);
+                // ...
             }
         });
 
@@ -264,15 +299,21 @@ public class RegistrationActivity extends AppCompatActivity {
                                 databaseReference1.child("contact").setValue(contact);
                                 databaseReference1.child("uid").setValue(mAuth.getUid());
                                 databaseReference1.child("type").setValue("user");
-                                StorageReference ref = FirebaseStorage.getInstance().getReference().child("ProfileImages/Users/"+mAuth.getCurrentUser().getUid());
-                                ref.putFile(selectImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-                                        mProgressdialog.dismiss();
-                                        finish();
-                                    }
-                                });
+                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("type","user");
+                                editor.commit();
+                                mProgressdialog.dismiss();
+                                finish();
+                   //             StorageReference ref = FirebaseStorage.getInstance().getReference().child("ProfileImages/Users/"+mAuth.getCurrentUser().getUid());
+//                                ref.putFile(selectImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//
+//                                        mProgressdialog.dismiss();
+//                                        finish();
+//                                    }
+//                                });
 
 
                             }else{

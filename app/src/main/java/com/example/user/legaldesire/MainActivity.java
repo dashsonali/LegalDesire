@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
                       editor.putString("areaOfPractice",areaOfPractice);
                       editor.putString("contact",contact);
                       editor.putString("email",email);
-                      editor.putString("rating",rating);
-                      editor.putString("usersRated",usersRated);
+//                      editor.putString("rating",rating);
+//                      editor.putString("usersRated",usersRated);
                       editor.putString("consultationFee",consultationFee);
                       if(dataSnapshot.hasChild("location"))
                       {

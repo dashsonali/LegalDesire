@@ -1,5 +1,6 @@
 package com.example.user.legaldesire.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -30,6 +32,11 @@ import com.example.user.legaldesire.UploadLocationLawyer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
@@ -44,6 +51,7 @@ public class LawyerProfileFragment extends Fragment{
     private ImageView user_menu,propic;
     ProgressBar mProgressBar;
     private Context mContext;
+    ProgressDialog mProgressDialog;
     public LawyerProfileFragment() {
         // Required empty public constructor
     }
@@ -57,6 +65,7 @@ public class LawyerProfileFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lawyer_profile, container, false);
         name = view.findViewById(R.id.nametxt);
+        mProgressDialog = new ProgressDialog(mContext);
         usersRated  = view.findViewById(R.id.usersRatedtext);
         areaOfPractice = view.findViewById(R.id.areaOfPracticeTxt);
         ratingBar = view.findViewById(R.id.ratingtxt);
@@ -69,8 +78,8 @@ public class LawyerProfileFragment extends Fragment{
         mProgressBar = view.findViewById(R.id.profilePicProgresspar);
         sharedPreferences = mContext.getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         name.setText(sharedPreferences.getString("name",null));
-        ratingBar.setRating(Float.valueOf(sharedPreferences.getString("rating",null)));
-        usersRated.setText(sharedPreferences.getString("usersRated",null)+" "+"client(s) have rated");
+       // ratingBar.setRating(Float.valueOf(sharedPreferences.getString("rating",null)));
+        //usersRated.setText(sharedPreferences.getString("usersRated",null)+" "+"client(s) have rated");
         areaOfPractice.setText(sharedPreferences.getString("areaOfPractice",null)+" "+"Lawyer");
         phone.setText(sharedPreferences.getString("contact",null));
         email.setText(sharedPreferences.getString("email",null));
@@ -78,6 +87,8 @@ public class LawyerProfileFragment extends Fragment{
         feeTxt.setText(sharedPreferences.getString("consultationFee","Not Assigned!"));
         address.setText(sharedPreferences.getString("address","Please Update Your Address In Settings so that clients can find you."));
         loadProfilePic();
+        loadingRating();
+
         user_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +96,27 @@ public class LawyerProfileFragment extends Fragment{
             }
         });
         return view;
+    }
+    public void loadingRating(){
+        mProgressDialog.setMessage("Fetching data...");
+        mProgressDialog.show();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Lawyers").child(FirebaseAuth.getInstance().getCurrentUser()
+        .getEmail().replace(".",","));
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mProgressDialog.dismiss();
+                //Toast.makeText(mContext,dataSnapshot.child("name").getValue().toString(),Toast.LENGTH_SHORT).show();
+                ratingBar.setRating(Float.valueOf(dataSnapshot.child("rating").getValue().toString()));
+                usersRated.setText(dataSnapshot.child("usersRated").getValue().toString()+" "+"client(s) have rated");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
     public void loadProfilePic(){
 

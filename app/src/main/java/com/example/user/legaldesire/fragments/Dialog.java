@@ -1,6 +1,7 @@
 package com.example.user.legaldesire.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class Dialog extends AppCompatDialogFragment {
     TextView registertxt,forgot_password;
     EditText email,password;
     Button login ;
+    Context mContext;
     FirebaseAuth mAuth;
    public  static String type;
    ProgressDialog mProgres;
@@ -83,7 +85,7 @@ public class Dialog extends AppCompatDialogFragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful())
                         {
-                            pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                            pref = mContext.getSharedPreferences("MyPref", MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putString("type",type);
 
@@ -111,7 +113,7 @@ public class Dialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View view) {
                 Intent intent;
-                intent = new Intent(getActivity().getApplicationContext(),RegistrationActivity.class);
+                intent = new Intent(mContext,RegistrationActivity.class);
                 if(type.equals("lawyer"))
                 {
 
@@ -131,6 +133,13 @@ public class Dialog extends AppCompatDialogFragment {
             }
         });
         return builder.create();
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
 
     }
 }

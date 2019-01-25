@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("Loading.....");
         progressDialog.show();
-        sharedPreferences= getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
+        sharedPreferences= this.getSharedPreferences("MyPref",MODE_PRIVATE);
         typeOfUser= sharedPreferences.getString("type",null);
         Log.e("locationlawyer",""+intent.getStringExtra("location"));
         dataStored = sharedPreferences.getBoolean("dataEntered",false);
         if(!dataStored)
         {
-            Toast.makeText(getApplicationContext(),"Data is Not Stored",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,"Data is Not Stored",Toast.LENGTH_SHORT).show();
           final SharedPreferences.Editor editor = sharedPreferences.edit();
           if(typeOfUser.equals("user"))
           {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
         }else{
             progressDialog.dismiss();
-            Toast.makeText(getApplicationContext(),"Data is Stored",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,"Data is Stored",Toast.LENGTH_SHORT).show();
         }
         Log.e("currentuser",""+mAuth.getCurrentUser()+" njk" );
         if(intent.getExtras()!=null)

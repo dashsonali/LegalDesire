@@ -149,7 +149,9 @@ public class LawyerProfileFragment extends Fragment{
                     getActivity().finish();
                     return true;
                 }else if(id == R.id.edit_profile){
-                    return true;
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container,new EditProfileFragment()).commit();
+
                 }else if(id == R.id.bookmarks){
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.fragment_container,new BookmarkFragment()).commit();

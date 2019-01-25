@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,7 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
     ImageView roundedImage;
     CardView roundedImageView;
     Uri selectImage;
-
+    TextView tapText;
     private static final int RESULT_LOAD_IMAGE = 100;
     ProgressDialog mProgressdialog;
     RelativeLayout rl;
@@ -83,6 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
         charges = findViewById(R.id.charges);
         mProgressdialog = new ProgressDialog(this);
         database = FirebaseDatabase.getInstance();
+        tapText = findViewById(R.id.tapTextView);
         mAuth = FirebaseAuth.getInstance();
         String areaOfPractice_array[] = getResources().getStringArray(R.array.area_of_practice);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,areaOfPractice_array);
@@ -99,6 +101,7 @@ public class RegistrationActivity extends AppCompatActivity {
        {
            consultationLayout.setVisibility(View.GONE);
            areaOfPractice.setVisibility(View.GONE);
+           tapText.setVisibility(View.GONE);
            user_type = "user";
          //  Toast.makeText(getApplicationContext(),"You are a user",Toast.LENGTH_SHORT).show();
        }

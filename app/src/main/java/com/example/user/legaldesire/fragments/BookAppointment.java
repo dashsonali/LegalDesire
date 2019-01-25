@@ -27,8 +27,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -43,6 +46,8 @@ public class BookAppointment extends AppCompatDialogFragment {
     FirebaseAuth mAuth;
     public static LawyerData lawyerData;
     SharedPreferences pref;
+    int Exist=0;
+
 
     @Override
     public android.app.Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -73,7 +78,28 @@ public class BookAppointment extends AppCompatDialogFragment {
                if(mAuth.getCurrentUser()!=null){
                String mail=lawyerData.getEmail().toString().replace('.',',');
                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
-               if(databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",","))!=null){
+                   databaseReference.child("pending_appointments").addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(DataSnapshot snapshot) {
+                           if (snapshot.hasChild(mAuth.getCurrentUser().getEmail().replace(".",","))) {
+
+                               Toast.makeText(getContext(), "already sent request", Toast.LENGTH_SHORT).show();
+                               Exist=1;
+
+                           }
+                       }
+
+                       @Override
+                       public void onCancelled(DatabaseError databaseError) {
+
+                       }
+                   });
+
+
+
+
+              // if(databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",","))!=null){
+                   if(Exist==1){
                    Toast.makeText(getContext(), "already sent request", Toast.LENGTH_SHORT).show();
                }else{
                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("message").setValue(problem.getText().toString());

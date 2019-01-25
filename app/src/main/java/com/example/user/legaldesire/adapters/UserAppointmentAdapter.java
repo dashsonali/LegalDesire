@@ -167,6 +167,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
                             AlertDialog.Builder adb = new AlertDialog.Builder(context);
                             adb.setTitle("Would you like to give FeedBack?");
                             adb.setMessage("This would help us rate the Lawyer.");
+                            adb.setView(R.layout.feedback);
                             adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

@@ -3,7 +3,7 @@ package com.example.user.legaldesire.models;
 /**
  * Created by USER on 10-01-2019.
  */
-
+//
 public class AppointmentDataModel {
     String message;
     String mail;

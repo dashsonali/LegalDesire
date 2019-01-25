@@ -39,6 +39,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import java.util.Date;
@@ -179,9 +181,56 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                    context.startActivity(intent);
                     //Format Changed
 
+
+
+
                }
            });
 
+           SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+           String curr[]=current.getStatus().split(" ");
+           Date strDate = null;
+           try {
+               Log.e("dateover12","in try");
+
+               strDate = sdf.parse(curr[0]);
+               Log.e("dateover12",strDate.toString()+"");
+
+               if (new Date().after(strDate)) {
+                   Log.e("dateover",strDate.toString()+"");
+
+                   holder.acceptButton.setText("Remove Appointment");
+                   holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View view) {
+
+                           mail=current.getMail();
+                           FirebaseAuth mAuth=FirebaseAuth.getInstance();
+                           final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                           database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
+                                   .child(mail.replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                               @Override
+                               public void onComplete(@NonNull Task<Void> task) {
+                                   Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
+//                        listItem.remove(position);
+                                   notifyItemRemoved(position);
+                                   notifyItemRangeChanged(position,listItem.size());
+                               }
+                           });
+
+
+                       }
+                   });
+
+
+
+
+
+
+               }
+           } catch (ParseException e) {
+               e.printStackTrace();
+           }
 
 
 
@@ -254,25 +303,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
 
     }
 
-    private void decline(final AppointmentDataModel current, final int position) {
-        mail=current.getMail();
-        FirebaseAuth mAuth=FirebaseAuth.getInstance();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference().child("Users").child(mail.replace(".",",")).child("appointments")
-                .child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").getRef().setValue("0");
-        database.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("pending_appointments")
-                .child(mail.replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(context, "removed", Toast.LENGTH_SHORT).show();
 
-            }
-        });
-
-
-
-
-    }
 
     private void setDate(final String txtDate, final String txtTime,  AppointmentDataModel current) {
           mail=current.getMail();

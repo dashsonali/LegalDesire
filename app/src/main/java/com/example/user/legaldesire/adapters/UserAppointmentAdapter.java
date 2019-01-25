@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -12,11 +13,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 
 import android.widget.ImageButton;
@@ -38,6 +41,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static android.graphics.Typeface.ITALIC;
@@ -107,37 +113,94 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
 
 
         });}
-        if(current.getStatus().equals("0")||current.getStatus().equals("-1")){}else {holder.status.setText(current.getStatus());
-              holder.cancelButton.setEnabled(true);
-              holder.cancelButton.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View view) {
-                      Toast.makeText(context, "clicked cancel", Toast.LENGTH_SHORT).show();
+        if(current.getStatus().equals("0")||current.getStatus().equals("-1")){}else {
+            holder.status.setText(current.getStatus());
+            holder.cancelButton.setEnabled(true);
+            if(holder.cancelButton.getText().toString().equals("Remove Appointment")){}else{
+            holder.cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "clicked cancel", Toast.LENGTH_SHORT).show();
 
 
-                      final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                      Log.e("cancelreference", current.getMail().replace(".",",")+"  "+mAuth.getCurrentUser().getEmail().replace(".",",").toString());
-                      database.getReference().child("Lawyers").child(current.getMail().replace(".",",")).child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                          @Override
-                          public void onComplete(@NonNull Task<Void> task) {
-                              database.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("appointments").child(current.getMail().replace(".",","))
-                                      .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                  @Override
-                                  public void onComplete(@NonNull Task<Void> task) {
-                                     // listItem.remove(position);
-                                      notifyItemRemoved(position);
-                                      notifyItemRangeChanged(position,listItem.size());
-                                  }
-                              });
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    Log.e("cancelreference", current.getMail().replace(".", ",") + "  " + mAuth.getCurrentUser().getEmail().replace(".", ",").toString());
+                    database.getReference().child("Lawyers").child(current.getMail().replace(".", ",")).child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".", ",")).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            database.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".", ",")).child("appointments").child(current.getMail().replace(".", ","))
+                                    .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    // listItem.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, listItem.size());
+                                }
+                            });
 
 
-                          }
-                      });
+                        }
+                    });
+
+
+                }
+            });}
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String curr[] = current.getStatus().split(" ");
+            java.util.Date strDate = null;
+            try {
+                strDate = sdf.parse(curr[0]);
+                Log.e("dateover12", strDate.toString() + "");
+
+                if (new Date().after(strDate)) {
+                    Log.e("dateover", strDate.toString() + "");
+
+                    holder.cancelButton.setText("Remove Appointment");
+                    holder.cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+
+
+                            AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                            adb.setTitle("Would you like to give FeedBack?");
+                            adb.setMessage("This would help us rate the Lawyer.");
+                            adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(context, "ready to give feedback", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                           adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialogInterface, int i) {
+
+                                   final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                   database.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".", ",")).child("appointments").child(current.getMail().replace(".", ","))
+                                           .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<Void> task) {
+                                           // listItem.remove(position);
+                                           notifyItemRemoved(position);
+                                           notifyItemRangeChanged(position, listItem.size());}});
+
+                               }
+                           });
+                            adb.show();
 
 
 
-                  }
-              });
+                                }
+                    });
+
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
         holder.mailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +219,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
         holder.name.setText(current.getName().toUpperCase());
 
     }
-    private void mailLawyer(AppointmentDataModel current) {
+        private void mailLawyer(AppointmentDataModel current) {
         String email=current.getMail();
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + email));
 

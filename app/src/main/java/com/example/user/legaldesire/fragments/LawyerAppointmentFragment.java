@@ -68,6 +68,7 @@ public class LawyerAppointmentFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
                 Log.e("data_snapshot", dataSnapshot.toString());
                 appointmentDataModels.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
@@ -91,7 +92,7 @@ public class LawyerAppointmentFragment extends Fragment {
                         );
                         appointmentDataModels.add(current);
                     }}
-                    progressDialog.dismiss();
+
 
 
                     adapter =new LawyerAppointmentAdapter(appointmentDataModels,getContext());

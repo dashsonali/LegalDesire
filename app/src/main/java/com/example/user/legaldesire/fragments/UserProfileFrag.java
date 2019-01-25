@@ -135,6 +135,12 @@ public class UserProfileFrag extends Fragment {
                     getActivity().finish();
                     return true;
                 }else if(id == R.id.edit_profile){
+
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                  //  EditProfileFragment editProfileFragment = new EditProfileFragment();
+
+
+                    ft.replace(R.id.fragment_container,new EditProfileFragment()).commit();
                     return true;
                 }
                 return false;

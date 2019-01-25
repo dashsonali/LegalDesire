@@ -18,7 +18,7 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -33,7 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
 
 public class LawyerProfileFragment extends Fragment{
 
@@ -43,6 +43,7 @@ public class LawyerProfileFragment extends Fragment{
     private RatingBar ratingBar;
     private ImageView user_menu,propic;
     ProgressBar mProgressBar;
+    private Context mContext;
     public LawyerProfileFragment() {
         // Required empty public constructor
     }
@@ -66,7 +67,7 @@ public class LawyerProfileFragment extends Fragment{
         address = view.findViewById(R.id.addressTxt);
         propic = view.findViewById(R.id.profilePic);
         mProgressBar = view.findViewById(R.id.profilePicProgresspar);
-        sharedPreferences = getContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+        sharedPreferences = mContext.getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         name.setText(sharedPreferences.getString("name",null));
         ratingBar.setRating(Float.valueOf(sharedPreferences.getString("rating",null)));
         usersRated.setText(sharedPreferences.getString("usersRated",null)+" "+"client(s) have rated");
@@ -96,7 +97,7 @@ public class LawyerProfileFragment extends Fragment{
                     @Override
                     public void onSuccess(Uri uri) {
 
-                        Glide.with(getActivity()).load(uri.toString()).listener(new RequestListener<String, GlideDrawable>() {
+                        Glide.with(mContext).load(uri.toString()).listener(new RequestListener<String, GlideDrawable>() {
                             @Override
                             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                                 mProgressBar.setVisibility(View.GONE);
@@ -118,7 +119,7 @@ public class LawyerProfileFragment extends Fragment{
                         int errorCode = ((StorageException) e).getErrorCode();
                         if(errorCode == StorageException.ERROR_OBJECT_NOT_FOUND){
                             mProgressBar.setVisibility(View.GONE);
-                           // Toast.makeText(getContext(),"Please Upload A Profile Pic",Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(mContext,"Please Upload A Profile Pic",Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -133,14 +134,14 @@ public class LawyerProfileFragment extends Fragment{
 
     }
     public void show_pop_up(View v){
-        PopupMenu popupMenu = new PopupMenu(getActivity().getBaseContext(),v);
+        PopupMenu popupMenu = new PopupMenu(mContext,v);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if(id == R.id.logout)
                 {
-                    SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = mContext.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                     sharedPreferences.edit().clear().commit();
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     mAuth.signOut();
@@ -155,7 +156,7 @@ public class LawyerProfileFragment extends Fragment{
 
                 }else if(id==R.id.uploadLocation)
                 {
-                    startActivity(new Intent(getContext(), UploadLocationLawyer.class));
+                    startActivity(new Intent(mContext, UploadLocationLawyer.class));
                 }
                 return false;
             }
@@ -165,7 +166,10 @@ public class LawyerProfileFragment extends Fragment{
 
     }
 
-
-
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        
+    }
 }

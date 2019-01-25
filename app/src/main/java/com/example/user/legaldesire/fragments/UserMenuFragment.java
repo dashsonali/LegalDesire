@@ -144,8 +144,7 @@ public class UserMenuFragment extends Fragment {
         });
         configure_button();
 
-        progressDialog.setMessage("Fetching data..");
-        progressDialog.show();
+      
 
         send_sos.setOnClickListener(new View.OnClickListener() {
             @Override

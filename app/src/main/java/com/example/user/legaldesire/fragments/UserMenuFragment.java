@@ -144,7 +144,7 @@ public class UserMenuFragment extends Fragment {
         });
         configure_button();
 
-      
+
 
         send_sos.setOnClickListener(new View.OnClickListener() {
             @Override

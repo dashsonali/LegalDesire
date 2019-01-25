@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.example.user.legaldesire.MainActivity;
 import com.example.user.legaldesire.R;
+import com.example.user.legaldesire.SingleShotLocationProvider;
 import com.example.user.legaldesire.adapters.ViewPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -62,6 +63,7 @@ public class UserMenuFragment extends Fragment {
     Location mlocation;
     Geocoder geocoder;
     String city;
+    SingleShotLocationProvider.GPSCoordinates cordinates=null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,52 +76,55 @@ public class UserMenuFragment extends Fragment {
         emergencyContactBtn = view.findViewById(R.id.emergency_contactsBtn);
         progressDialog=new ProgressDialog(getContext());
         locationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
-        listener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                geocoder=new Geocoder(mContext, Locale.getDefault());
-                double lat=location.getLatitude();
-              double longti=  location.getLongitude();
-                try {
-                    List<Address> addresses  = geocoder.getFromLocation(lat,longti, 1);
-                    city = addresses.get(0).getAdminArea();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                mlocation=location;
-                progressDialog.dismiss();
-
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);
-            }
-        };
+//        listener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                geocoder=new Geocoder(mContext, Locale.getDefault());
+//                double lat=location.getLatitude();
+//               double longti=  location.getLongitude();
+//                try {
+//                    List<Address> addresses  = geocoder.getFromLocation(lat,longti, 1);
+//                    city = addresses.get(0).getAdminArea();
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//                mlocation=location;
+//                progressDialog.dismiss();
+//
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String s, int i, Bundle bundle) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String s) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String s) {
+//
+//                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                startActivity(i);
+//            }
+//        };
         find_lawyers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("action","search_lawyer");
-                if(mlocation!=null){
+                if(cordinates!=null){
                     intent.putExtra("location",city.toString());
-                    Log.e("locationinfindLawyer",""+mlocation);
+                    //Log.e("locationinfindLawyer",""+mlocation);
 
+                }else{
+                    getLocation(mContext);
                 }
                 startActivity(intent);
 
@@ -138,16 +143,10 @@ public class UserMenuFragment extends Fragment {
             }
         });
         configure_button();
+
         progressDialog.setMessage("Fetching data..");
         progressDialog.show();
 
-       // Log.e("Location","NULL");
-        if (mlocation!=null)
-        {
-
-            progressDialog.dismiss();
-
-        }
         send_sos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,7 +158,7 @@ public class UserMenuFragment extends Fragment {
                     ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.SEND_SMS}
                             , 10);
                 }else{
-                    if(mlocation!=null)
+                    if(cordinates!=null)
                     {
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users")
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",","));
@@ -176,9 +175,9 @@ public class UserMenuFragment extends Fragment {
                                         SmsManager smsManager = SmsManager.getDefault();
                                         StringBuffer smsBody = new StringBuffer();
                                         smsBody.append(mContext.getSharedPreferences("MyPref",Context.MODE_PRIVATE).getString("name","****")+" needs your help "+"\n Locate on maps :\n"+"http://maps.google.com/maps?q=");
-                                        smsBody.append(mlocation.getLatitude());
+                                        smsBody.append(cordinates.latitude);
                                         smsBody.append(",");
-                                        smsBody.append(mlocation.getLongitude());
+                                        smsBody.append(cordinates.longitude);
                                         smsManager.sendTextMessage(contact, null, smsBody.toString(), null, null);
                                         Log.e("sms", smsBody.toString());
 
@@ -196,8 +195,7 @@ public class UserMenuFragment extends Fragment {
                             }
                         });
                     }else{
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, listener);
-                        progressDialog.dismiss();
+                        getLocation(mContext);
                         Toast.makeText(mContext,"Wait for location update!",Toast.LENGTH_SHORT).show();
                     }
 
@@ -229,13 +227,45 @@ public class UserMenuFragment extends Fragment {
             }
 
         } else {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, listener);
+            Toast.makeText(mContext,"Getting loction",Toast.LENGTH_SHORT).show();
+            getLocation(mContext);
+            //cordinates = getLocation(mContext);
+
+         //   locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, listener);
         }
         // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
 
 
     }
+    public void getLocation(Context context) {
+        // when you need location
+        // if inside activity context = this;
+       // Location location=null;
+        progressDialog.show();
+        progressDialog.setMessage("Getting Location");
+        SingleShotLocationProvider.requestSingleUpdate(context,
+                new SingleShotLocationProvider.LocationCallback() {
+                    @Override public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+                       cordinates = location;
 
+                        progressDialog.dismiss();
+                        geocoder=new Geocoder(mContext, Locale.getDefault());
+                double lat=cordinates.latitude;
+               double longti=  location.longitude;
+                try {
+                    List<Address> addresses  = geocoder.getFromLocation(lat,longti, 1);
+                    city = addresses.get(0).getAdminArea();
+                    Log.e("CITIYNAME",city.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                    }
+                });
+
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

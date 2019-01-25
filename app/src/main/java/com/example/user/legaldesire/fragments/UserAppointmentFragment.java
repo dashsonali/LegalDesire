@@ -104,6 +104,7 @@ public class UserAppointmentFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("datasnapshot", dataSnapshot.toString());
+                progressDialog.dismiss();
                 appointmentDataModels.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Log.e("datasnapshot1",dataSnapshot1.toString() );
@@ -115,6 +116,7 @@ public class UserAppointmentFragment extends Fragment {
                     email=dataSnapshot1.child("mail").getValue(String.class);
                     name=dataSnapshot1.child("name").getValue(String.class);
                     number=dataSnapshot1.child("number").getValue(String.class);
+
                     areaofpractice=dataSnapshot1.child("areaOfPractice").getValue(String.class)+" Lawyer";
                     AppointmentDataModel current=new AppointmentDataModel(
                             message,
@@ -125,7 +127,7 @@ public class UserAppointmentFragment extends Fragment {
                             areaofpractice
                     );
                     appointmentDataModels.add(current);
-                    progressDialog.dismiss();
+
 
                     adapter =new UserAppointmentAdapter(appointmentDataModels,getContext());
                     recyclerView.setAdapter(adapter);

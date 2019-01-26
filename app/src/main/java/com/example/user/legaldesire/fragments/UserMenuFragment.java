@@ -74,7 +74,8 @@ public class UserMenuFragment extends Fragment {
        // b = (Button) view.findViewById(R.id.SOS);
         find_lawyers=view.findViewById(R.id.find_lawyers);
         emergencyContactBtn = view.findViewById(R.id.emergency_contactsBtn);
-        progressDialog=new ProgressDialog(getContext());
+        progressDialog=new ProgressDialog(mContext);
+        progressDialog.setCanceledOnTouchOutside(false);
         call_ambulance =view.findViewById(R.id.call_ambulance);
         call_police = view.findViewById(R.id.call_police);
         call_fire = view.findViewById(R.id.call_fire);

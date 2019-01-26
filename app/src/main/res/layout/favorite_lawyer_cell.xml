@@ -49,8 +49,9 @@
                     app:cardCornerRadius="40dp">
 
                     <ImageView
+                        android:scaleType="fitCenter"
                         android:id="@+id/profilePic"
-                        android:layout_width="80dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="5dp"
                         android:src="@drawable/lawyer" />

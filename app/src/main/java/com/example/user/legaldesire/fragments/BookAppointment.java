@@ -77,54 +77,56 @@ public class BookAppointment extends AppCompatDialogFragment {
            public void onClick(View view) {
                if(mAuth.getCurrentUser()!=null){
              final  String mail=lawyerData.getEmail().toString().replace('.',',');
-              final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
+              final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",","));
                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                    @Override
                    public void onDataChange(DataSnapshot dataSnapshot) {
-                       if(dataSnapshot.hasChild("pending_appointments"))
+                       if(dataSnapshot.hasChild("appointments"))
                        {
-                            if(dataSnapshot.child("pending_appointments").hasChild(mAuth.getCurrentUser().getEmail().replace(".",","))){
+                            if(dataSnapshot.child("appointments").hasChild(mail)){
                                 Toast.makeText(getContext(), "Request already sent!", Toast.LENGTH_SHORT).show();
                                 dismiss();
                             }else{
                                 Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_SHORT).show();
-                                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("message").setValue(problem.getText().toString());
-                                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").setValue("-1");
-                                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("email").setValue(mAuth.getCurrentUser().getEmail());
-                                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("number").setValue("123456789");
-                                databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("name").setValue("sonali");
+                                DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
+                                databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("message").setValue(problem.getText().toString());
+                                databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").setValue("-1");
+                                databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("email").setValue(mAuth.getCurrentUser().getEmail());
+                                databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("number").setValue("123456789");
+                                databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("name").setValue("sonali");
 
 
 
                                 //New Book
-                                DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",","));
 
-                                databaseReference1.child("appointments").child(mail).child("message").setValue(problem.getText().toString());
-                                databaseReference1.child("appointments").child(mail).child("status").setValue("-1");
-                                databaseReference1.child("appointments").child(mail).child("mail").setValue(mail.replace(",","."));
-                                databaseReference1.child("appointments").child(mail).child("name").setValue(lawyerData.getName().toString());
-                                databaseReference1.child("appointments").child(mail).child("number").setValue(lawyerData.getContact().toString());
-                                databaseReference1.child("appointments").child(mail).child("areaOfPractice").setValue(lawyerData.getAreaOfPractice());
+
+                                databaseReference.child("appointments").child(mail).child("message").setValue(problem.getText().toString());
+                                databaseReference.child("appointments").child(mail).child("status").setValue("-1");
+                                databaseReference.child("appointments").child(mail).child("mail").setValue(mail.replace(",","."));
+                                databaseReference.child("appointments").child(mail).child("name").setValue(lawyerData.getName().toString());
+                                databaseReference.child("appointments").child(mail).child("number").setValue(lawyerData.getContact().toString());
+                                databaseReference.child("appointments").child(mail).child("areaOfPractice").setValue(lawyerData.getAreaOfPractice());
                             }
                        }else{
                            Toast.makeText(getContext(), "Request  sent!", Toast.LENGTH_SHORT).show();
-                           databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("message").setValue(problem.getText().toString());
-                           databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").setValue("-1");
-                           databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("email").setValue(mAuth.getCurrentUser().getEmail());
-                           databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("number").setValue("123456789");
-                           databaseReference.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("name").setValue("sonali");
+                           DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference().child("Lawyers").child(mail);
+                           databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("message").setValue(problem.getText().toString());
+                           databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("status").setValue("-1");
+                           databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("email").setValue(mAuth.getCurrentUser().getEmail());
+                           databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("number").setValue("123456789");
+                           databaseReference1.child("pending_appointments").child(mAuth.getCurrentUser().getEmail().replace(".",",")).child("name").setValue("sonali");
 
 
 
                            //New Book
-                           DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",","));
 
-                           databaseReference1.child("appointments").child(mail).child("message").setValue(problem.getText().toString());
-                           databaseReference1.child("appointments").child(mail).child("status").setValue("-1");
-                           databaseReference1.child("appointments").child(mail).child("mail").setValue(mail.replace(",","."));
-                           databaseReference1.child("appointments").child(mail).child("name").setValue(lawyerData.getName().toString());
-                           databaseReference1.child("appointments").child(mail).child("number").setValue(lawyerData.getContact().toString());
-                           databaseReference1.child("appointments").child(mail).child("areaOfPractice").setValue(lawyerData.getAreaOfPractice());
+
+                           databaseReference.child("appointments").child(mail).child("message").setValue(problem.getText().toString());
+                           databaseReference.child("appointments").child(mail).child("status").setValue("-1");
+                           databaseReference.child("appointments").child(mail).child("mail").setValue(mail.replace(",","."));
+                           databaseReference.child("appointments").child(mail).child("name").setValue(lawyerData.getName().toString());
+                           databaseReference.child("appointments").child(mail).child("number").setValue(lawyerData.getContact().toString());
+                           databaseReference.child("appointments").child(mail).child("areaOfPractice").setValue(lawyerData.getAreaOfPractice());
 
                        }
                    }

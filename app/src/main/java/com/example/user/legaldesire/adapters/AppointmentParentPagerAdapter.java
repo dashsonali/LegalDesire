@@ -11,7 +11,9 @@ import java.util.HashMap;
 
 public class AppointmentParentPagerAdapter extends FragmentPagerAdapter {
     private final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
-    public AppointmentParentPagerAdapter(FragmentManager fm) { super(fm); }
+    public AppointmentParentPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
 
     @Override
     public Fragment getItem(int position) {

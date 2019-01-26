@@ -124,9 +124,32 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                                                @Override
                                                public void onTimeSet(TimePicker view, int hourOfDay,
                                                                      int minute) {
+                                                   int hour = hourOfDay;
+                                                   int minutes = minute;
+                                                   String timeSet = "";
+                                                   if (hour > 12) {
+                                                       hour -= 12;
+                                                       timeSet = "PM";
+                                                   } else if (hour == 0) {
+                                                       hour += 12;
+                                                       timeSet = "AM";
+                                                   } else if (hour == 12){
+                                                       timeSet = "PM";
+                                                   }else{
+                                                       timeSet = "AM";
+                                                   }
 
-                                                   txtTime=(hourOfDay + ":" + minute);
-                                                   setDate(txtDate,txtTime,current);
+                                                   String min = "";
+                                                   if (minutes < 10)
+                                                       min = "0" + minutes ;
+                                                   else
+                                                       min = String.valueOf(minutes);
+
+                                                   // Append in a StringBuilder
+                                                   String aTime = new StringBuilder().append(hour).append(':')
+                                                           .append(min ).append(" ").append(timeSet).toString();
+
+                                                   setDate(txtDate,aTime,current);
 
                                                }
                                            }, mHour, mMinute, false);

@@ -165,7 +165,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
                         public void onClick(View view) {
                             Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
                             final AlertDialog.Builder adb = new AlertDialog.Builder(context);
-                            adb.setTitle("Would you like to give FeedBack?");
+                            adb.setTitle("Would you like to give Feedback?");
                             adb.setMessage("This would help us rate the Lawyer.");
                             View view1 = ((Activity) context).getLayoutInflater().inflate(R.layout.feedback, null, false);
 

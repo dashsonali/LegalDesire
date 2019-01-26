@@ -77,7 +77,7 @@ public class BookmarkClientFragment extends Fragment {
 
     public void loadData(){
         FirebaseDatabase fdatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = fdatabase.getReference().child("Lawyers").child(FirebaseAuth.getInstance()
+        DatabaseReference databaseReference = fdatabase.getReference().child("Users").child(FirebaseAuth.getInstance()
                 .getCurrentUser().getEmail().replace(".",",")).child("bookmarks");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

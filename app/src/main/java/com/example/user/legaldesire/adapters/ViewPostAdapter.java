@@ -39,7 +39,7 @@ public class ViewPostAdapter extends RecyclerView.Adapter<ViewPostAdapter.Youtub
 
             holder.textViewTitle.setText(object.getTitle());
             holder.textViewDate.setText(object.getPublishedAt());
-            holder.textViewDes.setText(object.getDes());
+           // holder.textViewDes.setText(object.getDes());
 
              Picasso.get().load(object.getThumb()).into(holder.imageViewThumb);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +69,7 @@ public class ViewPostAdapter extends RecyclerView.Adapter<ViewPostAdapter.Youtub
             super(itemView);
             textViewDate = itemView.findViewById(R.id.published_at);
             textViewTitle = itemView.findViewById(R.id.video_title);
-            textViewDes = itemView.findViewById(R.id.video_des);
+           // textViewDes = itemView.findViewById(R.id.video_des);
             imageViewThumb = itemView.findViewById(R.id.thumb_image);
         }
     }

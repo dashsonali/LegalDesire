@@ -192,7 +192,7 @@ public class UserAppointmentAdapter extends RecyclerView.Adapter<UserAppointment
 
                                             noOfRaters=noOfRaters+1;
                                             Float numOfStars= ratingBar.getRating();
-                                            numOfStars=(numOfStars+rating)/noOfRaters;
+                                            numOfStars=(numOfStars+rating)/2;
                                             database.getReference().child("Lawyers").child(current.getMail().replace(".", ",")).child("rating").setValue(numOfStars);
                                             database.getReference().child("Lawyers").child(current.getMail().replace(".", ",")).child("usersRated").setValue(noOfRaters);
                                         }

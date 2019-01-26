@@ -59,7 +59,7 @@ public class UserMenuFragment extends Fragment {
     private LocationListener listener;
     ProgressDialog progressDialog;
 
-    CardView send_sos,find_lawyers,emergencyContactBtn;
+    CardView send_sos,find_lawyers,emergencyContactBtn,call_police,call_fire,call_ambulance;
     Location mlocation;
     Geocoder geocoder;
     String city;
@@ -75,6 +75,36 @@ public class UserMenuFragment extends Fragment {
         find_lawyers=view.findViewById(R.id.find_lawyers);
         emergencyContactBtn = view.findViewById(R.id.emergency_contactsBtn);
         progressDialog=new ProgressDialog(getContext());
+        call_ambulance =view.findViewById(R.id.call_ambulance);
+        call_police = view.findViewById(R.id.call_police);
+        call_fire = view.findViewById(R.id.call_fire);
+        call_ambulance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri callUri = Uri.parse("tel://102");
+                Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                startActivity(callIntent);
+            }
+        });
+        call_fire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri callUri = Uri.parse("tel://101");
+                Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                startActivity(callIntent);
+            }
+        });
+        call_police.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri callUri = Uri.parse("tel://100");
+                Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                startActivity(callIntent);
+            }
+        });
         locationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
 
 //        listener = new LocationListener() {

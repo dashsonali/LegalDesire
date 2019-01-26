@@ -104,6 +104,7 @@ public class AddressDialog extends AppCompatDialogFragment {
                SharedPreferences pref = getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("type", "lawyer");
+                editor.putBoolean("dataEntered",false);
                 editor.commit();
 
 //                editor.commit();

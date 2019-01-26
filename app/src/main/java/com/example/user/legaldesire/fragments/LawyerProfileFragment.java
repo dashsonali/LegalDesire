@@ -112,6 +112,7 @@ public class LawyerProfileFragment extends Fragment{
        // Log.e("consultationFee",sharedPreferences.getString("consultationFee",null));
         feeTxt.setText(sharedPreferences.getString("consultationFee","Not Assigned!"));
         address.setText(sharedPreferences.getString("address","Please Update Your Address In Settings so that clients can find you."));
+        propic.setScaleType(ImageView.ScaleType.CENTER);
         loadProfilePic();
         loadingRating();
 
@@ -317,9 +318,10 @@ public class LawyerProfileFragment extends Fragment{
     {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mProgressDialog.setMessage("Uploading Profile Pic ...");
-        bitmap = Bitmap.createScaledBitmap(bitmap, 300 ,300, true);
+      bitmap = Bitmap.createScaledBitmap(bitmap, 200 ,200, true);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 30, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 20, baos);
+
         byte[] data = baos.toByteArray();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("ProfileImages/Lawyers").child(mAuth.getCurrentUser().getEmail());
         UploadTask uploadTask = storageReference.putBytes(data);
@@ -338,7 +340,9 @@ public class LawyerProfileFragment extends Fragment{
 //                Intent intent = new Intent(mContext, MainActivity.class);
 //                intent.putExtra("lawyer_mail",mAuth.getCurrentUser().getEmail());
 //                startActivity(intent);
+
                 // ...
+                loadProfilePic();
             }
         });
 

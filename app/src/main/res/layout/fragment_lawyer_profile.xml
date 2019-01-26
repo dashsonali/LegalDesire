@@ -48,6 +48,7 @@
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:padding="5dp"
+                    android:scaleType="center"
                     android:src="@drawable/lawyer" />
                 <ProgressBar
                     android:id="@+id/profilePicProgresspar"
@@ -80,7 +81,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/layout_bottom"
         android:layout_marginBottom="-20dp"
-        android:text="HELLO HELLO">
+        android:text="xxxxx">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
 
-                android:text="Corporate Lawyer"
+                android:text="XXXXX"
                 android:layout_toRightOf="@id/areaImageView"
                 android:id="@+id/areaOfPracticeTxt"/>
 
@@ -161,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_below="@id/areaOfPracticeTxt"
-                android:text="Rs 2500/- Per Hour"
+                android:text="****/- ****"
                 android:layout_toRightOf="@id/feeImageView"
                 android:id="@+id/feeTxt"/>
 
@@ -198,7 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
 
-                android:text="swain.rakesh131@gmail.com"
+                android:text="xxxx"
                 android:layout_toRightOf="@id/emailImageView"
                 android:id="@+id/emailTxt"
                 android:layout_below="@+id/phoneTxt"/>

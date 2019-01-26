@@ -206,6 +206,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             locate=itemView.findViewById(R.id.locatebtn);
             name=itemView.findViewById(R.id.nametxt);
             propic = itemView.findViewById(R.id.profilePic);
+            propic.setScaleType(ImageView.ScaleType.CENTER);
             areaOfPractice=itemView.findViewById(R.id.areaOfPracticetxt);
             call=itemView.findViewById(R.id.callbtn);
             mail=itemView.findViewById(R.id.emailbtn);

@@ -299,7 +299,8 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
         });
 
         holder.message.setText(current.getMessage());
-        holder.name.setText(current.getName().toUpperCase());
+        if(current.getName()!=null){
+        holder.name.setText(current.getName().toUpperCase());}
 
     }
 

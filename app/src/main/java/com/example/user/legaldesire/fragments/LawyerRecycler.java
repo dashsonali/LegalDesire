@@ -111,11 +111,14 @@ public class LawyerRecycler extends Fragment {
 
                         String addr21[]=addr2.split(",");
 
+                          if(addr21.length>1) {
+                              city = addr21[addr21.length - 2];
+                              Log.e("onItemSelected12", "" + addr21[addr21.length - 2] + "");
+                              loadRecyclerViewData(city);
+                          }else {
+                              Toast.makeText(getContext(), "Enter atleast a state", Toast.LENGTH_SHORT).show();
 
-                            city=addr21[addr21.length-2];
-                        Log.e("onItemSelected12",""+addr21[addr21.length-2]+"");
-                       loadRecyclerViewData(city);
-
+                          }
 
 
                     }else {

@@ -44,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.security.Permission;
 import java.util.List;
 import java.util.Locale;
 
@@ -82,69 +83,49 @@ public class UserMenuFragment extends Fragment {
         call_ambulance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri callUri = Uri.parse("tel://102");
-                Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
-                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-                startActivity(callIntent);
+                if(ActivityCompat.checkSelfPermission(mContext,Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(mContext,Manifest.permission.CALL_PRIVILEGED)!=PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.CALL_PHONE,Manifest.permission.CALL_PRIVILEGED},11);
+                }else{
+                    Uri callUri = Uri.parse("tel://102");
+                    Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
+                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                    startActivity(callIntent);
+                }
+
             }
         });
         call_fire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri callUri = Uri.parse("tel://101");
-                Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
-                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-                startActivity(callIntent);
+                if(ActivityCompat.checkSelfPermission(mContext,Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(mContext,Manifest.permission.CALL_PRIVILEGED)!=PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.CALL_PHONE,Manifest.permission.CALL_PRIVILEGED},11);
+                }else{
+                    Uri callUri = Uri.parse("tel://101");
+                    Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
+                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                    startActivity(callIntent);
+                }
+
             }
         });
         call_police.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri callUri = Uri.parse("tel://100");
-                Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
-                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-                startActivity(callIntent);
+                if(ActivityCompat.checkSelfPermission(mContext,Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(mContext,Manifest.permission.CALL_PRIVILEGED)!=PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.CALL_PHONE,Manifest.permission.CALL_PRIVILEGED},11);
+                }else{
+                    Uri callUri = Uri.parse("tel://100");
+                    Intent callIntent = new Intent(Intent.ACTION_CALL,callUri);
+                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                    startActivity(callIntent);
+                }
+
             }
         });
         locationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
-
-//        listener = new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                geocoder=new Geocoder(mContext, Locale.getDefault());
-//                double lat=location.getLatitude();
-//               double longti=  location.getLongitude();
-//                try {
-//                    List<Address> addresses  = geocoder.getFromLocation(lat,longti, 1);
-//                    city = addresses.get(0).getAdminArea();
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//                mlocation=location;
-//                progressDialog.dismiss();
-//
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String s, int i, Bundle bundle) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String s) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String s) {
-//
-//                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                startActivity(i);
-//            }
-//        };
         find_lawyers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,7 +164,7 @@ public class UserMenuFragment extends Fragment {
                 //noinspection MissingPermission
                 progressDialog.setMessage("Sending SOS...");
                     progressDialog.show();
-                if( ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
+                if( ActivityCompat.checkSelfPermission(mContext, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
                     progressDialog.dismiss();
                     ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.SEND_SMS}
                             , 10);
@@ -243,7 +224,9 @@ public class UserMenuFragment extends Fragment {
             case 10:
                 configure_button();
                 break;
-            default:
+            case 11:
+                Toast.makeText(mContext,"Permissions granted! Try again",Toast.LENGTH_SHORT);
+                default:
                 break;
         }
     }
@@ -259,19 +242,14 @@ public class UserMenuFragment extends Fragment {
         } else {
             Toast.makeText(mContext,"Getting loction",Toast.LENGTH_SHORT).show();
             getLocation(mContext);
-            //cordinates = getLocation(mContext);
 
-         //   locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, listener);
         }
-        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+
 
 
     }
     public void getLocation(Context context) {
-        // when you need location
-        // if inside activity context = this;
-       // Location location=null;
-        progressDialog.show();
+       progressDialog.show();
         progressDialog.setMessage("Getting Location");
         SingleShotLocationProvider.requestSingleUpdate(context,
                 new SingleShotLocationProvider.LocationCallback() {

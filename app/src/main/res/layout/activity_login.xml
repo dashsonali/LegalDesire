@@ -63,7 +63,7 @@
             android:gravity="center"
             android:background="@drawable/layout_border"
             android:layout_alignStart="@+id/line"
-            android:text="Sing In as a user "
+            android:text="Sign In as a user "
             android:elevation="5dp"
             />
 
@@ -77,7 +77,7 @@
             android:background="@drawable/layout_border"
             android:elevation="5dp"
             android:layout_alignStart="@id/line"
-            android:text="Sing In as a Lawyer "
+            android:text="Sign In as a Lawyer "
 
             android:padding="5dp"
             />

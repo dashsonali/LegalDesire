@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:fillViewport="true"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        >
+
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="30dp"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:id="@+id/welcmtxt"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:text="FILL UP DETAILS"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+                android:textSize="18dp"
+                android:textColor="#000"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:id="@+id/closebtn"
+                android:layout_toRightOf="@+id/welcmtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/welcmtxt"
+                android:background="#0000"
+                android:src="@drawable/ic_close_black_24dp" />
+
+
+
+
+            <EditText
+                android:id="@+id/entCaseName"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+                android:hint="Enter Case Name"
+                android:inputType="text"
+                android:layout_below="@id/welcmtxt"
+                android:padding="10dp" />
+            <EditText
+                android:id="@+id/entCourtName"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+                android:hint="Enter Court Name"
+                android:layout_below="@id/entCaseName"
+                android:inputType="text"
+                android:padding="10dp" />
+            <EditText
+                android:id="@+id/entLawyerName"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+                android:hint="Enter Lawyer Name"
+                android:layout_below="@id/entCourtName"
+                android:inputType="text"
+                android:padding="10dp" />
+            <EditText
+                android:id="@+id/entOppostionParty"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+                android:hint="Enter Opposition Party"
+                android:layout_below="@id/entLawyerName"
+                android:inputType="text"
+                android:padding="10dp" />
+            <EditText
+                android:id="@+id/entIntiationDate"
+                android:layout_width="185dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+
+                android:hint="Choose Initiation Date"
+                android:layout_below="@id/entOppostionParty"
+                android:inputType="text"
+                android:padding="10dp" />
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/initiation_datepicker_layout"
+                android:layout_below="@+id/entOppostionParty"
+                android:layout_toRightOf="@id/entIntiationDate">
+                <Button
+                    android:background="@drawable/calendar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/initiation_datepicker"
+                    android:layout_below="@+id/entOppostionParty"
+                    android:layout_toRightOf="@id/entIntiationDate"/>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/entNextDate"
+                android:layout_width="185dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_text_border"
+                android:gravity="center"
+                android:hint="Choose Next Date"
+                android:layout_below="@id/entIntiationDate"
+                android:inputType="text"
+                android:padding="10dp" />
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_below="@+id/initiation_datepicker_layout"
+                android:layout_toRightOf="@id/entNextDate">
+                <Button
+                    android:background="@drawable/calendar_next"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/next_datepicker"
+                    android:layout_below="@+id/initiation_datepicker"
+                    android:layout_toRightOf="@id/entNextDate"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit_btn"
+                android:layout_width="245dp"
+                android:text="Submit"
+                android:layout_margin="5dp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_border"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/entNextDate"/>
+
+
+        </RelativeLayout>
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/black"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+</ScrollView>

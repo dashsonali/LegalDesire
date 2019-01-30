@@ -305,9 +305,10 @@ listItems.clear();
                                     location
                             );
                     Log.e("locationinfindLawyer",""+state);
-                    if(state!=null){
+                    if(state!=null||city!=null){
 
-                    if(city.toUpperCase().equals(state.toUpperCase())){
+                    if(city.toUpperCase().equals(
+                            state.toUpperCase())){
                             listItems.add(current);}}
                             progressDialog.dismiss();
                     adapter = new RecyclerAdapter(listItems,getContext());

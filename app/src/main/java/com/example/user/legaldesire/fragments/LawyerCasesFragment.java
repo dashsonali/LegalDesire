@@ -52,20 +52,20 @@ public class LawyerCasesFragment extends Fragment {
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
 
-
+    Context mContext;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Context context=getContext();
+        Context context=mContext;
 
         View rootView= inflater.inflate(R.layout.fragment_lawyer_cases2, container, false);
         recyclerView=rootView.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        progressDialog=new ProgressDialog(context);
+        progressDialog=new ProgressDialog(mContext);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         appointmentDataModels=new ArrayList<>();
 
 
@@ -139,6 +139,12 @@ public class LawyerCasesFragment extends Fragment {
         });
 
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }
 

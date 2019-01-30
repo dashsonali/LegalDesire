@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.user.legaldesire.fragments.LawyerAppointmentFragment;
 import com.example.user.legaldesire.fragments.LawyerCasesFragment;
+import com.example.user.legaldesire.fragments.LawyerManualCasesFragment;
 
 import java.util.HashMap;
 
@@ -21,22 +22,32 @@ public class AppointmentParentPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                selectedFragment = fragmentHashMap.get("lawyer_appointment");
+                selectedFragment = fragmentHashMap.get("lawyer_requests");
                 if(selectedFragment==null)
                 {
                     selectedFragment = new LawyerAppointmentFragment();
-                    fragmentHashMap.put("lawyer_appointment",selectedFragment);
+                    fragmentHashMap.put("lawyer_requests",selectedFragment);
 
                 }
                 break;
             case 1:
-                selectedFragment = fragmentHashMap.get("lawyer_cases");
+                selectedFragment = fragmentHashMap.get("lawyer_appointments");
                 if(selectedFragment==null)
                 {
                     selectedFragment = new LawyerCasesFragment();
+                    fragmentHashMap.put("lawyer_appointments",selectedFragment);
+
+                }
+                break;
+            case 2:
+                selectedFragment = fragmentHashMap.get("lawyer_cases");
+                if(selectedFragment==null)
+                {
+                    selectedFragment = new LawyerManualCasesFragment();
                     fragmentHashMap.put("lawyer_cases",selectedFragment);
 
                 }
+
                 break;
         }
 
@@ -46,7 +57,7 @@ public class AppointmentParentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount()
     {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -55,7 +66,10 @@ public class AppointmentParentPagerAdapter extends FragmentPagerAdapter {
         if(position==0)
         {
             title = "Requests";
-        }else {
+        }else if(position==1) {
+            title = "Appointments";
+        }else if(position ==2)
+        {
             title = "My Cases";
         }
         return title;

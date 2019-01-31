@@ -21,6 +21,7 @@ import com.example.user.legaldesire.fragments.LawyerProfileFragment;
 import com.example.user.legaldesire.fragments.LawyerRecycler;
 import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserAppointmentFragment;
+import com.example.user.legaldesire.fragments.UserAppointmetnParentFragment;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                         selectFragment = fragmentHashMap.get("appointments");
                         if(selectFragment==null){
                             if(typeOfUser.equals("user")){
-                            selectFragment = new UserAppointmentFragment();
+                            selectFragment = new UserAppointmetnParentFragment();
                             fragmentHashMap.put("appointments",selectFragment);}
                             else {
                                selectFragment = new LawyerAppointmetnParentFragment();

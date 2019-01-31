@@ -11,6 +11,7 @@ import com.example.user.legaldesire.fragments.LawyerManualCasesFragment;
 import java.util.HashMap;
 
 public class AppointmentParentPagerAdapter extends FragmentPagerAdapter {
+
     private final HashMap<String,Fragment> fragmentHashMap = new HashMap<>();
     public AppointmentParentPagerAdapter(FragmentManager fm) {
         super(fm);

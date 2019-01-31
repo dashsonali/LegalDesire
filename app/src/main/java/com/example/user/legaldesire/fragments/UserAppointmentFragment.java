@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
@@ -48,7 +49,9 @@ public class UserAppointmentFragment extends Fragment {
     private List<AppointmentDataModel>appointmentDataModels;
     FirebaseDatabase database;
     FirebaseAuth mAuth;
-    ProgressDialog progressDialog;
+   // ProgressDialog progressDialog;
+    ProgressBar mProgressBar;
+    Context mContext;
 
     private String mParam1;
     private String mParam2;
@@ -80,9 +83,9 @@ public class UserAppointmentFragment extends Fragment {
         View rootView= inflater.inflate(R.layout.fragment_user_appointment, container, false);
         recyclerView=rootView.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        progressDialog=new ProgressDialog(context);
+       mProgressBar = rootView.findViewById(R.id.progressBar);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         appointmentDataModels=new ArrayList<>();
         loadRecyclerViewData();
 
@@ -94,8 +97,7 @@ public class UserAppointmentFragment extends Fragment {
 
     private void loadRecyclerViewData() {
         mAuth = FirebaseAuth.getInstance();
-        progressDialog.setMessage("Fetching data..");
-        progressDialog.show();
+
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -104,7 +106,7 @@ public class UserAppointmentFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("datasnapshot", dataSnapshot.toString());
-                progressDialog.dismiss();
+                mProgressBar.setVisibility(View.GONE);
                 appointmentDataModels.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Log.e("datasnapshot1",dataSnapshot1.toString() );
@@ -147,6 +149,13 @@ public class UserAppointmentFragment extends Fragment {
 
 
 
-    }}
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+}
 
 

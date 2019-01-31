@@ -72,7 +72,7 @@ public class CasesDialog extends AppCompatDialogFragment {
         if(getTag().equals("lawyer"))
             { databaseReference = firebaseDatabase.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",","));
             }else{
-            databaseReference = firebaseDatabase.getReference().child("Lawyers").child(mAuth.getCurrentUser().getEmail().replace(".",","));
+            databaseReference = firebaseDatabase.getReference().child("Users").child(mAuth.getCurrentUser().getEmail().replace(".",","));
         }
        submitBtn.setOnClickListener(new View.OnClickListener() {
            @Override

@@ -178,7 +178,7 @@ public class LawyerProfileFragment extends Fragment{
                     @Override
                     public void onSuccess(Uri uri) {
 
-                        Glide.with(mContext).load(uri.toString()).listener(new RequestListener<String, GlideDrawable>() {
+                        Glide.with(LawyerProfileFragment.this).load(uri.toString()).listener(new RequestListener<String, GlideDrawable>() {
                             @Override
                             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                                 mProgressBar.setVisibility(View.GONE);

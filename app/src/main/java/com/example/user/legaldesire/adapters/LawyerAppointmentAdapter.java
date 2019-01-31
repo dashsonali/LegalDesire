@@ -223,8 +223,7 @@ public class LawyerAppointmentAdapter extends RecyclerView.Adapter<LawyerAppoint
                         beginTime.set(year, month-1,day , Integer.valueOf(hoursAndMins[0]), Integer.valueOf(hoursAndMins[1]));
                         long startMillis = beginTime.getTimeInMillis();
                      //   Toast.makeText(context,String.valueOf(startMillis),Toast.LENGTH_SHORT).show();
-                        Calendar endTime = Calendar.getInstance();
-                        endTime.set(year, month, day, 0, 0);
+
                        // long endMillis = endTime.getTimeInMillis();
 
 

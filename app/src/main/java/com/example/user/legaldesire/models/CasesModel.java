@@ -1,11 +1,11 @@
 package com.example.user.legaldesire.models;
 
 public class CasesModel {
-    String casename,oppositon_party,court,lawyer,date_of_initation,key,next_date;
+    String casename,opposition_party,court,lawyer,date_of_initation,key,next_date;
 
-    public CasesModel(String casename, String oppositon_party, String court, String lawyer, String date_of_initation,String next_date,String key) {
+    public CasesModel(String casename, String opposition_party, String court, String lawyer, String date_of_initation,String next_date,String key) {
         this.casename = casename;
-        this.oppositon_party = oppositon_party;
+        this.opposition_party = opposition_party;
         this.court = court;
         this.lawyer = lawyer;
         this.key = key;
@@ -38,11 +38,11 @@ public class CasesModel {
     }
 
     public String getOppositon_party() {
-        return oppositon_party;
+        return opposition_party;
     }
 
     public void setOppositon_party(String oppositon_party) {
-        this.oppositon_party = oppositon_party;
+        this.opposition_party = oppositon_party;
     }
 
     public String getCourt() {

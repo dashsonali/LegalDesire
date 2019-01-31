@@ -54,6 +54,7 @@ public class CasesAdapter extends RecyclerView.Adapter<CasesAdapter.MyViewHolder
         holder.lawyer.setText("Lawyer: "+currentCase.getLawyer());
         holder.initiationdate.setText("Initiation Date: "+currentCase.getDate_of_initation());
         holder.nextdate.setText("Next Date: "+currentCase.getNext_date());
+        holder.opposition_party.setText("Opposition Party: "+currentCase.getOppositon_party());
         holder.updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

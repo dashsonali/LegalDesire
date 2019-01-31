@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,25 +72,49 @@ public class BookmarksRecyclerAdapter extends  RecyclerView.Adapter<BookmarksRec
     public void deleteBookmark(final BookmarkDataModel bookmarkDataModel,final int position)
     {
         Log.e("Deleting",bookmarkDataModel.getKey());
-     FirebaseDatabase.getInstance()
-                .getReference().child("Lawyers").child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",",")).child("bookmarks")
-                .child(bookmarkDataModel.getKey()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(context,"Bookmark Removed",Toast.LENGTH_SHORT);
-                            //bookmarkLinks.remove()
-                            notifyItemRemoved(position);
-                            notifyItemRangeChanged(position,bookmarkLinks.size());
+        if(context.getSharedPreferences("MyPref", Context.MODE_PRIVATE).getString("type","").equals("lawyer"))
+        {
+            FirebaseDatabase.getInstance()
+                    .getReference().child("Lawyers").child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",",")).child("bookmarks")
+                    .child(bookmarkDataModel.getKey()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful())
+                    {
+                        Toast.makeText(context,"Bookmark Removed",Toast.LENGTH_SHORT);
+                        //bookmarkLinks.remove()
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position,bookmarkLinks.size());
 
-                        }else
-                        {
-                            Log.e("ERROR DELETING",task
-                            .getException().toString());
-                        }
+                    }else
+                    {
+                        Log.e("ERROR DELETING",task
+                                .getException().toString());
                     }
-                });
+                }
+            });
+        }else{
+            FirebaseDatabase.getInstance()
+                    .getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",",")).child("bookmarks")
+                    .child(bookmarkDataModel.getKey()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful())
+                    {
+                        Toast.makeText(context,"Bookmark Removed",Toast.LENGTH_SHORT);
+                        //bookmarkLinks.remove()
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position,bookmarkLinks.size());
+
+                    }else
+                    {
+                        Log.e("ERROR DELETING",task
+                                .getException().toString());
+                    }
+                }
+            });
+        }
+
     }
     public void goToHomeFragment(BookmarkDataModel bookmarkDataModel,View view)
     {

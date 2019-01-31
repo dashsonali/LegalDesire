@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class CasesDialog extends AppCompatDialogFragment {
     private Context mContext;
     private ProgressBar mProgressBar;
     private Button submitBtn,chooseInitiationDateBtn,chooseNextDateBtn;
+    private ImageButton cross;
     private DatabaseReference databaseReference;
     private  FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private   FirebaseAuth mAuth=FirebaseAuth.getInstance();
@@ -65,6 +68,13 @@ public class CasesDialog extends AppCompatDialogFragment {
         initiationDateEditText = view.findViewById(R.id.entIntiationDate);
         nextDateEditText = view.findViewById(R.id.entNextDate);
         oppositionPartyEditText = view.findViewById(R.id.entOppostionParty);
+        cross = view.findViewById(R.id.closebtn);
+        cross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
         initiationDateEditText.setEnabled(false);
         nextDateEditText.setEnabled(false);
         mProgressBar = new ProgressBar(mContext);
@@ -179,6 +189,7 @@ public class CasesDialog extends AppCompatDialogFragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(mContext,"Cases added!",Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.GONE);
+                        addReminder(nextDateEditText.getText().toString(),caseNameEditText.getText().toString());
                         dismiss();
                     }
                 });
@@ -190,18 +201,24 @@ public class CasesDialog extends AppCompatDialogFragment {
             }
         });
     }
+    public void addReminder(String nexdate,String casename)
+    {
+        String arr1[] = nexdate.toString().split("-");
+        int day = Integer.valueOf(arr1[0]);
+        int month = Integer.valueOf(arr1[1]);
+        int year = Integer.valueOf(arr1[2]);
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(year, month-1,day , 0, 0);
+        long startMillis = beginTime.getTimeInMillis();
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if(isVisibleToUser)
-        {
-          loadRecyclerViewData();
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("beginTime", startMillis);
+        intent.putExtra("allDay", true);
+        intent.putExtra("rrule", "FREQ=DAILY");
 
-
-        }
-    }
-    public void loadRecyclerViewData(){
-
+        intent.putExtra("title",casename );
+        mContext.startActivity(intent);
     }
 
     @Override

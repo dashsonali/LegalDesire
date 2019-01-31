@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.user.legaldesire.R;
@@ -35,6 +36,7 @@ public class UpdateNextDialog extends AppCompatDialogFragment {
     int mYear = calendar.get(Calendar.YEAR);
     int   mMonth = calendar.get(Calendar.MONTH);
     int  mDay = calendar.get(Calendar.DAY_OF_MONTH);
+    ImageButton cross;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
@@ -64,6 +66,13 @@ public class UpdateNextDialog extends AppCompatDialogFragment {
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
+            }
+        });
+        cross = view.findViewById(R.id.closebtn);
+        cross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
             }
         });
         submitBtn.setOnClickListener(new View.OnClickListener() {

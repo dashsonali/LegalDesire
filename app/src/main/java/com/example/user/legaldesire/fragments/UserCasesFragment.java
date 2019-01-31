@@ -66,10 +66,13 @@ public class UserCasesFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 casesModelList.clear();
+
+
                 mProgressBar.setVisibility(View.GONE);
                 if(dataSnapshot.hasChild("cases")){
                     for(DataSnapshot dataSnapshot1 : dataSnapshot.child("cases").getChildren())
                     {
+                       // Toast.makeText(mContext,dataSnapshot1.child("oppositon_party").getValue().toString(),Toast.LENGTH_SHORT).show();
                         CasesModel casesModel = new CasesModel(dataSnapshot1.child("casename").getValue().toString(),
                                 dataSnapshot1.child("oppositon_party").getValue().toString(),
                                 dataSnapshot1.child("court").getValue().toString(),
@@ -80,6 +83,7 @@ public class UserCasesFragment extends Fragment {
                         casesModelList.add(casesModel);
                         casesAdapter = new CasesAdapter(casesModelList,mContext);
                         manualCases.setAdapter(casesAdapter);
+                        casesAdapter.notifyDataSetChanged();
 
 
                     }

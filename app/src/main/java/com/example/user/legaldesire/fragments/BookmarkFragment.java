@@ -31,6 +31,7 @@ public class BookmarkFragment extends Fragment {
 
     RecyclerView bookmarkRecycler;
     RecyclerView.Adapter bookmarksRecyclerAdapter;
+    Context mContext;
     public BookmarkFragment() {
         // Required empty public constructor
     }
@@ -63,26 +64,30 @@ public class BookmarkFragment extends Fragment {
     public void loadData(){
         FirebaseDatabase fdatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = fdatabase.getReference().child("Lawyers").child(FirebaseAuth.getInstance()
-        .getCurrentUser().getEmail().replace(".",",")).child("bookmarks");
+        .getCurrentUser().getEmail().replace(".",","));
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 bookmarkLinks.clear();
-                if(dataSnapshot.getChildrenCount()==0)
+                if(!dataSnapshot.hasChild("bookmarks"))
                 {
-                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                   ft.replace(R.id.fragment_container,new BookmarkNullFragment()).commit();
-                    Toast.makeText(getContext(),"Nothing To Show",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"You haven't added any bookmarks!",Toast.LENGTH_SHORT).show();
                 }else
                 {
-                    for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
+                    for(DataSnapshot dataSnapshot1 :dataSnapshot.child("bookmarks").getChildren()){
                         Log.e("coming here",dataSnapshot1.toString());
-                        BookmarkDataModel bookmarkDataModel = new BookmarkDataModel(dataSnapshot1.getKey(),dataSnapshot1.child("link").getValue().toString(),
-                                dataSnapshot1.child("title").getValue().toString());
-                        bookmarkLinks.add(bookmarkDataModel);
-                        //bookmarkLinks.add(dataSnapshot1.getValue().toString());
-                        bookmarksRecyclerAdapter = new BookmarksRecyclerAdapter(bookmarkLinks,getContext());
-                        bookmarkRecycler.setAdapter(bookmarksRecyclerAdapter);
+                        if(dataSnapshot1.hasChild("link")&&dataSnapshot1.hasChild("title"))
+                        {
+                            BookmarkDataModel bookmarkDataModel = new BookmarkDataModel(dataSnapshot1.getKey(),dataSnapshot1.child("link").getValue().toString(),
+                                    dataSnapshot1.child("title").getValue().toString());
+                            bookmarkLinks.add(bookmarkDataModel);
+                            //bookmarkLinks.add(dataSnapshot1.getValue().toString());
+                            bookmarksRecyclerAdapter = new BookmarksRecyclerAdapter(bookmarkLinks,getContext());
+                            bookmarkRecycler.setAdapter(bookmarksRecyclerAdapter);
+                        }else{
+                            Toast.makeText(mContext,"Wait for a few seconds",Toast.LENGTH_SHORT).show();
+                        }
+
                     }
 
 
@@ -96,5 +101,9 @@ public class BookmarkFragment extends Fragment {
         });
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 }

@@ -142,6 +142,18 @@ public class UserProfileFrag extends Fragment {
 
                     ft.replace(R.id.fragment_container,new EditProfileFragment()).commit();
                     return true;
+                }else if(id==R.id.fileRti)
+                {
+                    FileRtiFragment fileRtiFragment = new FileRtiFragment();
+                    fileRtiFragment.show(getFragmentManager(),"");
+                }else if(id==R.id.gstApplication)
+                {
+                    GSTapplicationFragment gsTapplicationFragment = new GSTapplicationFragment();
+                    gsTapplicationFragment.show(getFragmentManager(),"");
+                }else if(id==R.id.legalDrafting)
+                {
+                   LegalDraftingFragment legalDraftingFragment = new LegalDraftingFragment();
+                   legalDraftingFragment.show(getFragmentManager(),"");
                 }
                 return false;
             }

@@ -23,6 +23,9 @@ import com.example.user.legaldesire.fragments.LearnLaw;
 import com.example.user.legaldesire.fragments.UserAppointmentFragment;
 import com.example.user.legaldesire.fragments.UserAppointmetnParentFragment;
 import com.example.user.legaldesire.fragments.UserProfileFrag;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     String typeOfUser;
     ProgressDialog progressDialog;
     boolean dataStored;
+    private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading.....");
         progressDialog.show();
         sharedPreferences= this.getSharedPreferences("MyPref",MODE_PRIVATE);
+        MobileAds.initialize(this,"ca-app-pub-1918084302457714~8339404384");
+        mAdView = findViewById(R.id.bannerAdView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("8B6394015EB78261F108E7DD36ED7498").build();
+        mAdView.loadAd(adRequest);
         typeOfUser= sharedPreferences.getString("type",null);
         Log.e("locationlawyer",""+intent.getStringExtra("location"));
         dataStored = sharedPreferences.getBoolean("dataEntered",false);

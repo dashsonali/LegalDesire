@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.example.user.legaldesire.R;
 import com.example.user.legaldesire.VideoPlayActivity;
 import com.example.user.legaldesire.models.YouTubeDataModel;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +23,8 @@ public class ViewPostAdapter extends RecyclerView.Adapter<ViewPostAdapter.Youtub
     public ArrayList<YouTubeDataModel> dataset;
     public Context mContext =null;
     private  String video_id;
+    private InterstitialAd mInterstitialAd;
+
 
     public ViewPostAdapter(ArrayList<YouTubeDataModel> dataset, Context mContext) {
         this.dataset = dataset;
@@ -30,6 +35,10 @@ public class ViewPostAdapter extends RecyclerView.Adapter<ViewPostAdapter.Youtub
     public YoutubePostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_post_layotu,parent,false);
         YoutubePostViewHolder youtubePostViewHolder = new YoutubePostViewHolder(view);
+        mInterstitialAd = new InterstitialAd(mContext);
+        mInterstitialAd.setAdUnitId("ca-app-pub-1918084302457714/8503055917");
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("8B6394015EB78261F108E7DD36ED7498").build());
+
         return youtubePostViewHolder;
     }
 
@@ -48,14 +57,30 @@ public class ViewPostAdapter extends RecyclerView.Adapter<ViewPostAdapter.Youtub
                  goToPlayerView(object);
              }
          });
+
             //TODO:Image will be downloaded from URL
 
     }
-    public void goToPlayerView(YouTubeDataModel object)
+    public void goToPlayerView(final YouTubeDataModel object)
     {
-        Intent intent = new Intent(mContext, VideoPlayActivity.class);
-        intent.putExtra("video_id",object.getVideo_id());
-        mContext.startActivity(intent);
+        if(mInterstitialAd.isLoaded())
+        {
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener(){
+                @Override
+                public void onAdClosed() {
+                    super.onAdClosed();
+                    Intent intent = new Intent(mContext, VideoPlayActivity.class);
+                    intent.putExtra("video_id",object.getVideo_id());
+                    mContext.startActivity(intent);
+                }
+            });
+        }else{
+            Intent intent = new Intent(mContext, VideoPlayActivity.class);
+            intent.putExtra("video_id",object.getVideo_id());
+            mContext.startActivity(intent);
+        }
+
     }
     @Override
     public int getItemCount() {

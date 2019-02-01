@@ -17,5 +17,17 @@
         <item>Per Hour</item>
         <item>Per Consultation</item>
     </string-array>
+    <string-array name="legal_category">
+        <item>Select Category</item>
+        <item>Partnership Agreement</item>
+        <item>Rent Agreement</item>
+        <item>Non Disclosure Agreement</item>
+        <item>Plaint</item>
+        <item>Arbitration Agreement</item>
+        <item>Articles Of Association</item>
+        <item>Memorandum Of Association</item>
+        <item>NHRC Complaint</item>
+        <item>Consumer Complaint</item>
 
+    </string-array>
 </resources>

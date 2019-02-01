@@ -5,23 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.user.legaldesire.MainActivity">
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btm_nav"
+        android:layout_above="@id/btm_nav_linear"
         ></FrameLayout>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/btm_nav"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottomnavigation"
-        android:background="#FFFFFF"
-        app:itemTextColor="#808080"
-        app:itemIconTint="#000"
-        ></android.support.design.widget.BottomNavigationView>
+        android:orientation="vertical"
+        android:id="@+id/btm_nav_linear"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/bannerAdView"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-1918084302457714/3199716206"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </com.google.android.gms.ads.AdView>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/btm_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/bottomnavigation"
+            android:background="@color/white"
+            app:itemTextColor="#808080"
+            app:itemIconTint="#000"
+            ></android.support.design.widget.BottomNavigationView>
+    </LinearLayout>
+
 
 
 </RelativeLayout>

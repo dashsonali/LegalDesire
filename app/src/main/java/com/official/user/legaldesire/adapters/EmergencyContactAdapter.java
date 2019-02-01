@@ -25,7 +25,7 @@ public class EmergencyContactAdapter extends RecyclerView.Adapter<EmergencyConta
 
     Context mContext;
     List<EmergencyContactDataModel> listitem;
-    EmergencyContactDataModel emergencyContactDataModel;
+
     DatabaseReference databaseReference;
     public EmergencyContactAdapter(List<EmergencyContactDataModel> listitem, Context mContext){
         if(listitem.size()==0)
@@ -44,7 +44,7 @@ public class EmergencyContactAdapter extends RecyclerView.Adapter<EmergencyConta
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        emergencyContactDataModel = listitem.get(position);
+        final EmergencyContactDataModel emergencyContactDataModel = listitem.get(position);
         holder.name.setText(emergencyContactDataModel.getName());
         holder.contact.setText(emergencyContactDataModel.getContact());
         holder.cross.setOnClickListener(new View.OnClickListener() {

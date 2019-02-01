@@ -36,7 +36,7 @@ public class GSTapplicationFragment extends AppCompatDialogFragment {
         builder.setView(view);
         name = view.findViewById(R.id.entName);
         email = view.findViewById(R.id.entEmail);
-        contact = view.findViewById(R.id.contact);
+        contact = view.findViewById(R.id.entContact);
         address = view.findViewById(R.id.entAddress);
         firmName = view.findViewById(R.id.entFirmName);
         sendBtn = view.findViewById(R.id.submit_btn);

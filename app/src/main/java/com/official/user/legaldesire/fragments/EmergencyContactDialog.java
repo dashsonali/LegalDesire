@@ -112,6 +112,7 @@ public class EmergencyContactDialog extends AppCompatDialogFragment {
 
                                             Toast.makeText(getActivity(), "Contact Already Exists!", Toast.LENGTH_SHORT).show();
                                             exists=true;
+                                            dismiss();
                                         }
                                     }
                                     if(!exists)
@@ -125,10 +126,12 @@ public class EmergencyContactDialog extends AppCompatDialogFragment {
                                                 if(task.isSuccessful())
                                                 {
                                                     Toast.makeText(getActivity(),"Contact added!",Toast.LENGTH_SHORT).show();
+                                                    dismiss();
 
                                                 }else
                                                 {
                                                     Toast.makeText(getActivity(),"Something Went Wrong!",Toast.LENGTH_SHORT).show();
+                                                    dismiss();
                                                 }
 
                                             }

@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:text="GST APPLICATION"
+                android:text="LEGAL DRAFTING"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif"
                 android:textSize="18dp"

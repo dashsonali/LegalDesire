@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/bookmarkParent"
 
-    tools:context=".fragments.BookmarkFragment">
+    tools:context="com.official.user.legaldesire.fragments.BookmarkFragment">
    <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
        android:layout_height="match_parent"

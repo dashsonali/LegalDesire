@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.user.legaldesire">
+    package="com.official.user.legaldesire">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,12 +27,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/maps_api" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.official.user.legaldesire.MainActivity">
 
         </activity>
-        <activity android:name=".SplashActivity" />
+        <activity android:name="com.official.user.legaldesire.SplashActivity" />
 
-        <activity android:name=".LoginActivity" >
+        <activity android:name="com.official.user.legaldesire.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,17 +40,17 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".UploadLocationLawyer">
+        <activity android:name="com.official.user.legaldesire.RegistrationActivity" />
+        <activity android:name="com.official.user.legaldesire.UploadLocationLawyer">
 
         </activity>
-        <activity android:name=".UserProfile">
+        <activity android:name="com.official.user.legaldesire.UserProfile">
 
         </activity>
-        <activity android:name=".SearchLawer" >
+        <activity android:name="com.official.user.legaldesire.SearchLawer" >
 
         </activity>
-        <activity android:name=".VideoPlayActivity"></activity>
+        <activity android:name="com.official.user.legaldesire.VideoPlayActivity"></activity>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-1918084302457714~8339404384"/>

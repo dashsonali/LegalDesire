@@ -30,14 +30,16 @@
         <activity android:name="com.official.user.legaldesire.MainActivity">
 
         </activity>
-        <activity android:name="com.official.user.legaldesire.SplashActivity" />
-
-        <activity android:name="com.official.user.legaldesire.LoginActivity" >
+        <activity android:name="com.official.user.legaldesire.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name="com.official.user.legaldesire.LoginActivity" >
+
 
         </activity>
         <activity android:name="com.official.user.legaldesire.RegistrationActivity" />
